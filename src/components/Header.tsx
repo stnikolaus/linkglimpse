@@ -85,7 +85,7 @@ export default function Header() {
             <ul aria-labelledby="mega-menu-full-dropdown-button">
               {socialPreviews.slice(0, 3).map((preview) => (
                 <li key={preview.href}>
-                  <Link href={preview.href} className="block p-3 rounded-lg hover:bg-gray-50">
+                  <Link href={preview.href} className="block p-3 rounded-lg hover:bg-gray-50 border border-white hover:border-gray-100 transition ease-in-out duration-200">
                     <div className="font-semibold flex items-center">
                       <preview.icon className="mr-2 h-5 w-5 text-gray-600" />
                       {preview.name}
@@ -98,7 +98,7 @@ export default function Header() {
             <ul>
               {socialPreviews.slice(3, 6).map((preview) => (
                 <li key={preview.href}>
-                  <Link href={preview.href} className="block p-3 rounded-lg hover:bg-gray-50">
+                  <Link href={preview.href} className="block p-3 rounded-lg hover:bg-gray-50 border border-white hover:border-gray-100 transition ease-in-out duration-200">
                     <div className="font-semibold flex items-center">
                       <preview.icon className="mr-2 h-5 w-5 text-gray-600" />
                       {preview.name}
@@ -111,7 +111,7 @@ export default function Header() {
             <ul className="hidden md:block">
               {socialPreviews.slice(6, 9).map((preview) => (
                 <li key={preview.href}>
-                  <Link href={preview.href} className="block p-3 rounded-lg hover:bg-gray-50">
+                  <Link href={preview.href} className="block p-3 rounded-lg hover:bg-gray-50 border border-white hover:border-gray-100 transition ease-in-out duration-200">
                     <div className="font-semibold flex items-center">
                       <preview.icon className="mr-2 h-5 w-5 text-gray-600" />
                       {preview.name}

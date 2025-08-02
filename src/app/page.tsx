@@ -205,7 +205,7 @@ export default function Home() {
       
       <section className="bg-white py-8">
         {/* AI Enhancement Section */}
-        <div className="py-8 bg-gradient-to-r from-purple-50 to-white m-16 border border-gray-100 rounded-lg shadow-sm">
+        <div className="py-8 bg-gradient-to-r from-purple-50 to-white m-16 border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -266,7 +266,7 @@ export default function Home() {
         </div>
 
         {/* Bulk Processing Section */}
-        <div className="py-8 bg-gradient-to-l from-blue-50 to-white m-16 border border-gray-100 rounded-lg shadow-sm">
+        <div className="py-8 bg-gradient-to-l from-blue-50 to-white m-16 border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
@@ -336,7 +336,7 @@ export default function Home() {
         </div>
 
         {/* API Section */}
-        <div className="py-8 bg-gradient-to-r from-green-50 to-white m-16 border border-gray-100 rounded-lg shadow-sm">
+        <div className="py-8 bg-gradient-to-r from-green-50 to-white m-16 border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>

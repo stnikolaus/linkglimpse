@@ -1,33 +1,47 @@
+'use client';
 
-import type { Metadata } from 'next';
+import { useState } from 'react';
 
-import { AlertCircle, ArrowLeft, Sparkles, Wand2, Brain, Zap, CheckCircle, Copy, Download } from 'lucide-react';
-import Link from 'next/link';
+import { Sparkles, Wand2, Brain, Zap } from 'lucide-react';
 import AiEnhancer from '@/components/AiEnhancer';
-
-export const metadata: Metadata = {
-  title: 'AI Enhancement - Social Preview Generator',
-  description: 'Enhance your social media previews with AI. Generate optimized titles, descriptions, and Open Graph tags using artificial intelligence for better social media engagement.',
-  keywords: 'ai enhancement, social media ai, open graph ai, meta tags ai, social preview ai, content optimization ai',
-  openGraph: {
-    title: 'AI Enhancement - Social Preview Generator',
-    description: 'Enhance your social media previews with AI. Generate optimized titles, descriptions, and Open Graph tags using artificial intelligence for better social media engagement.',
-    type: 'website',
-    url: 'https://social-preview-generator.com/ai',
-    siteName: 'Social Preview Generator',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'AI Enhancement - Social Preview Generator',
-    description: 'Enhance your social media previews with AI. Generate optimized titles, descriptions, and Open Graph tags using artificial intelligence for better social media engagement.',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+import UrlInput from '@/components/UrlInput';
+import { ApiResponse } from '@/types';
+import { fetchUrlMetadata } from '@/lib/url-utils';
 
 export default function AiPage() {
+  const [metadata, setMetadata] = useState<ApiResponse>({
+    title: '',
+    description: '',
+    image: '',
+    url: '',
+    siteName: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleUrlSubmit = async (url: string) => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const fetchedMetadata = await fetchUrlMetadata(url);
+      
+      if (fetchedMetadata.error) {
+        throw new Error(fetchedMetadata.error);
+      }
+
+      setMetadata(fetchedMetadata);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch metadata');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEnhancedMetadata = (enhancedMetadata: ApiResponse) => {
+    setMetadata(enhancedMetadata);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
 
@@ -47,10 +61,28 @@ export default function AiPage() {
           </p>
         </div>
 
-        {/* AI Enhancer Component */}
-        <div className="mb-12">
-          <AiEnhancer />
+        {/* URL Input Section */}
+        <div className="mb-8">
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Step 1: Enter Your URL</h2>
+            <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} />
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* AI Enhancer Component */}
+        {metadata.url && (
+          <div className="mb-12">
+            <AiEnhancer 
+              metadata={metadata}
+              onEnhancedMetadata={handleEnhancedMetadata}
+            />
+          </div>
+        )}
 
         {/* Features Section */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
