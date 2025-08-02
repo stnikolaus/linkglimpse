@@ -1,36 +1,240 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Social Preview Generator
+
+A modern Next.js web application that generates social media previews for any URL. See how your links will appear when shared on Facebook, Twitter, LinkedIn, WhatsApp, Slack, and Discord.
+
+## Features
+
+- **URL Input & Validation**: Enter any URL and get instant validation
+- **Multi-Platform Previews**: Generate previews for 9 different social platforms
+- **AI-Powered Enhancement**: Optimize titles, descriptions, and generate hashtags using AI
+- **Bulk URL Processing**: Process up to 100 URLs at once with batch export
+- **Real-time Metadata Extraction**: Fetches Open Graph, Twitter Cards, and meta tags
+- **API Access**: RESTful API for programmatic access to social preview data
+- **Export Options**: Download results in JSON or CSV format
+- **Copy to Clipboard**: Copy preview text with one click
+- **Responsive Design**: Works perfectly on desktop and mobile
+- **Modern UI**: Clean, intuitive interface with smooth animations
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Package Manager**: pnpm
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- pnpm (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd social-preview
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. Enter any URL in the input field
+2. Click "Preview" or press Enter
+3. View how the URL will appear on different social platforms
+4. Click the copy icon to copy the preview text
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### GET /api/metadata?url={url}
 
-## Deploy on Vercel
+Fetches metadata from a given URL.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Parameters:**
+- `url` (required): The URL to extract metadata from
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Response:**
+```json
+{
+  "title": "Page Title",
+  "description": "Page description",
+  "image": "https://example.com/image.jpg",
+  "url": "https://example.com",
+  "siteName": "Site Name"
+}
+```
+
+### POST /api/bulk
+
+Process multiple URLs in bulk.
+
+**Parameters:**
+- `urls` (required): Array of URLs to process (max 100)
+- `format` (optional): Export format - 'json' or 'csv' (default: 'json')
+
+**Request Body:**
+```json
+{
+  "urls": ["https://example.com", "https://google.com"],
+  "format": "json"
+}
+```
+
+**Response:**
+```json
+{
+  "summary": {
+    "totalUrls": 2,
+    "successful": 2,
+    "failed": 0,
+    "totalProcessingTime": 1500,
+    "averageProcessingTime": 750
+  },
+  "results": [
+    {
+      "url": "https://example.com",
+      "success": true,
+      "metadata": { ... },
+      "processingTime": 800
+    }
+  ],
+  "timestamp": "2024-01-01T12:00:00.000Z"
+}
+```
+
+### POST /api/enhance
+
+Enhance metadata using AI.
+
+**Parameters:**
+- `metadata` (required): Current metadata object
+- `platforms` (optional): Target platforms for optimization (default: ['facebook', 'twitter', 'linkedin'])
+- `enhancementType` (optional): Type of enhancement - 'title', 'description', 'hashtags', or 'all' (default: 'all')
+
+**Request Body:**
+```json
+{
+  "metadata": {
+    "title": "Example Title",
+    "description": "Example description",
+    "url": "https://example.com"
+  },
+  "platforms": ["facebook", "twitter"],
+  "enhancementType": "all"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "enhancements": {
+    "original": { ... },
+    "enhanced": { ... },
+    "suggestions": {
+      "title": "Optimized Title",
+      "description": "Enhanced description",
+      "hashtags": ["#example", "#social"],
+      "improvements": ["Add more engaging content", "Include call-to-action"]
+    },
+    "confidence": 0.85
+  },
+  "timestamp": "2024-01-01T12:00:00.000Z"
+}
+```
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── metadata/
+│   │       └── route.ts          # API endpoint for metadata
+│   ├── globals.css               # Global styles
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Main page
+├── components/
+│   ├── PreviewCard.tsx           # Individual preview card
+│   ├── SocialPreview.tsx         # Main preview component
+│   └── UrlInput.tsx              # URL input component
+├── lib/
+│   └── url-utils.ts              # URL validation utilities
+└── types/
+    └── index.ts                  # TypeScript type definitions
+```
+
+## Supported Platforms
+
+- **Facebook**: Open Graph preview
+- **Twitter**: Twitter Card preview
+- **LinkedIn**: Professional network preview
+- **Google Search**: Search result preview
+- **Instagram**: Social media preview
+- **Tumblr**: Blog platform preview
+- **Mastodon**: Fediverse preview
+- **Nextdoor**: Local community preview
+- **Bluesky**: Social platform preview
+
+## Development
+
+### Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+
+### Environment Variables
+
+For AI features, create a `.env.local` file with:
+
+```bash
+# Get your API key from: https://makersuite.google.com/app/apikey
+GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key_here
+
+# Optional: Set to 'false' to disable AI features (default: true)
+ENABLE_AI_FEATURES=true
+```
+
+Basic functionality works without AI features.
+
+## Deployment
+
+The app can be deployed to any platform that supports Next.js:
+
+- **Vercel** (recommended)
+- **Netlify**
+- **Railway**
+- **AWS Amplify**
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Icons from [Lucide React](https://lucide.dev/)
