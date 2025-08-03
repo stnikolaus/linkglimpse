@@ -228,7 +228,7 @@ export default function SocialPreview() {
 
       {/* AI Enhancement */}
       {urlMetadata && (
-        <div className="mb-8">
+        <div className="mb-8 max-w-7xl mx-auto px-4 mt-12">
           <AiEnhancer 
             metadata={urlMetadata} 
             onEnhancedMetadata={(enhancedMetadata) => setUrlMetadata(enhancedMetadata)}

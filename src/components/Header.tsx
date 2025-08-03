@@ -21,13 +21,10 @@ export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <nav className="bg-white border-gray-200">
+    <nav className="border-gray-200 absolute top-0 left-0 right-0 z-50">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <svg className="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <span className="self-center text-2xl font-semibold whitespace-nowrap">Social Preview</span>
+          <img src="/images/link-glimpse-logo.svg" alt="LinkGlimpse Logo" className="h-8 w-auto" />
         </Link>
         
         <button 

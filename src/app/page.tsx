@@ -4,19 +4,19 @@ import { Globe, Share2, Eye, Zap, CheckCircle, ArrowRight, Facebook, Twitter, Li
 import SocialPreview from '@/components/SocialPreview';
 
 export const metadata: Metadata = {
-  title: 'Social Preview Generator - Preview URLs on Social Media',
+  title: 'LinkGlimpse - Social Media Preview Debugger',
   description: 'Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Free tool for marketers and developers.',
   keywords: 'social media preview, facebook preview, twitter preview, linkedin preview, instagram preview, open graph, meta tags, url preview generator',
   openGraph: {
-    title: 'Social Preview Generator - Preview URLs on Social Media',
+    title: 'LinkGlimpse - Social Media Preview Debugger',
     description: 'Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms.',
     type: 'website',
-    url: 'https://social-preview-generator.com',
-    siteName: 'Social Preview Generator',
+    url: 'https://linkglimpse.com',
+    siteName: 'LinkGlimpse',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Social Preview Generator - Preview URLs on Social Media',
+    title: 'LinkGlimpse - Social Media Preview Debugger',
     description: 'Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms.',
   },
   robots: {
@@ -118,7 +118,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
@@ -129,12 +129,11 @@ export default function Home() {
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Social Preview
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Generator</span>
+              Social Preview 
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Debugger</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Preview how your URLs will appear when shared across all major social media platforms. 
-              Perfect for marketers, content creators, and developers.
+              Preview your link to find out how it will appear when shared across all major social media platforms. Perfect social share checker for marketers, content creators, and developers.
             </p>
           </div>
         </div>
@@ -149,7 +148,7 @@ export default function Home() {
       <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Our Social Preview Generator?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose LinkGlimpse?</h2>
             <p className="text-lg text-gray-600">Built with modern technology and designed for accuracy</p>
           </div>
           

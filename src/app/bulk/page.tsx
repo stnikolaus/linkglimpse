@@ -4,19 +4,19 @@ import { ArrowLeft, BarChart3 } from 'lucide-react';
 import BulkProcessor from '@/components/BulkProcessor';
 
 export const metadata: Metadata = {
-  title: 'Bulk URL Processing - Social Preview Generator',
+  title: 'Bulk URL Processing - LinkGlimpse',
   description: 'Process up to 100 URLs at once with our bulk URL processor. Generate social media previews for multiple URLs and export results in JSON or CSV format.',
   keywords: 'bulk url processing, social media preview batch, url preview generator, csv export, json export, batch processing',
   openGraph: {
-    title: 'Bulk URL Processing - Social Preview Generator',
+    title: 'Bulk URL Processing - LinkGlimpse',
     description: 'Process up to 100 URLs at once with our bulk URL processor. Generate social media previews for multiple URLs and export results in JSON or CSV format.',
     type: 'website',
-    url: 'https://social-preview-generator.com/bulk',
-    siteName: 'Social Preview Generator',
+    url: 'https://linkglimpse.com/bulk',
+    siteName: 'LinkGlimpse',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bulk URL Processing - Social Preview Generator',
+    title: 'Bulk URL Processing - LinkGlimpse',
     description: 'Process up to 100 URLs at once with our bulk URL processor. Generate social media previews for multiple URLs and export results in JSON or CSV format.',
   },
   robots: {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function BulkPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
 
       {/* Main Content */}
       <div className="py-8">

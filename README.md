@@ -1,4 +1,4 @@
-# Social Preview Generator
+# LinkGlimpse - Social Media Preview Generator
 
 A modern Next.js web application that generates social media previews for any URL. See how your links will appear when shared on Facebook, Twitter, LinkedIn, WhatsApp, Slack, and Discord.
 
