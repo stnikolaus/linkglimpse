@@ -11,10 +11,9 @@ import {
   Play,
   FileText,
   Shield,
-  Terminal,
-  ExternalLink,
-  AlertCircle
+  Terminal
 } from 'lucide-react';
+import CodeExamples from '@/components/CodeExamples';
 
 export default function ApiPage() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -52,19 +51,19 @@ export default function ApiPage() {
   const quickStartExamples = [
     {
       title: 'Get metadata for any URL',
-      code: `curl "https://linkglimpse.com/api/metadata?url=https://example.com"`,
+      code: `curl "https://www.linkglimpse.com/api/metadata?url=https://example.com"`,
       description: 'Extract Open Graph, Twitter Cards, and meta tags'
     },
     {
       title: 'Process multiple URLs',
-      code: `curl -X POST "https://linkglimpse.com/api/bulk" \\
+      code: `curl -X POST "https://www.linkglimpse.com/api/bulk" \\
   -H "Content-Type: application/json" \\
   -d '{"urls": ["https://example.com", "https://google.com"]}'`,
       description: 'Process up to 100 URLs at once'
     },
     {
       title: 'Enhance with AI',
-      code: `curl -X POST "https://linkglimpse.com/api/enhance" \\
+      code: `curl -X POST "https://www.linkglimpse.com/api/enhance" \\
   -H "Content-Type: application/json" \\
   -d '{"metadata": {"title": "My Page", "description": "Description", "url": "https://example.com"}}'`,
       description: 'AI-powered optimization of titles and descriptions'
@@ -73,17 +72,17 @@ export default function ApiPage() {
 
   const codeExamples = [
     {
-      title: 'JavaScript',
-      code: `const response = await fetch('https://linkglimpse.com/api/metadata?url=https://example.com');
+      title: 'JavaScript (Fetch API)',
+      code: `const response = await fetch('https://www.linkglimpse.com/api/metadata?url=https://example.com');
 const data = await response.json();
 console.log(data);`,
       language: 'javascript'
     },
     {
-      title: 'Python',
+      title: 'Python (requests)',
       code: `import requests
 
-response = requests.get('https://linkglimpse.com/api/metadata', params={
+response = requests.get('https://www.linkglimpse.com/api/metadata', params={
     'url': 'https://example.com'
 })
 data = response.json()
@@ -91,32 +90,101 @@ print(data)`,
       language: 'python'
     },
     {
-      title: 'PHP',
-      code: `$response = file_get_contents('https://linkglimpse.com/api/metadata?url=' . urlencode('https://example.com'));
+      title: 'PHP (file_get_contents)',
+      code: `$response = file_get_contents('https://www.linkglimpse.com/api/metadata?url=' . urlencode('https://example.com'));
 $data = json_decode($response, true);
 print_r($data);`,
       language: 'php'
     },
     {
-      title: 'Node.js',
-      code: `const axios = require('axios');
+      title: 'cURL (Command Line)',
+      code: `curl "https://www.linkglimpse.com/api/metadata?url=https://example.com"`,
+      language: 'bash'
+    },
+    {
+      title: 'Ruby (net/http)',
+      code: `require 'net/http'
+require 'json'
 
-const response = await axios.get('https://linkglimpse.com/api/metadata', {
-  params: { url: 'https://example.com' }
-});
-console.log(response.data);`,
-      language: 'javascript'
+uri = URI('https://www.linkglimpse.com/api/metadata')
+params = { url: 'https://example.com' }
+uri.query = URI.encode_www_form(params)
+
+response = Net::HTTP.get_response(uri)
+data = JSON.parse(response.body)
+puts data`,
+      language: 'ruby'
+    },
+    {
+      title: 'Java (HttpClient)',
+      code: `import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://www.linkglimpse.com/api/metadata?url=https://example.com"))
+    .build();
+
+HttpResponse<String> response = client.send(request, 
+    HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());`,
+      language: 'java'
+    },
+    {
+      title: 'C# (.NET)',
+      code: `using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+var client = new HttpClient();
+var response = await client.GetAsync("https://www.linkglimpse.com/api/metadata?url=https://example.com");
+var content = await response.Content.ReadAsStringAsync();
+Console.WriteLine(content);`,
+      language: 'csharp'
+    },
+    {
+      title: 'Go (net/http)',
+      code: `package main
+
+import (
+    "fmt"
+    "io/ioutil"
+    "net/http"
+    "net/url"
+)
+
+func main() {
+    baseURL := "https://www.linkglimpse.com/api/metadata"
+    params := url.Values{}
+    params.Add("url", "https://example.com")
+    
+    resp, err := http.Get(baseURL + "?" + params.Encode())
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
+    
+    fmt.Println(string(body))
+}`,
+      language: 'go'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-24">
       <div className="max-w-6xl mx-auto px-4 py-8">
         
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-full">
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-3 rounded-full shadow-lg">
               <Code className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -175,7 +243,7 @@ console.log(response.data);`,
               </code>
             </div>
             <button
-              onClick={() => copyToClipboard('https://linkglimpse.com/api/metadata?url=https://example.com', 'metadata')}
+              onClick={() => copyToClipboard('https://www.linkglimpse.com/api/metadata?url=https://example.com', 'metadata')}
               className="text-blue-600 hover:text-blue-700 text-sm font-medium"
             >
               {copied === 'metadata' ? 'Copied!' : 'Copy URL'}
@@ -196,7 +264,7 @@ console.log(response.data);`,
               </code>
             </div>
             <button
-              onClick={() => copyToClipboard('https://linkglimpse.com/api/bulk', 'bulk')}
+              onClick={() => copyToClipboard('https://www.linkglimpse.com/api/bulk', 'bulk')}
               className="text-blue-600 hover:text-blue-700 text-sm font-medium"
             >
               {copied === 'bulk' ? 'Copied!' : 'Copy URL'}
@@ -217,7 +285,7 @@ console.log(response.data);`,
               </code>
             </div>
             <button
-              onClick={() => copyToClipboard('https://linkglimpse.com/api/enhance', 'enhance')}
+              onClick={() => copyToClipboard('https://www.linkglimpse.com/api/enhance', 'enhance')}
               className="text-blue-600 hover:text-blue-700 text-sm font-medium"
             >
               {copied === 'enhance' ? 'Copied!' : 'Copy URL'}
@@ -226,32 +294,7 @@ console.log(response.data);`,
         </div>
 
         {/* Code Examples */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Code Examples</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {codeExamples.map((example, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg">
-                <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-900">{example.title}</h3>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-500 uppercase tracking-wide">{example.language}</span>
-                    <button
-                      onClick={() => copyToClipboard(example.code, `example-${index}`)}
-                      className="text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                      {copied === `example-${index}` ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    </button>
-                  </div>
-                  <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
-                    <code>{example.code}</code>
-                  </pre>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CodeExamples examples={codeExamples} />
 
         {/* Response Format */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">

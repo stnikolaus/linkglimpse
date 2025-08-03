@@ -52,7 +52,7 @@ export default function UrlInput({ onSubmit, isLoading }: UrlInputProps) {
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              'Preview'
+              'Preview & Debug'
             )}
           </button>
         </div>

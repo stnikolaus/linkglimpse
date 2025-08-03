@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Bulk URL Processing - LinkGlimpse',
     description: 'Process up to 100 URLs at once with our bulk URL processor. Generate social media previews for multiple URLs and export results in JSON or CSV format.',
     type: 'website',
-    url: 'https://linkglimpse.com/bulk',
+    url: 'https://www.linkglimpse.com/bulk',
     siteName: 'LinkGlimpse',
   },
   twitter: {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function BulkPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-24">
 
       {/* Main Content */}
       <div className="py-8">

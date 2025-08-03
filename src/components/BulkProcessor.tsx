@@ -170,7 +170,7 @@ export default function BulkProcessor() {
       {/* Header */}
       <div className="text-center">
         <div className="flex items-center justify-center mb-4">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-full">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-full shadow-lg">
             <BarChart3 className="h-8 w-8 text-white" />
           </div>
         </div>

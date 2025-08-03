@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Globe, Share2, Eye, Zap, CheckCircle, ArrowRight, Facebook, Twitter, Linkedin, Search, Instagram, MessageCircle, Users, Hash, BarChart3, Sparkles, Bot, Star, Building2, Code, Database, Cpu } from 'lucide-react';
 import SocialPreview from '@/components/SocialPreview';
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: 'LinkGlimpse - Social Media Preview Debugger',
     description: 'Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms.',
     type: 'website',
-    url: 'https://linkglimpse.com',
+    url: 'https://www.linkglimpse.com',
     siteName: 'LinkGlimpse',
   },
   twitter: {
@@ -82,12 +83,11 @@ export default function Home() {
   ];
 
   const companies = [
-    { name: 'TechCorp', logo: '🏢' },
-    { name: 'DigitalFlow', logo: '💻' },
-    { name: 'SocialBoost', logo: '📈' },
-    { name: 'ContentPro', logo: '📝' },
-    { name: 'MarketingHub', logo: '🎯' },
-    { name: 'WebCraft', logo: '🌐' },
+    { name: 'AI Skill', logo: '/images/company-logos/aiskill.svg' },
+    { name: 'Lead Magnet Creator', logo: '/images/company-logos/lead-magnet-creator-logo.png' },
+    { name: 'Podfan', logo: '/images/company-logos/podfan.svg' },
+    { name: 'SaaS Garden', logo: '/images/company-logos/saas-garden.png' },
+    { name: 'Shorts Faceless', logo: '/images/company-logos/shorts-faceless.svg' },
   ];
 
   const reviews = [
@@ -124,15 +124,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
           <div className="text-center">
             <div className="flex items-center justify-center mb-6">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-full">
-                <Globe className="h-8 w-8 text-white" />
+              <div className="bg-white rounded-full p-2 shadow-lg">
+                <Image src="/images/link-icon.svg" alt="LinkGlimpse" width={42} height={42} />
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Social Preview 
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Debugger</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
               Preview your link to find out how it will appear when shared across all major social media platforms. Perfect social share checker for marketers, content creators, and developers.
             </p>
           </div>
@@ -203,8 +203,8 @@ export default function Home() {
       
       <section className="bg-white py-8">
         {/* AI Enhancement Section */}
-        <div className="py-8 bg-gradient-to-r from-purple-50 to-white m-16 border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
-          <div className="max-w-7xl mx-auto px-4">
+        <div className="py-8">
+          <div className="max-w-7xl mx-auto p-8 bg-gradient-to-r from-purple-50 to-white border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="flex items-center mb-6">
@@ -264,8 +264,8 @@ export default function Home() {
         </div>
 
         {/* Bulk Processing Section */}
-        <div className="py-8 bg-gradient-to-l from-blue-50 to-white m-16 border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
-          <div className="max-w-7xl mx-auto px-4">
+        <div className="py-8">
+          <div className="max-w-7xl mx-auto p-8 bg-gradient-to-l from-blue-50 to-white border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl">
@@ -334,8 +334,8 @@ export default function Home() {
         </div>
 
         {/* API Section */}
-        <div className="py-8 bg-gradient-to-r from-green-50 to-white m-16 border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
-          <div className="max-w-7xl mx-auto px-4">
+        <div className="py-8">
+          <div className="max-w-7xl mx-auto p-8 bg-gradient-to-r from-green-50 to-white border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="flex items-center mb-6">
@@ -476,21 +476,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-6">
-              <div className="bg-gradient-to-r from-gray-600 to-gray-700 p-3 rounded-lg mr-4">
-                <Building2 className="h-6 w-6 text-white" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900">Trusted by Leading Companies</h2>
+              <h2 className="text-3xl font-bold text-gray-900">Trusted by leading tech enthusiasts</h2>
             </div>
-            <p className="text-lg text-gray-600">Join thousands of companies using our platform</p>
+            <p className="text-lg text-gray-600"><b>3593</b> social links previews generated today and still counting</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
             {companies.map((company, index) => (
               <div key={index} className="text-center">
-                <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-200">
-                  <div className="text-3xl mb-3">{company.logo}</div>
-                  <h3 className="font-semibold text-gray-900">{company.name}</h3>
-                </div>
+                <img src={company.logo} alt={company.name} className="h-[50px] w-auto mx-auto" />
               </div>
             ))}
           </div>

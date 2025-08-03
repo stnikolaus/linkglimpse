@@ -9,11 +9,11 @@ export const metadata: Metadata = {
   description: "Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, and more.",
   keywords: "social media, preview, generator, facebook, twitter, linkedin, whatsapp, slack, discord",
   authors: [{ name: "LinkGlimpse" }],
-  metadataBase: new URL("https://linkglimpse.com"),
+  metadataBase: new URL("https://www.linkglimpse.com"),
   openGraph: {
     title: "LinkGlimpse - Social Media Preview Debugger",
     description: "Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, and more.",
-    url: "https://linkglimpse.com",
+    url: "https://www.linkglimpse.com",
     siteName: "LinkGlimpse",
     images: [
       {
