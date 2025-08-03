@@ -1,18 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertCircle, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
+import { AlertCircle, Globe } from 'lucide-react';
 import { 
-  FacebookPreviews, 
+  FacebookPreview, 
   GoogleSearchPreview,
-  TumblrPreviews,
-  TwitterPreviews,
-  LinkedInPreviews,
-  MastodonPreviews,
-  NextdoorPreviews,
-  BlueskyPreviews,
-  InstagramPreviews
-} from '@automattic/social-previews';
+  TumblrPreview,
+  TwitterPreview,
+  LinkedInPreview,
+  MastodonPreview,
+  NextdoorPreview,
+  BlueskyPreview,
+  InstagramPreview,
+  ThreadsPreview
+} from './social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from './UrlInput';
@@ -51,22 +52,13 @@ export default function SocialPreview() {
     }
   };
 
-  const scrollContainer = (direction: 'left' | 'right') => {
-    const container = document.getElementById('previews-carousel');
-    if (container) {
-      const scrollAmount = 400;
-      container.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
+    <div className="w-full">
       {/* URL Input */}
-      <div className="mb-8 text-left items-start">
-        <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} />
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="mb-8 text-left items-start">
+          <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} />
+        </div>
       </div>
 
       {/* Error Display */}
@@ -79,6 +71,161 @@ export default function SocialPreview() {
         </div>
       )}
 
+      {/* Social Previews Wall */}
+      {urlMetadata && (
+        <div className="space-y-8">
+          <h2 className="text-2xl font-semibold text-gray-900 text-center">Social Media Previews</h2>
+          
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 gap-4 px-4">
+            {/* Facebook Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Facebook</h3>
+              <FacebookPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                user={{ displayName: getDomain(urlMetadata.url) }}
+              />
+            </div>
+
+            {/* Instagram Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Instagram</h3>
+              <InstagramPreview
+                image={urlMetadata.image}
+                name={getDomain(urlMetadata.url)}
+                profileImage="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                caption={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
+              />
+            </div>
+
+            {/* Threads Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Threads</h3>
+              <ThreadsPreview
+                posts={[{
+                  date: new Date(),
+                  name: getDomain(urlMetadata.url),
+                  profileImage: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+                  caption: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`,
+                  image: urlMetadata.image,
+                  title: urlMetadata.title || 'No title available',
+                  url: urlMetadata.url,
+                  media: urlMetadata.image ? [{
+                    alt: urlMetadata.title || 'Image',
+                    url: urlMetadata.image,
+                    type: 'image/jpeg'
+                  }] : undefined
+                }]}
+              />
+            </div>
+
+            {/* LinkedIn Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">LinkedIn</h3>
+              <LinkedInPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                name={getDomain(urlMetadata.url)}
+                profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
+                jobTitle="Website"
+              />
+            </div>
+
+            {/* Twitter Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Twitter</h3>
+              <TwitterPreview
+                tweets={[{
+                  date: new Date(),
+                  name: getDomain(urlMetadata.url),
+                  profileImage: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+                  screenName: `@${getDomain(urlMetadata.url).replace(/\./g, '')}`,
+                  text: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`,
+                  media: urlMetadata.image ? [{
+                    alt: urlMetadata.title || 'Image',
+                    url: urlMetadata.image,
+                    type: 'image/jpeg'
+                  }] : undefined
+                }]}
+              />
+            </div>
+
+            {/* Google Search Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Google Search</h3>
+              <GoogleSearchPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                siteTitle={urlMetadata.siteName}
+              />
+            </div>
+
+            {/* Tumblr Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tumblr</h3>
+              <TumblrPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                user={{ displayName: getDomain(urlMetadata.url) }}
+              />
+            </div>
+
+            {/* Mastodon Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Mastodon</h3>
+              <MastodonPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                user={{ 
+                  displayName: getDomain(urlMetadata.url),
+                  avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+                  address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}@mastodon.social`
+                }}
+              />
+            </div>
+
+            {/* Nextdoor Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Nextdoor</h3>
+              <NextdoorPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                name={getDomain(urlMetadata.url)}
+                profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
+              />
+            </div>
+
+            {/* Bluesky Preview */}
+            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Bluesky</h3>
+              <BlueskyPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                customText={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                user={{ 
+                  displayName: getDomain(urlMetadata.url),
+                  avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
+                  address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}.bsky.social`
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* AI Enhancement */}
       {urlMetadata && (
         <div className="mb-8">
@@ -86,179 +233,6 @@ export default function SocialPreview() {
             metadata={urlMetadata} 
             onEnhancedMetadata={(enhancedMetadata) => setUrlMetadata(enhancedMetadata)}
           />
-        </div>
-      )}
-
-      {/* Previews Carousel */}
-      {urlMetadata && (
-        <div className="space-y-8">
-          <h2 className="text-2xl font-semibold text-gray-900 text-center">Social Media Previews</h2>
-          
-          <div className="relative">
-            {/* Navigation Buttons */}
-            <button
-              onClick={() => scrollContainer('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white border border-gray-200 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
-            >
-              <ChevronLeft className="h-6 w-6 text-gray-600" />
-            </button>
-            
-            <button
-              onClick={() => scrollContainer('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white border border-gray-200 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
-            >
-              <ChevronRight className="h-6 w-6 text-gray-600" />
-            </button>
-
-            {/* Carousel Container */}
-            <div 
-              id="previews-carousel"
-              className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {/* Facebook Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Facebook</h3>
-                  <FacebookPreviews
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    image={urlMetadata.image}
-                    user={{ displayName: getDomain(urlMetadata.url) }}
-                  />
-                </div>
-              </div>
-
-              {/* Twitter Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Twitter</h3>
-                  <TwitterPreviews
-                    tweets={[{
-                      date: new Date(),
-                      name: getDomain(urlMetadata.url),
-                      profileImage: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                      screenName: `@${getDomain(urlMetadata.url).replace(/\./g, '')}`,
-                      text: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`,
-                      media: urlMetadata.image ? [{
-                        alt: urlMetadata.title || 'Image',
-                        url: urlMetadata.image,
-                        type: 'image/jpeg'
-                      }] : undefined
-                    }]}
-                  />
-                </div>
-              </div>
-
-              {/* LinkedIn Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">LinkedIn</h3>
-                  <LinkedInPreviews
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    image={urlMetadata.image}
-                    name={getDomain(urlMetadata.url)}
-                    profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
-                    jobTitle="Website"
-                  />
-                </div>
-              </div>
-
-              {/* Google Search Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Google Search</h3>
-                  <GoogleSearchPreview
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    siteTitle={urlMetadata.siteName || getDomain(urlMetadata.url)}
-                  />
-                </div>
-              </div>
-
-              {/* Tumblr Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Tumblr</h3>
-                  <TumblrPreviews
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    image={urlMetadata.image}
-                    user={{ displayName: getDomain(urlMetadata.url) }}
-                  />
-                </div>
-              </div>
-
-              {/* Mastodon Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Mastodon</h3>
-                  <MastodonPreviews
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    image={urlMetadata.image}
-                    user={{ 
-                      displayName: getDomain(urlMetadata.url),
-                      avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                      address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}@mastodon.social`
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Nextdoor Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Nextdoor</h3>
-                  <NextdoorPreviews
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    image={urlMetadata.image}
-                    name={getDomain(urlMetadata.url)}
-                    profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
-                  />
-                </div>
-              </div>
-
-              {/* Bluesky Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Bluesky</h3>
-                  <BlueskyPreviews
-                    title={urlMetadata.title || 'No title available'}
-                    description={urlMetadata.description || 'No description available'}
-                    url={urlMetadata.url}
-                    image={urlMetadata.image}
-                    user={{ 
-                      displayName: getDomain(urlMetadata.url),
-                      avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                      address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}.bsky.social`
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Instagram Preview */}
-              <div className="flex-shrink-0 w-80 snap-start">
-                <div className="bg-white rounded-lg shadow-lg p-6 h-full">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Instagram</h3>
-                  <InstagramPreviews
-                    image={urlMetadata.image}
-                    name={getDomain(urlMetadata.url)}
-                    profileImage="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
-                    caption={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 

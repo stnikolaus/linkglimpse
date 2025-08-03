@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AlertCircle, ArrowLeft, Linkedin } from 'lucide-react';
 import Link from 'next/link';
-import { LinkedInPreviews } from '@automattic/social-previews';
+import { LinkedInPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
@@ -84,7 +84,7 @@ export default function LinkedInSocialPreview() {
               </div>
               
               <div className="bg-gray-50 rounded-lg p-6">
-                <LinkedInPreviews
+                <LinkedInPreview
                   title={urlMetadata.title || 'No title available'}
                   description={urlMetadata.description || 'No description available'}
                   url={urlMetadata.url}

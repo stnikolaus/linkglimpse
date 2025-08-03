@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AlertCircle, ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
-import { GoogleSearchPreview } from '@automattic/social-previews';
+import { GoogleSearchPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AlertCircle, ArrowLeft, Twitter } from 'lucide-react';
 import Link from 'next/link';
-import { TwitterPreviews } from '@automattic/social-previews';
+import { TwitterPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
@@ -84,18 +84,13 @@ export default function TwitterSocialPreview() {
               </div>
               
               <div className="bg-gray-50 rounded-lg p-6">
-                <TwitterPreviews
+                <TwitterPreview
                   tweets={[{
                     date: new Date(),
                     name: getDomain(urlMetadata.url),
                     profileImage: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
                     screenName: `@${getDomain(urlMetadata.url).replace(/\./g, '')}`,
-                    text: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`,
-                    media: urlMetadata.image ? [{
-                      alt: urlMetadata.title || 'Image',
-                      url: urlMetadata.image,
-                      type: 'image/jpeg'
-                    }] : undefined
+                    text: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`
                   }]}
                 />
               </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AlertCircle, ArrowLeft, Instagram } from 'lucide-react';
 import Link from 'next/link';
-import { InstagramPreviews } from '@automattic/social-previews';
+import { InstagramPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
@@ -84,8 +84,13 @@ export default function InstagramSocialPreview() {
               </div>
               
               <div className="bg-gray-50 rounded-lg p-6">
-                <InstagramPreviews
+                <InstagramPreview
                   image={urlMetadata.image}
+                  media={urlMetadata.image ? [{
+                    url: urlMetadata.image,
+                    type: 'image/jpeg',
+                    alt: urlMetadata.title || 'Instagram post image'
+                  }] : undefined}
                   name={getDomain(urlMetadata.url)}
                   profileImage="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
                   caption={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}

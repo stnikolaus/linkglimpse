@@ -77,7 +77,7 @@ export default function Header() {
       
       {isDropdownOpen && (
         <div 
-          className="mt-1 bg-white border-gray-200 shadow-xs border-y"
+          className="bg-white border-gray-200 shadow-xs border-y absolute w-full z-50"
           onMouseEnter={() => setIsDropdownOpen(true)}
           onMouseLeave={() => setIsDropdownOpen(false)}
         >

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AlertCircle, ArrowLeft, Hash } from 'lucide-react';
 import Link from 'next/link';
-import { NextdoorPreviews } from '@automattic/social-previews';
+import { NextdoorPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
@@ -84,7 +84,7 @@ export default function NextdoorSocialPreview() {
               </div>
               
               <div className="bg-gray-50 rounded-lg p-6">
-                <NextdoorPreviews
+                <NextdoorPreview
                   title={urlMetadata.title || 'No title available'}
                   description={urlMetadata.description || 'No description available'}
                   url={urlMetadata.url}

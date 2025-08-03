@@ -62,7 +62,7 @@ export default function Home() {
     {
       icon: CheckCircle,
       title: 'Accurate Rendering',
-      description: 'Uses official @automattic/social-previews library for authentic platform appearances.'
+              description: 'Uses custom-built social preview components for authentic platform appearances.'
     },
     {
       icon: Sparkles,
@@ -136,13 +136,12 @@ export default function Home() {
               Preview how your URLs will appear when shared across all major social media platforms. 
               Perfect for marketers, content creators, and developers.
             </p>
-            
-            {/* Preview Generator Section */}
-            <div id="preview-generator" className="pb-16">
-              <SocialPreview />
-            </div>
-
           </div>
+        </div>
+
+        {/* Preview Generator Section */}
+        <div id="preview-generator" className="pb-16">
+          <SocialPreview />
         </div>
       </div>
 
