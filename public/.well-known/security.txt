@@ -1,0 +1,5 @@
+Contact: mailto:security@linkglimpse.com
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://www.linkglimpse.com/.well-known/security.txt
+Policy: https://www.linkglimpse.com/security-policy 

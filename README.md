@@ -1,8 +1,8 @@
 # LinkGlimpse - Social Media Preview Generator
 
-A modern Next.js web application that generates social media previews for any URL. See how your links will appear when shared on Facebook, Twitter, LinkedIn, WhatsApp, Slack, and Discord.
+A modern Next.js web application that generates social media previews for any URL. See how your links will appear when shared on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Perfect for marketers, content creators, and developers who want to optimize their social media sharing.
 
-## Features
+## 🚀 Features
 
 - **URL Input & Validation**: Enter any URL and get instant validation
 - **Multi-Platform Previews**: Generate previews for 9 different social platforms
@@ -14,6 +14,9 @@ A modern Next.js web application that generates social media previews for any UR
 - **Copy to Clipboard**: Copy preview text with one click
 - **Responsive Design**: Works perfectly on desktop and mobile
 - **Modern UI**: Clean, intuitive interface with smooth animations
+- **SEO Optimized**: Built with best practices for search engine optimization
+
+
 
 ## Tech Stack
 
@@ -22,6 +25,20 @@ A modern Next.js web application that generates social media previews for any UR
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
 - **Package Manager**: pnpm
+
+## 🎯 SEO Features
+
+This application is built with comprehensive SEO optimization:
+
+- **Dynamic Sitemap**: Automatically generated sitemap.xml with all pages
+- **Structured Data**: JSON-LD markup for rich snippets and voice search
+- **Meta Tags**: Complete Open Graph and Twitter Card support
+- **Robots.txt**: Proper crawling instructions for search engines
+- **Canonical URLs**: Prevents duplicate content issues
+- **Performance Optimized**: Fast loading times for better rankings
+- **Mobile Friendly**: Responsive design for mobile-first indexing
+- **PWA Support**: Web app manifest for better mobile experience
+- **Security Headers**: Enhanced security for trust signals
 
 ## Getting Started
 
@@ -111,7 +128,7 @@ Process multiple URLs in bulk.
       "processingTime": 800
     }
   ],
-  "timestamp": "2024-01-01T12:00:00.000Z"
+  "timestamp": "2025-01-01T12:00:00.000Z"
 }
 ```
 
@@ -152,7 +169,7 @@ Enhance metadata using AI.
     },
     "confidence": 0.85
   },
-  "timestamp": "2024-01-01T12:00:00.000Z"
+  "timestamp": "2025-01-01T12:00:00.000Z"
 }
 ```
 

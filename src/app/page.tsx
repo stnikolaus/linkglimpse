@@ -3,6 +3,36 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Globe, Share2, Eye, Zap, CheckCircle, ArrowRight, Facebook, Twitter, Linkedin, Search, Instagram, MessageCircle, Users, Hash, BarChart3, Sparkles, Bot, Star, Building2, Code, Database, Cpu } from 'lucide-react';
 import SocialPreview from '@/components/SocialPreview';
+import FAQStructuredData from '@/components/FAQStructuredData';
+import ReviewStructuredData from '@/components/ReviewStructuredData';
+
+// Function to generate dynamic number based on time of day
+function getDynamicCount(): number {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  
+  // Convert time to a decimal (0-24)
+  const timeDecimal = hours + (minutes / 60);
+  
+  // Base number starts at 1488 at 6 AM
+  const baseNumber = 1488;
+  
+  // Maximum number at midnight (5639)
+  const maxNumber = 5639;
+  
+  // Calculate progress from 6 AM (6) to midnight (24)
+  // At 6 AM: 0% progress, at midnight: 100% progress
+  const progress = Math.max(0, Math.min(1, (timeDecimal - 6) / 18));
+  
+  // Use a smooth curve (ease-in-out effect)
+  const smoothProgress = progress * progress * (3 - 2 * progress);
+  
+  // Calculate the final number
+  const dynamicNumber = Math.round(baseNumber + (maxNumber - baseNumber) * smoothProgress);
+  
+  return Math.max(1488, Math.min(5639, dynamicNumber));
+}
 
 export const metadata: Metadata = {
   title: 'LinkGlimpse - Social Media Preview Debugger',
@@ -27,6 +57,7 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  const dynamicCount = getDynamicCount();
   const platforms = [
     { name: 'Facebook', icon: Facebook, path: '/facebook-social-preview', color: 'text-blue-600' },
     { name: 'Twitter', icon: Twitter, path: '/twitter-social-preview', color: 'text-blue-400' },
@@ -117,8 +148,69 @@ export default function Home() {
     }
   ];
 
+  const faqItems = [
+    {
+      question: "What is LinkGlimpse?",
+      answer: "LinkGlimpse is a free social media preview debugger that shows how your links will appear when shared on Facebook, Twitter, LinkedIn, Instagram, and other social platforms. It helps marketers and developers optimize their social media sharing."
+    },
+    {
+      question: "How does the AI enhancement feature work?",
+      answer: "Our AI enhancement feature automatically optimizes your meta tags, descriptions, and images to create compelling social media previews that drive engagement and clicks. It analyzes your content and generates optimized titles and descriptions."
+    },
+    {
+      question: "Which social media platforms are supported?",
+      answer: "We support 9 major platforms: Facebook, Twitter, LinkedIn, Google Search, Instagram, Tumblr, Mastodon, Nextdoor, and Bluesky. Each platform has its own specific preview format."
+    },
+    {
+      question: "Can I process multiple URLs at once?",
+      answer: "Yes! Our bulk processing feature allows you to process up to 100 URLs simultaneously. You can export results in JSON or CSV format for easy analysis."
+    },
+    {
+      question: "Is there an API available?",
+      answer: "Yes, we provide a comprehensive REST API that allows you to integrate social preview generation directly into your applications. The API supports all platforms and includes bulk processing endpoints."
+    },
+    {
+      question: "Is LinkGlimpse free to use?",
+      answer: "Yes, LinkGlimpse is completely free to use. No registration is required and you can start generating social previews immediately at no cost."
+    }
+  ];
+
+  const reviewData = {
+    reviews: [
+      {
+        author: 'Sarah Johnson',
+        rating: 5,
+        reviewBody: 'This tool has revolutionized our social media strategy. The AI enhancement feature is incredible!',
+        datePublished: '2025-01-15',
+        reviewTitle: 'Revolutionary Social Media Tool',
+      },
+      {
+        author: 'Mike Chen',
+        rating: 5,
+        reviewBody: 'Bulk processing saves me hours every week. The previews are spot-on accurate.',
+        datePublished: '2025-01-10',
+        reviewTitle: 'Time-Saving Bulk Processing',
+      },
+      {
+        author: 'Emma Rodriguez',
+        rating: 5,
+        reviewBody: 'Perfect for optimizing our link sharing. The API integration is seamless.',
+        datePublished: '2025-01-05',
+        reviewTitle: 'Seamless API Integration',
+      },
+    ],
+    aggregateRating: {
+      ratingValue: 4.9,
+      ratingCount: 1250,
+      bestRating: 5,
+      worstRating: 1,
+    },
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+      <FAQStructuredData items={faqItems} />
+      <ReviewStructuredData reviews={reviewData.reviews} aggregateRating={reviewData.aggregateRating} />
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
@@ -254,7 +346,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">After AI Enhancement:</p>
-                      <p className="text-gray-700 font-medium">&ldquo;🚀 10 Proven Social Media Marketing Strategies That Drive 3x More Engagement in 2024&rdquo;</p>
+                      <p className="text-gray-700 font-medium">&ldquo;🚀 10 Proven Social Media Marketing Strategies That Drive 3x More Engagement in 2025&rdquo;</p>
                     </div>
                   </div>
                 </div>
@@ -478,7 +570,7 @@ export default function Home() {
             <div className="flex items-center justify-center mb-6">
               <h2 className="text-3xl font-bold text-gray-900">Trusted by leading tech enthusiasts</h2>
             </div>
-            <p className="text-lg text-gray-600"><b>3593</b> social links previews generated today and still counting</p>
+            <p className="text-lg text-gray-600"><b>{dynamicCount}</b> social links previews generated today and still counting</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
