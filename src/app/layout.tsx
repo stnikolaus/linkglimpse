@@ -4,6 +4,7 @@ import "@/styles/social-previews.scss";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
+import PlausibleProvider from 'next-plausible';
 
 export const metadata: Metadata = {
   title: "LinkGlimpse - Social Media Preview Debugger",
@@ -83,6 +84,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <PlausibleProvider 
+          domain="linkglimpse.com"
+          trackOutboundLinks={true}
+          taggedEvents={true}
+          pageviewProps={true}
+        />
+      </head>
       <body className="antialiased flex flex-col min-h-screen">
         <StructuredData
           type="tool"
