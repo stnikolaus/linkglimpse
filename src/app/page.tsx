@@ -37,7 +37,7 @@ function getDynamicCount(): number {
 export const metadata: Metadata = {
   title: 'LinkGlimpse - Social Media Preview Debugger',
   description: 'Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Free tool for marketers and developers.',
-  keywords: 'social media preview, facebook preview, twitter preview, linkedin preview, instagram preview, open graph, meta tags, url preview generator',
+  keywords: 'social media preview, facebook preview, twitter preview, linkedin preview, instagram preview, open graph, meta tags, url preview generator, open graph debugger, og debugger, opengraph debugger, social sharing checker, social preview, social share preview, open graph preview',
   openGraph: {
     title: 'LinkGlimpse - Social Media Preview Debugger',
     description: 'Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms.',
@@ -221,12 +221,25 @@ export default function Home() {
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Social Preview 
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Debugger</span>
+              Universal Social Share 
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Preview Tool</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Preview your link to find out how it will appear when shared across all major social media platforms. Perfect social share checker for marketers, content creators, and developers.
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-4">
+              Your All-in-One Open Graph Debugger. The fastest OG debugger and opengraph debugger to validate meta tags and generate a social preview across platforms.
             </p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              Use this social sharing checker to create a reliable social share preview for Facebook, Twitter, LinkedIn, Instagram, and more. Paste any URL to get an open graph preview instantly.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-2 text-gray-500">
+              <Facebook className="h-6 w-6 text-blue-600" />
+              <Twitter className="h-6 w-6 text-blue-400" />
+              <Linkedin className="h-6 w-6 text-blue-700" />
+              <Instagram className="h-6 w-6 text-pink-600" />
+              <MessageCircle className="h-6 w-6 text-blue-500" />
+              <Users className="h-6 w-6 text-purple-600" />
+              <Hash className="h-6 w-6 text-green-700" />
+              <Search className="h-6 w-6 text-green-600" />
+            </div>
           </div>
         </div>
 
