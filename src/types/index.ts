@@ -35,6 +35,8 @@ export interface PreviewCardProps {
 export interface UrlInputProps {
   onSubmit: (url: string) => void;
   isLoading: boolean;
+  ctaLabel?: string;
+  placeholder?: string;
 }
 
 // AI Enhancement Schema

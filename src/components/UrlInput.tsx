@@ -5,7 +5,7 @@ import { Search, Loader2 } from 'lucide-react';
 import { UrlInputProps } from '@/types';
 import { isValidUrl, normalizeUrl } from '@/lib/url-utils';
 
-export default function UrlInput({ onSubmit, isLoading }: UrlInputProps) {
+export default function UrlInput({ onSubmit, isLoading, ctaLabel, placeholder }: UrlInputProps) {
   const [url, setUrl] = useState('');
   const [error, setError] = useState('');
 
@@ -40,7 +40,7 @@ export default function UrlInput({ onSubmit, isLoading }: UrlInputProps) {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Enter a URL to preview (e.g., https://example.com)"
+            placeholder={placeholder || "Enter a URL to preview (e.g., https://example.com)"}
             className="block w-full pl-10 pr-12 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
             disabled={isLoading}
           />
@@ -52,7 +52,7 @@ export default function UrlInput({ onSubmit, isLoading }: UrlInputProps) {
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              'Preview & Debug'
+              ctaLabel || 'Preview & Debug'
             )}
           </button>
         </div>
