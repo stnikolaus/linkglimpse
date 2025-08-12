@@ -149,7 +149,7 @@ export default function LinkedInSocialPreviewClient() {
             </p>
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Validate Key Open Graph Tags</h3>
             <p className="text-gray-600 mb-4">
-              Ensure <code className="bg-gray-200 px-1 rounded">og:title</code>, <code className="bg-gray-200 px-1 rounded">og:description</code>, <code className="bg-gray-200 px-1 rounded">og:image</code>, and <code className="bg-gray-200 px-1 rounded">og:url</code> are present and optimized for LinkedIn's layout.
+              Ensure <code className="bg-gray-200 px-1 rounded">og:title</code>, <code className="bg-gray-200 px-1 rounded">og:description</code>, <code className="bg-gray-200 px-1 rounded">og:image</code>, and <code className="bg-gray-200 px-1 rounded">og:url</code> are present and optimized for LinkedIn&rsquo;s layout.
             </p>
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Step-by-Step: Debug LinkedIn</h3>
             <ol className="text-sm text-gray-600 list-decimal pl-5 space-y-2">
@@ -180,7 +180,7 @@ export default function LinkedInSocialPreviewClient() {
             <div className="bg-gray-50 p-4 rounded-lg mb-4">
               <p className="text-sm text-gray-600 mb-2"><strong>Before:</strong> Stock image, generic title, broad description.</p>
               <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
-                <li>Title: “We\'re Launching A New Solution For Businesses”</li>
+                <li>Title: “We&rsquo;re Launching A New Solution For Businesses”</li>
                 <li>Description: “Our platform is flexible and customizable.”</li>
                 <li>Image: Abstract background with small text</li>
               </ul>
