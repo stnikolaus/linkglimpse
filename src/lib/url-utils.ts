@@ -19,12 +19,13 @@ export function normalizeUrl(url: string): string {
 export async function fetchUrlMetadata(url: string): Promise<ApiResponse> {
   try {
     const response = await fetch(`/api/metadata?url=${encodeURIComponent(url)}`);
+    const data = await response.json() as ApiResponse;
     if (!response.ok) {
-      throw new Error('Failed to fetch metadata');
+      throw new Error(data.error || `Metadata request failed with HTTP ${response.status}`);
     }
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Error fetching metadata:', error);
     throw error;
   }
-} 
+}

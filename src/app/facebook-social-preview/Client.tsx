@@ -7,11 +7,14 @@ import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
 import FAQStructuredData from '@/components/FAQStructuredData';
+import DiagnosticsPanel from '@/components/DiagnosticsPanel';
+import { useLinkGlimpseAnalytics } from '@/components/PlausibleEvents';
 
 export default function FacebookSocialPreviewClient() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [urlMetadata, setUrlMetadata] = useState<ApiResponse | null>(null);
+  const analytics = useLinkGlimpseAnalytics();
 
   const faqItems = [
     {
@@ -33,9 +36,11 @@ export default function FacebookSocialPreviewClient() {
   ];
 
   const handleUrlSubmit = async (url: string) => {
+    const startedAt = performance.now();
     setIsLoading(true);
     setError('');
     setUrlMetadata(null);
+    analytics.trackPreviewStarted('facebook-debugger', url);
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
@@ -43,8 +48,11 @@ export default function FacebookSocialPreviewClient() {
         throw new Error(fetchedMetadata.error);
       }
       setUrlMetadata(fetchedMetadata);
+      analytics.trackPreviewSucceeded('facebook-debugger', fetchedMetadata, Math.round(performance.now() - startedAt));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate preview');
+      const message = err instanceof Error ? err.message : 'Failed to generate preview';
+      setError(message);
+      analytics.trackPreviewFailed('facebook-debugger', url, message);
     } finally {
       setIsLoading(false);
     }
@@ -67,9 +75,9 @@ export default function FacebookSocialPreviewClient() {
               <Facebook className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Free Facebook URL Debugger & Preview Tool</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Facebook Debugger Alternative &amp; OG Preview</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Debug Facebook link previews in seconds. Paste a URL to test your Open Graph tags, validate images, and see exactly how your post will look before you share.
+            Check live Open Graph tags and preview a Facebook link card without signing in. Find missing titles, descriptions and images before sharing.
           </p>
         </div>
 
@@ -88,10 +96,11 @@ export default function FacebookSocialPreviewClient() {
 
         {urlMetadata && (
           <div className="space-y-8">
+            <DiagnosticsPanel metadata={urlMetadata} />
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="flex items-center mb-6">
                 <Facebook className="h-6 w-6 text-blue-600 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">Facebook Preview</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Facebook Link Preview Result</h2>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-6">
@@ -105,7 +114,7 @@ export default function FacebookSocialPreviewClient() {
               </div>
 
               <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Extracted Metadata</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Facebook Open Graph Metadata</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-700">Title:</span>
@@ -140,16 +149,16 @@ export default function FacebookSocialPreviewClient() {
 
         <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
           <FAQStructuredData items={faqItems} />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">How Our Facebook Linter Works</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">How This Facebook Open Graph Debugger Works</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
-              This facebook linter (url linter facebook) acts as a comprehensive facebook open graph debugger. It crawls your page, extracts Open Graph meta tags, and renders a pixel-accurate preview so you can run a facebook link debug without guesswork.
+              This Facebook Open Graph debugger fetches the public page, extracts its metadata, and renders a representative card alongside the exact tags and technical checks it found.
             </p>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Instantly Test Your Open Graph Tags</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Test Facebook Open Graph Tags</h3>
             <p className="text-gray-600 mb-4">
               Validate <code className="bg-gray-200 px-1 rounded">og:title</code>, <code className="bg-gray-200 px-1 rounded">og:description</code>, <code className="bg-gray-200 px-1 rounded">og:image</code>, and <code className="bg-gray-200 px-1 rounded">og:url</code> with one click. Our facebook og debugger highlights missing fields and sizing issues that can reduce clicks.
             </p>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Why Use a Facebook URL Debugger?</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Why Use a Facebook Link Debugger?</h3>
             <p className="text-gray-600 mb-4">
               Correct previews drive engagement. Whether you search “debug facebook,” “debugger facebook,” or “facebook debug link,” this facebook opengraph tester ensures your brand looks right on every share.
             </p>
@@ -164,7 +173,7 @@ export default function FacebookSocialPreviewClient() {
               </ul>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Step-by-Step: Debug Link Facebook</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">How to Debug a Facebook Link</h3>
             <ol className="text-sm text-gray-600 list-decimal pl-5 space-y-2">
               <li>Paste your URL into the facebook url debugger and click “Debug Facebook Link.”</li>
               <li>Review the preview and the extracted tags. Check for missing or incorrect values.</li>
@@ -173,7 +182,7 @@ export default function FacebookSocialPreviewClient() {
               <li>Share your link with confidence once the preview matches your expectations.</li>
             </ol>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Image Requirements and Best Practices</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Facebook OG Image Requirements</h3>
             <p className="text-gray-600 mb-4">
               For best results, use 1200×630 images in JPG or PNG, under 5 MB, with strong contrast and clear subject matter. Keep crucial elements within a safe area so that cropping on mobile doesn’t hide key content. Avoid text-heavy images when possible; if text is needed, ensure it’s legible at small sizes.
             </p>
@@ -184,7 +193,7 @@ export default function FacebookSocialPreviewClient() {
               <li>Host images on a fast CDN to minimize load time during scraping.</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Common Errors Our Facebook Linter Catches</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Facebook Preview Errors This Tool Finds</h3>
             <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
               <li>Missing <code className="bg-gray-200 px-1 rounded">og:title</code> or <code className="bg-gray-200 px-1 rounded">og:description</code></li>
               <li>Invalid or unreachable <code className="bg-gray-200 px-1 rounded">og:image</code> URL</li>
@@ -192,7 +201,7 @@ export default function FacebookSocialPreviewClient() {
               <li>Overly long titles or descriptions that truncate awkwardly</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Technical Checklist for a Clean Facebook Preview</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Facebook Open Graph QA Checklist</h3>
             <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
               <li>One set of Open Graph tags per page (avoid duplicates)</li>
               <li>Canonical <code className="bg-gray-200 px-1 rounded">og:url</code> that matches the final destination</li>
@@ -200,12 +209,12 @@ export default function FacebookSocialPreviewClient() {
               <li>Server returns 200 status for the URL and image assets</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Official Debugger vs. This Facebook URL Debugger</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Official Facebook Debugger vs. LinkGlimpse</h3>
             <p className="text-gray-600 mb-4">
               The official tool is great for cache refreshes, but this facebook url linter focuses on clarity and speed. It provides a clean facebook link debug preview and a guided checklist, making it ideal for quick QA before campaigns.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Facebook Debugger FAQ</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Facebook Debugger Questions</h2>
             <div className="space-y-4">
               {faqItems.map((item, idx) => (
                 <div key={idx} className="bg-gray-50 p-4 rounded-lg">
@@ -215,7 +224,7 @@ export default function FacebookSocialPreviewClient() {
               ))}
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Optimization Examples</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Before-and-After Preview Examples</h3>
             <div className="bg-gray-50 p-4 rounded-lg mb-4">
               <p className="text-sm text-gray-600 mb-2"><strong>Before:</strong> Generic image, long title, vague description.</p>
               <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
@@ -233,14 +242,14 @@ export default function FacebookSocialPreviewClient() {
               </ul>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Compliance and Accessibility</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Accessible Facebook Link Previews</h3>
             <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
               <li>Ensure images meet accessibility guidelines for contrast and clarity</li>
               <li>Avoid misleading thumbnails; align preview with on-page content</li>
               <li>Respect privacy and licensing for imagery and brand assets</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Campaign QA Checklist</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-2">Facebook Campaign Preview Checklist</h3>
             <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
               <li>Preview the URL with this facebook url debugger and confirm all fields</li>
               <li>Validate mobile vs desktop cropping by testing multiple images</li>

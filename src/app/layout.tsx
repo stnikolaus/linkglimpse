@@ -7,16 +7,13 @@ import StructuredData from "@/components/StructuredData";
 import PlausibleProvider from 'next-plausible';
 
 export const metadata: Metadata = {
-  title: "LinkGlimpse - Social Media Preview Debugger",
-  description: "Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Free tool for marketers and developers.",
+  title: "Social Media Link Preview & Open Graph Checker",
+  description: "Check how any URL may appear across social networks, inspect its Open Graph tags, and find missing images, titles, or descriptions.",
   keywords: "social media preview, facebook preview, twitter preview, linkedin preview, instagram preview, open graph, meta tags, url preview generator, social media debugger, link preview tool, og tags, social sharing preview",
   authors: [{ name: "LinkGlimpse" }],
   creator: "LinkGlimpse",
   publisher: "LinkGlimpse",
   metadataBase: new URL("https://www.linkglimpse.com"),
-  alternates: {
-    canonical: "https://www.linkglimpse.com",
-  },
   robots: {
     index: true,
     follow: true,
@@ -28,13 +25,12 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code", // Replace with actual verification code
-  },
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
   openGraph: {
-    title: "LinkGlimpse - Social Media Preview Debugger",
-    description: "Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Free tool for marketers and developers.",
-    url: "https://www.linkglimpse.com",
+    title: "Social Media Link Preview & Open Graph Checker",
+    description: "Check how any URL may appear across social networks, inspect its Open Graph tags, and find missing images, titles, or descriptions.",
     siteName: "LinkGlimpse",
     images: [
       {
@@ -50,8 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LinkGlimpse - Social Media Preview Debugger",
-    description: "Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Free tool for marketers and developers.",
+    title: "Social Media Link Preview & Open Graph Checker",
+    description: "Check how any URL may appear across social networks, inspect its Open Graph tags, and find missing images, titles, or descriptions.",
     images: ["/images/icon/social-preview.jpeg"],
     creator: "@linkglimpse",
     site: "@linkglimpse",
@@ -95,8 +91,8 @@ export default function RootLayout({
       <body className="antialiased flex flex-col min-h-screen">
         <StructuredData
           type="tool"
-          title="LinkGlimpse - Social Media Preview Debugger"
-          description="Generate social media previews for any URL. See how your links will appear on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Free tool for marketers and developers."
+          title="Social Media Link Preview & Open Graph Checker"
+          description="Check how any URL may appear across social networks, inspect its Open Graph tags, and find missing images, titles, or descriptions."
           url="https://www.linkglimpse.com"
         />
         <Header />

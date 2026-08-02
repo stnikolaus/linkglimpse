@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export interface UrlMetadata {
   title?: string;
   description?: string;
@@ -17,6 +15,54 @@ export interface ApiResponse {
   url: string;
   siteName?: string;
   author?: string;
+  requestedUrl?: string;
+  finalUrl?: string;
+  status?: number;
+  statusText?: string;
+  redirected?: boolean;
+  contentType?: string;
+  canonical?: string;
+  robots?: string;
+  tags?: Record<string, string>;
+  openGraph?: Record<string, string>;
+  twitter?: Record<string, string>;
+  imageInfo?: ImageInspection;
+  diagnostics?: DiagnosticReport;
+}
+
+export type DiagnosticStatus = 'pass' | 'warning' | 'fail';
+
+export interface MetadataCheck {
+  id: string;
+  label: string;
+  category: 'fetch' | 'open-graph' | 'twitter' | 'indexing' | 'image';
+  status: DiagnosticStatus;
+  value?: string;
+  recommendation: string;
+  weight: number;
+}
+
+export interface ImageInspection {
+  url: string;
+  status?: number;
+  contentType?: string;
+  contentLength?: number;
+  width?: number;
+  height?: number;
+  error?: string;
+}
+
+export interface PlatformReadiness {
+  platform: 'Facebook' | 'LinkedIn' | 'X / Twitter';
+  status: 'ready' | 'needs-work';
+  missing: string[];
+}
+
+export interface DiagnosticReport {
+  score: number;
+  counts: Record<DiagnosticStatus, number>;
+  checks: MetadataCheck[];
+  platforms: PlatformReadiness[];
 }
 
 export interface SocialPreview {
@@ -38,26 +84,3 @@ export interface UrlInputProps {
   ctaLabel?: string;
   placeholder?: string;
 }
-
-// AI Enhancement Schema
-export const aiEnhancementSchema = z.object({
-  title: z.object({
-    optimized: z.string(),
-    score: z.number().min(0).max(100),
-    feedback: z.string(),
-  }),
-  description: z.object({
-    optimized: z.string(),
-    score: z.number().min(0).max(100),
-    feedback: z.string(),
-  }),
-  hashtags: z.array(z.string()),
-  improvements: z.array(z.string()),
-  overallScore: z.number().min(0).max(100),
-  platformOptimizations: z.record(z.string(), z.object({
-    score: z.number().min(0).max(100),
-    feedback: z.string(),
-  })),
-});
-
-export type AiEnhancementResult = z.infer<typeof aiEnhancementSchema>; 

@@ -1,18 +1,27 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, User, ArrowRight, Tag } from 'lucide-react';
+import { Calendar, Clock, User, Tag } from 'lucide-react';
 import { getAllBlogPosts, getFeaturedBlogPosts } from '@/lib/blog';
 import BlogListStructuredData from '@/components/BlogListStructuredData';
 
 export const metadata: Metadata = {
-  title: 'Blog - Social Media Tips & SEO Insights | LinkGlimpse',
-  description: 'Learn about social media marketing, SEO best practices, and how to optimize your content for better engagement. Expert tips from LinkGlimpse.',
+  title: 'Open Graph & Social Preview Guides',
+  description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',
   keywords: 'social media marketing, SEO tips, content optimization, social media strategy, digital marketing blog',
+  alternates: { canonical: '/blog' },
   openGraph: {
-    title: 'Blog - Social Media Tips & SEO Insights | LinkGlimpse',
-    description: 'Learn about social media marketing, SEO best practices, and how to optimize your content for better engagement.',
+    title: 'Open Graph & Social Preview Guides',
+    description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',
     type: 'website',
+    url: '/blog',
+    images: ['/images/icon/social-preview.jpeg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Open Graph & Social Preview Guides',
+    description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',
+    images: ['/images/icon/social-preview.jpeg'],
   },
 };
 
@@ -21,7 +30,7 @@ export default function BlogPage() {
   const featuredPosts = getFeaturedBlogPosts();
   const featuredPost = featuredPosts[0] || allPosts[0];
   const otherPosts = allPosts.filter(post => post.slug !== featuredPost?.slug).slice(0, 6);
-  
+
   return (
     <>
       <BlogListStructuredData posts={allPosts} baseUrl="https://www.linkglimpse.com" />
@@ -30,11 +39,10 @@ export default function BlogPage() {
           {/* Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Blog & <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Insights</span>
+              Open Graph &amp; <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Social Preview Guides</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Expert tips, tutorials, and insights on social media marketing, SEO, and content optimization. 
-              Stay ahead with the latest trends and best practices.
+              Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.
             </p>
           </div>
 
@@ -57,7 +65,7 @@ export default function BlogPage() {
                     ) : (
                       <div className="h-64 md:h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                         <div className="text-center text-white p-8">
-                          <h2 className="text-2xl font-bold mb-4">Featured Article</h2>
+                          <p className="text-2xl font-bold mb-4">Featured Open Graph Guide</p>
                           <p className="text-lg opacity-90">Latest insights and strategies</p>
                         </div>
                       </div>
@@ -73,9 +81,9 @@ export default function BlogPage() {
                         {new Date(featuredPost.date).toLocaleDateString()}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
                       {featuredPost.title}
-                    </h3>
+                    </h2>
                     <p className="text-gray-600 mb-6">
                       {featuredPost.description}
                     </p>
@@ -145,4 +153,4 @@ export default function BlogPage() {
       </div>
     </>
   );
-} 
+}

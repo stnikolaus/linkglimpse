@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertCircle, ArrowLeft, Users } from 'lucide-react';
-import Link from 'next/link';
+import { AlertCircle, Users } from 'lucide-react';
 import { MastodonPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
@@ -20,7 +19,7 @@ export default function MastodonSocialPreview() {
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
-      
+
       if (fetchedMetadata.error) {
         throw new Error(fetchedMetadata.error);
       }
@@ -52,10 +51,9 @@ export default function MastodonSocialPreview() {
               <Users className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Mastodon Social Preview</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Mastodon Link Preview Tool</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See exactly how your content will appear when shared on Mastodon. 
-            Preview federated social post format and user identity.
+            Preview how a public URL may appear in a Mastodon post. Check the representative Open Graph card, title, description and image before sharing.
           </p>
         </div>
 
@@ -80,16 +78,16 @@ export default function MastodonSocialPreview() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="flex items-center mb-6">
                 <Users className="h-6 w-6 text-purple-600 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">Mastodon Preview</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Mastodon Link Preview Result</h2>
               </div>
-              
+
               <div className="bg-gray-50 rounded-lg p-6">
                 <MastodonPreview
                   title={urlMetadata.title || 'No title available'}
                   description={urlMetadata.description || 'No description available'}
                   url={urlMetadata.url}
                   image={urlMetadata.image}
-                  user={{ 
+                  user={{
                     displayName: getDomain(urlMetadata.url),
                     avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
                     address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}@mastodon.social`
@@ -99,7 +97,7 @@ export default function MastodonSocialPreview() {
 
               {/* Metadata Info */}
               <div className="mt-8 p-6 bg-purple-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Extracted Metadata</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Mastodon Preview Metadata</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-700">Title:</span>
@@ -135,11 +133,11 @@ export default function MastodonSocialPreview() {
 
         {/* Info Section */}
         <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">About Mastodon Social Previews</h3>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">How Mastodon Link Previews Use Metadata</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
-              Mastodon uses Open Graph meta tags to determine how your content appears when shared. 
-              The preview shows exactly how your link will look in Mastodon toots and boosts.
+              Mastodon uses Open Graph meta tags to determine how your content appears when shared.
+              The preview approximates a link card; individual Mastodon servers can render metadata differently.
             </p>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h4 className="font-semibold text-gray-900 mb-2">Key Mastodon Meta Tags:</h4>

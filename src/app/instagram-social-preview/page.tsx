@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertCircle, ArrowLeft, Instagram } from 'lucide-react';
-import Link from 'next/link';
+import { AlertCircle, Instagram } from 'lucide-react';
 import { InstagramPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
@@ -20,7 +19,7 @@ export default function InstagramSocialPreview() {
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
-      
+
       if (fetchedMetadata.error) {
         throw new Error(fetchedMetadata.error);
       }
@@ -52,10 +51,9 @@ export default function InstagramSocialPreview() {
               <Instagram className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Instagram Social Preview</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Instagram Post Preview from URL</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See exactly how your content will appear when shared on Instagram. 
-            Preview photo posts with captions and engagement elements.
+            Enter a public URL to preview a representative Instagram photo post using its image, title and description. Check the content before publishing.
           </p>
         </div>
 
@@ -80,9 +78,9 @@ export default function InstagramSocialPreview() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="flex items-center mb-6">
                 <Instagram className="h-6 w-6 text-pink-600 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">Instagram Preview</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Instagram Post Preview Result</h2>
               </div>
-              
+
               <div className="bg-gray-50 rounded-lg p-6">
                 <InstagramPreview
                   image={urlMetadata.image}
@@ -99,7 +97,7 @@ export default function InstagramSocialPreview() {
 
               {/* Metadata Info */}
               <div className="mt-8 p-6 bg-pink-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Extracted Metadata</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Instagram Preview Metadata</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-700">Title:</span>
@@ -135,11 +133,11 @@ export default function InstagramSocialPreview() {
 
         {/* Info Section */}
         <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">About Instagram Social Previews</h3>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">How the Instagram URL Preview Is Generated</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
-              Instagram uses Open Graph meta tags to determine how your content appears when shared. 
-              The preview shows exactly how your link will look in Instagram stories and posts.
+              Instagram uses Open Graph meta tags to determine how your content appears when shared.
+              The preview is a representative composition and does not reproduce Instagram&apos;s private rendering logic.
             </p>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h4 className="font-semibold text-gray-900 mb-2">Key Instagram Meta Tags:</h4>
@@ -155,4 +153,4 @@ export default function InstagramSocialPreview() {
       </div>
     </div>
   );
-} 
+}

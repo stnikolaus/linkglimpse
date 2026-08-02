@@ -30,21 +30,26 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   return {
-    title: `${post.title} | LinkGlimpse Blog`,
+    title: post.title,
     description: post.description,
     keywords: post.tags.join(', '),
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
       type: 'article',
       publishedTime: post.date,
+      modifiedTime: post.updated || post.date,
       authors: [post.author],
       tags: post.tags,
+      url: `/blog/${post.slug}`,
+      images: [post.image || '/images/icon/social-preview.jpeg'],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
+      images: [post.image || '/images/icon/social-preview.jpeg'],
     },
   };
 }
@@ -68,6 +73,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         url={`https://www.linkglimpse.com/blog/${post.slug}`}
         author={post.author}
         datePublished={post.date}
+        dateModified={post.updated}
         category={post.category}
         tags={post.tags}
         readTime={post.readTime}
@@ -76,8 +82,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         {/* Reading Progress Bar */}
         <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-          <div className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300" 
-               style={{ width: '0%' }} 
+          <div className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300"
+               style={{ width: '0%' }}
                id="reading-progress"></div>
         </div>
 
@@ -85,7 +91,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="max-w-7xl mx-auto px-4 py-8">
             {/* Back to Blog */}
             <div className="mb-8">
-              <Link 
+              <Link
                 href="/blog"
                 className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 group"
               >
@@ -114,7 +120,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       <BookOpen className="h-8 w-8 mr-3" />
                       <span className="text-lg font-medium">Blog Post</span>
                     </div>
-                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{post.title}</h1>
+                    <p className="text-2xl md:text-3xl font-bold mb-2">{post.title}</p>
                     <p className="text-lg opacity-90">{post.description}</p>
                   </div>
                 </div>
@@ -143,9 +149,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
                   {post.title}
                 </h1>
+                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                  {post.description}
+                </p>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-10">
@@ -161,7 +170,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
                 {/* Article Body */}
                 <div className="prose prose-lg max-w-none">
-                  <div 
+                  <div
                     className="markdown-content"
                     dangerouslySetInnerHTML={{ __html: post.html }}
                   />
@@ -179,7 +188,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         <Share2 className="h-4 w-4 mr-2" />
                         Share
                       </button>
-                      <Link 
+                      <Link
                         href="/blog"
                         className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 group"
                       >
@@ -263,4 +272,4 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </div>
     </>
   );
-} 
+}

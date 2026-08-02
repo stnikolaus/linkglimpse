@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Search, ArrowLeft, Globe } from 'lucide-react';
+import { Home, ArrowLeft, Globe } from 'lucide-react';
 
 export default function NotFound() {
   return (
@@ -20,13 +20,13 @@ export default function NotFound() {
 
           {/* Message */}
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Oops! The page you&apos;re looking for doesn&apos;t exist. But don&apos;t worry, 
+            Oops! The page you&apos;re looking for doesn&apos;t exist. But don&apos;t worry,
             we have plenty of useful tools and resources for you to explore.
           </p>
 
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Link 
+            <Link
               href="/"
               className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300"
             >
@@ -35,16 +35,7 @@ export default function NotFound() {
               <p className="text-sm text-gray-600">Return to the main page</p>
             </Link>
 
-            <Link 
-              href="/ai"
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300"
-            >
-              <Search className="h-8 w-8 text-purple-600 mx-auto mb-4" />
-              <h3 className="font-semibold text-gray-900 mb-2">AI Enhancement</h3>
-              <p className="text-sm text-gray-600">Optimize your content with AI</p>
-            </Link>
-
-            <Link 
+            <Link
               href="/bulk"
               className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300"
             >
@@ -58,37 +49,37 @@ export default function NotFound() {
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Popular Pages</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Link 
-                href="/facebook-social-preview"
+              <Link
+                href="/facebook-open-graph-debugger"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Facebook Preview Tool
               </Link>
-              <Link 
-                href="/twitter-social-preview"
+              <Link
+                href="/twitter-card-validator"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Twitter Preview Tool
               </Link>
-              <Link 
-                href="/linkedin-social-preview"
+              <Link
+                href="/linkedin-post-preview"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 LinkedIn Preview Tool
               </Link>
-              <Link 
+              <Link
                 href="/instagram-social-preview"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Instagram Preview Tool
               </Link>
-              <Link 
+              <Link
                 href="/google-search-preview"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Google Search Preview
               </Link>
-              <Link 
+              <Link
                 href="/api"
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
@@ -99,7 +90,7 @@ export default function NotFound() {
 
           {/* Back Button */}
           <div className="mt-8">
-            <button 
+            <button
               onClick={() => window.history.back()}
               className="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
             >
@@ -111,4 +102,4 @@ export default function NotFound() {
       </div>
     </div>
   );
-} 
+}

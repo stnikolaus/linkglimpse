@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertCircle, ArrowLeft, Hash } from 'lucide-react';
-import Link from 'next/link';
+import { AlertCircle, Hash } from 'lucide-react';
 import { NextdoorPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
@@ -20,7 +19,7 @@ export default function NextdoorSocialPreview() {
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
-      
+
       if (fetchedMetadata.error) {
         throw new Error(fetchedMetadata.error);
       }
@@ -52,10 +51,9 @@ export default function NextdoorSocialPreview() {
               <Hash className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Nextdoor Social Preview</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Nextdoor Link Preview Tool</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See exactly how your content will appear when shared on Nextdoor. 
-            Preview neighborhood post format and local engagement.
+            Preview how a public URL may appear in a Nextdoor post. Check the representative link card, title, description and image before sharing.
           </p>
         </div>
 
@@ -80,9 +78,9 @@ export default function NextdoorSocialPreview() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="flex items-center mb-6">
                 <Hash className="h-6 w-6 text-green-700 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">Nextdoor Preview</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Nextdoor Link Preview Result</h2>
               </div>
-              
+
               <div className="bg-gray-50 rounded-lg p-6">
                 <NextdoorPreview
                   title={urlMetadata.title || 'No title available'}
@@ -96,7 +94,7 @@ export default function NextdoorSocialPreview() {
 
               {/* Metadata Info */}
               <div className="mt-8 p-6 bg-green-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Extracted Metadata</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Nextdoor Preview Metadata</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-700">Title:</span>
@@ -132,11 +130,11 @@ export default function NextdoorSocialPreview() {
 
         {/* Info Section */}
         <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">About Nextdoor Social Previews</h3>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">How Nextdoor Link Previews Use Metadata</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
-              Nextdoor uses Open Graph meta tags to determine how your content appears when shared. 
-              The preview shows exactly how your link will look in Nextdoor posts and neighborhood discussions.
+              Nextdoor uses Open Graph meta tags to determine how your content appears when shared.
+              The preview is representative and does not reproduce Nextdoor&apos;s private rendering logic.
             </p>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h4 className="font-semibold text-gray-900 mb-2">Key Nextdoor Meta Tags:</h4>

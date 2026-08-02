@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { AlertCircle, Globe } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AlertCircle } from 'lucide-react';
 import { 
   FacebookPreview, 
   GoogleSearchPreview,
@@ -17,17 +17,39 @@ import {
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from './UrlInput';
-import AiEnhancer from './AiEnhancer';
+import DiagnosticsPanel from './DiagnosticsPanel';
+import { useLinkGlimpseAnalytics } from './PlausibleEvents';
 
-export default function SocialPreview() {
+interface SocialPreviewProps {
+  surface?: string;
+}
+
+export default function SocialPreview({ surface = 'all-platforms' }: SocialPreviewProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [urlMetadata, setUrlMetadata] = useState<ApiResponse | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const analytics = useLinkGlimpseAnalytics();
+
+  useEffect(() => {
+    if (!urlMetadata) return;
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [urlMetadata]);
 
   const handleUrlSubmit = async (url: string) => {
+    const startedAt = performance.now();
     setIsLoading(true);
     setError('');
     setUrlMetadata(null);
+    analytics.trackPreviewStarted(surface, url);
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
@@ -37,8 +59,11 @@ export default function SocialPreview() {
       }
 
       setUrlMetadata(fetchedMetadata);
+      analytics.trackPreviewSucceeded(surface, fetchedMetadata, Math.round(performance.now() - startedAt));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate previews');
+      const message = err instanceof Error ? err.message : 'Failed to generate previews';
+      setError(message);
+      analytics.trackPreviewFailed(surface, url, message);
     } finally {
       setIsLoading(false);
     }
@@ -73,13 +98,18 @@ export default function SocialPreview() {
 
       {/* Social Previews Wall */}
       {urlMetadata && (
-        <div className="space-y-8">
+        <div ref={resultsRef} className="scroll-mt-24 space-y-8">
           <h2 className="text-2xl font-semibold text-gray-900 text-center">Social Media Previews</h2>
           
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 2xl:columns-5 gap-4 px-4">
+          <div
+            aria-label="Social preview gallery"
+            className="social-preview-strip flex w-full snap-x snap-proximity items-start gap-3 overflow-x-auto px-3 pb-4"
+            role="region"
+            tabIndex={0}
+          >
             {/* Facebook Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Facebook</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Facebook</h3>
               <FacebookPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -90,8 +120,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Instagram Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Instagram</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Instagram</h3>
               <InstagramPreview
                 image={urlMetadata.image}
                 name={getDomain(urlMetadata.url)}
@@ -101,8 +131,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Threads Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Threads</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Threads</h3>
               <ThreadsPreview
                 posts={[{
                   date: new Date(),
@@ -122,8 +152,8 @@ export default function SocialPreview() {
             </div>
 
             {/* LinkedIn Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">LinkedIn</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">LinkedIn</h3>
               <LinkedInPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -136,8 +166,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Twitter Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Twitter</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Twitter</h3>
               <TwitterPreview
                 tweets={[{
                   date: new Date(),
@@ -155,8 +185,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Google Search Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Google Search</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Google Search</h3>
               <GoogleSearchPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -166,8 +196,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Tumblr Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tumblr</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Tumblr</h3>
               <TumblrPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -178,8 +208,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Mastodon Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Mastodon</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Mastodon</h3>
               <MastodonPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -194,8 +224,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Nextdoor Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Nextdoor</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Nextdoor</h3>
               <NextdoorPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -207,8 +237,8 @@ export default function SocialPreview() {
             </div>
 
             {/* Bluesky Preview */}
-            <div className="p-4 mb-4 break-inside-avoid min-w-[460px]">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Bluesky</h3>
+            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
+              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Bluesky</h3>
               <BlueskyPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -223,16 +253,8 @@ export default function SocialPreview() {
               />
             </div>
           </div>
-        </div>
-      )}
 
-      {/* AI Enhancement */}
-      {urlMetadata && (
-        <div className="mb-8 max-w-7xl mx-auto px-4 mt-12">
-          <AiEnhancer 
-            metadata={urlMetadata} 
-            onEnhancedMetadata={(enhancedMetadata) => setUrlMetadata(enhancedMetadata)}
-          />
+          <DiagnosticsPanel metadata={urlMetadata} />
         </div>
       )}
 

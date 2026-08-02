@@ -36,7 +36,7 @@ export default function BlogListStructuredData({ posts, baseUrl }: BlogListStruc
           },
         },
         datePublished: post.date,
-        dateModified: post.date,
+        dateModified: post.updated || post.date,
         mainEntityOfPage: {
           '@type': 'WebPage',
           '@id': `${baseUrl}/blog/${post.slug}`,
@@ -61,4 +61,4 @@ export default function BlogListStructuredData({ posts, baseUrl }: BlogListStruc
       }}
     />
   )
-} 
+}

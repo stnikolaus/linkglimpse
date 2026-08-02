@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import { withPlausibleProxy } from 'next-plausible';
 
 const nextConfig: NextConfig = {
+  // Keep development and production artifacts separate so `next build` cannot
+  // invalidate manifests while a local dev server is running.
+  distDir: process.env.NODE_ENV === 'development' ? '.next-dev' : '.next',
   sassOptions: {
     includePaths: ['./src'],
   },
@@ -50,6 +53,35 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react'],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/facebook-social-preview',
+        destination: '/facebook-open-graph-debugger',
+        permanent: true,
+      },
+      {
+        source: '/twitter-social-preview',
+        destination: '/twitter-card-validator',
+        permanent: true,
+      },
+      {
+        source: '/linkedin-social-preview',
+        destination: '/linkedin-post-preview',
+        permanent: true,
+      },
+      {
+        source: '/ai',
+        destination: '/open-graph-checker',
+        permanent: true,
+      },
+      {
+        source: '/blog/ai-content-optimization',
+        destination: '/blog/social-media-preview-best-practices',
+        permanent: true,
+      },
+    ];
   },
 };
 

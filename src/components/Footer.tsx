@@ -3,9 +3,10 @@ import Image from 'next/image';
 import { getAllBlogPosts } from '@/lib/blog';
 
 const socialPreviews = [
-  { name: 'Facebook', href: '/facebook-social-preview' },
-  { name: 'Twitter', href: '/twitter-social-preview' },
-  { name: 'LinkedIn', href: '/linkedin-social-preview' },
+  { name: 'Open Graph Checker', href: '/open-graph-checker' },
+  { name: 'Facebook', href: '/facebook-open-graph-debugger' },
+  { name: 'Twitter / X', href: '/twitter-card-validator' },
+  { name: 'LinkedIn', href: '/linkedin-post-preview' },
   { name: 'Instagram', href: '/instagram-social-preview' },
   { name: 'Mastodon', href: '/mastodon-social-preview' },
   { name: 'Tumblr', href: '/tumblr-social-preview' },
@@ -46,12 +47,6 @@ export default function Footer() {
               Tools & Resources
             </h3>
             <div className="space-y-2">
-              <Link
-                href="/ai"
-                className="block text-sm text-gray-400 hover:text-gray-200"
-              >
-                AI Enhancement
-              </Link>
               <Link
                 href="/api"
                 className="block text-sm text-gray-400 hover:text-gray-200"
@@ -126,4 +121,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}

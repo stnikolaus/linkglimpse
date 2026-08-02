@@ -1,19 +1,20 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { 
-  Upload, 
-  Download, 
-  FileText, 
-  AlertCircle, 
-  CheckCircle, 
-  X, 
+import {
+  Upload,
+  Download,
+  FileText,
+  AlertCircle,
+  CheckCircle,
+  X,
   Loader2,
   BarChart3,
   Clock,
   Globe,
   Settings
 } from 'lucide-react';
+import { useLinkGlimpseAnalytics } from '@/components/PlausibleEvents';
 
 interface BulkResult {
   url: string;
@@ -44,20 +45,8 @@ export default function BulkProcessor() {
   const [summary, setSummary] = useState<BulkSummary | null>(null);
   const [progress, setProgress] = useState(0);
   const [exportFormat, setExportFormat] = useState<'json' | 'csv'>('json');
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['facebook', 'twitter', 'linkedin', 'google']);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const platforms = [
-    { key: 'facebook', label: 'Facebook', color: 'bg-blue-600' },
-    { key: 'twitter', label: 'Twitter', color: 'bg-sky-500' },
-    { key: 'linkedin', label: 'LinkedIn', color: 'bg-blue-700' },
-    { key: 'google', label: 'Google Search', color: 'bg-green-600' },
-    { key: 'instagram', label: 'Instagram', color: 'bg-pink-600' },
-    { key: 'tumblr', label: 'Tumblr', color: 'bg-blue-400' },
-    { key: 'mastodon', label: 'Mastodon', color: 'bg-purple-600' },
-    { key: 'nextdoor', label: 'Nextdoor', color: 'bg-green-500' },
-    { key: 'bluesky', label: 'Bluesky', color: 'bg-blue-500' }
-  ];
+  const analytics = useLinkGlimpseAnalytics();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -70,7 +59,7 @@ export default function BulkProcessor() {
         .map(line => line.trim())
         .filter(line => line.length > 0)
         .slice(0, 100); // Limit to 100 URLs
-      
+
       setUrls(lines);
     };
     reader.readAsText(file);
@@ -86,6 +75,7 @@ export default function BulkProcessor() {
 
   const processBulkUrls = async () => {
     if (urls.length === 0) return;
+    analytics.trackBulkProcessingStarted(urls.length);
 
     setIsProcessing(true);
     setProgress(0);
@@ -100,12 +90,12 @@ export default function BulkProcessor() {
         },
         body: JSON.stringify({
           urls,
-          platforms: selectedPlatforms,
           format: exportFormat
         })
       });
 
       if (exportFormat === 'csv') {
+        if (!response.ok) throw new Error(`Bulk request failed with HTTP ${response.status}`);
         // Handle CSV download
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -116,13 +106,14 @@ export default function BulkProcessor() {
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-        
+        analytics.trackBulkReportExported('csv', urls.length);
+
         setIsProcessing(false);
         return;
       }
 
       const data = await response.json();
-      
+
       if (data.error) {
         throw new Error(data.error);
       }
@@ -130,6 +121,7 @@ export default function BulkProcessor() {
       setResults(data.results);
       setSummary(data.summary);
       setProgress(100);
+      analytics.trackBulkProcessingSucceeded(data.summary.totalUrls, data.summary.successful);
     } catch (error) {
       console.error('Bulk processing error:', error);
     } finally {
@@ -151,6 +143,7 @@ export default function BulkProcessor() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+      analytics.trackBulkReportExported('json', results.length);
     }
   };
 
@@ -174,10 +167,9 @@ export default function BulkProcessor() {
             <BarChart3 className="h-8 w-8 text-white" />
           </div>
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Bulk URL Processor</h2>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Bulk URL Metadata Checker</h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Process multiple URLs at once and export results in JSON or CSV format. 
-          Perfect for marketers and SEO professionals.
+          Check Open Graph, Twitter Card and page metadata for up to 100 URLs at once. Compare issues and export the results as CSV or JSON.
         </p>
       </div>
 
@@ -185,37 +177,15 @@ export default function BulkProcessor() {
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center mb-4">
           <Settings className="h-5 w-5 text-gray-600 mr-2" />
-          <h3 className="text-lg font-semibold text-gray-900">Configuration</h3>
+          <h2 className="text-lg font-semibold text-gray-900">Bulk Check Settings</h2>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Platform Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Select Platforms
-            </label>
-            <div className="grid grid-cols-2 gap-2">
-              {platforms.map((platform) => (
-                <label key={platform.key} className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedPlatforms.includes(platform.key)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedPlatforms([...selectedPlatforms, platform.key]);
-                      } else {
-                        setSelectedPlatforms(selectedPlatforms.filter(p => p !== platform.key));
-                      }
-                    }}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{platform.label}</span>
-                </label>
-              ))}
-            </div>
+          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+            <h4 className="font-medium text-gray-900">Universal metadata diagnostics</h4>
+            <p className="text-sm text-gray-600 mt-1">Each URL is checked once for Open Graph, Twitter Card, indexing, response, and share-image signals.</p>
           </div>
 
-          {/* Export Format */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Export Format
@@ -249,7 +219,7 @@ export default function BulkProcessor() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <Globe className="h-5 w-5 text-gray-600 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900">URL Input</h3>
+            <h2 className="text-lg font-semibold text-gray-900">URLs to Check</h2>
           </div>
           <div className="flex space-x-2">
             <button
@@ -320,7 +290,7 @@ export default function BulkProcessor() {
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-center mb-4">
             <BarChart3 className="h-5 w-5 text-gray-600 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900">Results Summary</h3>
+            <h2 className="text-lg font-semibold text-gray-900">Bulk Metadata Results Summary</h2>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -359,7 +329,7 @@ export default function BulkProcessor() {
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex items-center mb-4">
             <FileText className="h-5 w-5 text-gray-600 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900">Detailed Results</h3>
+            <h2 className="text-lg font-semibold text-gray-900">Metadata Results by URL</h2>
           </div>
 
           <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -386,7 +356,7 @@ export default function BulkProcessor() {
                         <X className="h-4 w-4" />
                       </button>
                     </div>
-                    
+
                     {result.success && result.metadata && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                         <div>
@@ -399,12 +369,12 @@ export default function BulkProcessor() {
                         </div>
                       </div>
                     )}
-                    
+
                     {!result.success && result.error && (
                       <div className="text-sm text-red-600">{result.error}</div>
                     )}
                   </div>
-                  
+
                   <div className="flex items-center text-sm text-gray-500 ml-4">
                     <Clock className="h-4 w-4 mr-1" />
                     {result.processingTime}ms
@@ -417,4 +387,4 @@ export default function BulkProcessor() {
       )}
     </div>
   );
-} 
+}

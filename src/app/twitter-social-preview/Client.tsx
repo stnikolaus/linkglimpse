@@ -7,11 +7,14 @@ import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
 import FAQStructuredData from '@/components/FAQStructuredData';
+import DiagnosticsPanel from '@/components/DiagnosticsPanel';
+import { useLinkGlimpseAnalytics } from '@/components/PlausibleEvents';
 
 export default function TwitterSocialPreviewClient() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [urlMetadata, setUrlMetadata] = useState<ApiResponse | null>(null);
+  const analytics = useLinkGlimpseAnalytics();
 
   const faqItems = [
     {
@@ -20,7 +23,7 @@ export default function TwitterSocialPreviewClient() {
     },
     {
       question: 'How do I refresh my Twitter Card cache?',
-      answer: 'Paste your URL and click “Preview Your Tweet Now.” If your card image or title is outdated, update your site\'s meta tags and re-test. Our tool simulates a twitter card refresh by fetching the latest headers and tags so you can confirm the update before posting.'
+      answer: 'Paste your URL and click “Validate Twitter Card.” LinkGlimpse fetches the latest public page metadata so you can confirm your deployed tags. It does not clear X\'s own cache; platform cache refreshes remain controlled by X.'
     },
     {
       question: 'Which Twitter Card types are supported?',
@@ -33,9 +36,11 @@ export default function TwitterSocialPreviewClient() {
   ];
 
   const handleUrlSubmit = async (url: string) => {
+    const startedAt = performance.now();
     setIsLoading(true);
     setError('');
     setUrlMetadata(null);
+    analytics.trackPreviewStarted('twitter-card-validator', url);
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
@@ -43,8 +48,11 @@ export default function TwitterSocialPreviewClient() {
         throw new Error(fetchedMetadata.error);
       }
       setUrlMetadata(fetchedMetadata);
+      analytics.trackPreviewSucceeded('twitter-card-validator', fetchedMetadata, Math.round(performance.now() - startedAt));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate preview');
+      const message = err instanceof Error ? err.message : 'Failed to generate preview';
+      setError(message);
+      analytics.trackPreviewFailed('twitter-card-validator', url, message);
     } finally {
       setIsLoading(false);
     }
@@ -67,14 +75,14 @@ export default function TwitterSocialPreviewClient() {
               <Twitter className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Twitter Card Debugger & Validator</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Twitter Card Validator &amp; X Preview</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Instantly test, validate, and preview your Twitter Card. See a live tweet preview, verify tags, and simulate a twitter card refresh before you post.
+            Validate Twitter Card and Open Graph tags for any URL. Preview the card on X and find missing title, description, image or card-type metadata.
           </p>
         </div>
 
         <div className="mb-8">
-          <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} ctaLabel="Preview Your Tweet Now" placeholder="Paste a URL to test your Twitter Card" />
+          <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} ctaLabel="Validate Twitter Card" placeholder="Paste a URL to test your Twitter Card" />
         </div>
 
         {error && (
@@ -88,10 +96,11 @@ export default function TwitterSocialPreviewClient() {
 
         {urlMetadata && (
           <div className="space-y-8">
+            <DiagnosticsPanel metadata={urlMetadata} />
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="flex items-center mb-6">
                 <Twitter className="h-6 w-6 text-blue-400 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">Twitter Preview</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Twitter Card Preview Result</h2>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-6">
@@ -107,7 +116,7 @@ export default function TwitterSocialPreviewClient() {
               </div>
 
               <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Extracted Metadata</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Twitter Card Metadata</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-700">Title:</span>
@@ -142,16 +151,16 @@ export default function TwitterSocialPreviewClient() {
 
         <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
           <FAQStructuredData items={faqItems} />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Test and Refresh Your Twitter Card</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">How to Test a Twitter Card</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
               Use this twitter sharing debugger to run a comprehensive twitter cards test for any page. Our validator checks essential tags including <code className="bg-gray-200 px-1 rounded">twitter:card</code>, <code className="bg-gray-200 px-1 rounded">twitter:title</code>, <code className="bg-gray-200 px-1 rounded">twitter:description</code>, and <code className="bg-gray-200 px-1 rounded">twitter:image</code>, then renders a realistic preview of your tweet.
             </p>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Refresh Your Twitter Card Cache</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Verify Live Twitter Card Tags</h3>
             <p className="text-gray-600 mb-4">
-              After updating your site, re-run the test to simulate a twitter card refresh and confirm that your new image, title, or description appear. This helps avoid stale previews that can reduce engagement.
+              After updating your site, re-run the test to confirm the public page now exposes the new image, title, and description. LinkGlimpse does not clear or control X&apos;s platform cache.
             </p>
-            <h3 className="text-xl font-semibold text-gray-900 mt-2 mb-2">Step-by-Step: Debug Twitter</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-2 mb-2">How to Debug a Twitter Card</h3>
             <ol className="text-sm text-gray-600 list-decimal pl-5 space-y-2">
               <li>Paste your URL and click “Preview Your Tweet Now.”</li>
               <li>Inspect the tweet and card preview, along with extracted tag values.</li>
@@ -159,29 +168,29 @@ export default function TwitterSocialPreviewClient() {
               <li>Deploy your changes, then re-run the debugger twitter flow to verify.</li>
               <li>Share your link with confidence once the twitter card update is reflected.</li>
             </ol>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Best Practices for Twitter Cards</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Twitter Card Best Practices</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
               <li>Use <em>summary_large_image</em> for posts where the image should dominate the preview</li>
               <li>Ensure images are at least 1200×630 and under a few MB for faster loads</li>
               <li>Keep titles punchy and clear; make descriptions action-oriented</li>
               <li>Use absolute HTTPS URLs for all assets, including images</li>
             </ul>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Troubleshooting Tips</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Fix Common Twitter Card Problems</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
               <li>Outdated preview? Trigger a twitter card update by changing the image filename</li>
               <li>Broken image? Verify the URL is reachable and returns 200 status</li>
               <li>No card? Confirm <code className="bg-gray-200 px-1 rounded">twitter:card</code> is set and meta tags are in the <code className="bg-gray-200 px-1 rounded">&lt;head&gt;</code></li>
             </ul>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Why Use a Twitter Card Validator?</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Why Validate a Twitter Card?</h3>
             <p className="text-gray-600 mb-4">
               A validator prevents broken previews, increases click-through rates, and helps you control brand presentation. Whether you search “debug twitter,” “debugger twitter,” or “twitter card update,” this tool provides the rapid feedback loop you need.
             </p>
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Supported Card Types</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Supported Twitter Card Types</h2>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
               <li>Summary Card</li>
               <li>Summary Card with Large Image</li>
             </ul>
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Twitter Card FAQ</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Twitter Card Validator Questions</h2>
             <div className="space-y-4">
               {faqItems.map((item, idx) => (
                 <div key={idx} className="bg-gray-50 p-4 rounded-lg">
@@ -190,7 +199,7 @@ export default function TwitterSocialPreviewClient() {
                 </div>
               ))}
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Optimization Examples</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Twitter Card Optimization Examples</h3>
             <div className="bg-gray-50 p-4 rounded-lg mb-4">
               <p className="text-sm text-gray-600 mb-2"><strong>Before:</strong> Cropped image, long title, generic description.</p>
               <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
@@ -208,7 +217,7 @@ export default function TwitterSocialPreviewClient() {
               </ul>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Pre-Post QA Checklist</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Twitter Card QA Checklist</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
               <li>Validate card type and all required tags using this twitter sharing debugger</li>
               <li>Confirm image is reachable, uses HTTPS, and isn’t blocked by robots</li>

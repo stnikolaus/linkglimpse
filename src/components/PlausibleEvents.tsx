@@ -1,94 +1,82 @@
 'use client';
 
 import { usePlausible } from 'next-plausible';
+import { capturePostHog } from '@/lib/posthog-client';
 
-/**
- * Custom hook for tracking common events in LinkGlimpse
- * This provides a consistent way to track user interactions across the app
- */
-export function useLinkGlimpseAnalytics() {
-  const plausible = usePlausible();
+type AnalyticsValue = string | number | boolean;
+type AnalyticsProps = Record<string, AnalyticsValue | undefined>;
 
-  return {
-    // Track when a user generates a social media preview
-    trackPreviewGeneration: (platform: string, url: string) => {
-      plausible('Preview Generated', {
-        props: {
-          platform,
-          url_domain: new URL(url).hostname,
-        },
-      });
-    },
+export const PRODUCT_EVENTS = {
+  previewStarted: 'Preview Started',
+  previewSucceeded: 'Preview Succeeded',
+  previewFailed: 'Preview Failed',
+  reportExported: 'Report Exported',
+  bulkProcessingStarted: 'Bulk Processing Started',
+  bulkProcessingSucceeded: 'Bulk Processing Succeeded',
+  bulkReportExported: 'Bulk Report Exported',
+  apiTestCompleted: 'API Test Completed',
+  platformNavigation: 'Platform Navigation',
+} as const;
 
-    // Track when a user clicks on a social media platform in the navigation
-    trackPlatformNavigation: (platform: string) => {
-      plausible('Platform Navigation', {
-        props: {
-          platform,
-        },
-      });
-    },
-
-    // Track when a user copies a URL or shares content
-    trackContentShare: (action: 'copy' | 'share', platform?: string) => {
-      plausible('Content Share', {
-        props: {
-          action,
-          platform: platform || 'unknown',
-        },
-      });
-    },
-
-    // Track when a user uses the bulk preview feature
-    trackBulkPreview: (count: number) => {
-      plausible('Bulk Preview Used', {
-        props: {
-          url_count: count.toString(),
-        },
-      });
-    },
-
-    // Track general button clicks with custom properties
-    trackButtonClick: (buttonName: string, location: string) => {
-      plausible('Button Click', {
-        props: {
-          button_name: buttonName,
-          location,
-        },
-      });
-    },
-  };
+function getHostname(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return 'invalid';
+  }
 }
 
-/**
- * Example component showing how to use Plausible events
- * You can use this pattern in your existing components
- */
-export function ExampleAnalyticsComponent() {
-  const analytics = useLinkGlimpseAnalytics();
-
-  const handlePreviewClick = () => {
-    analytics.trackPreviewGeneration('facebook', 'https://example.com');
-  };
-
-  const handleNavigationClick = () => {
-    analytics.trackPlatformNavigation('twitter');
-  };
-
-  return (
-    <div className="space-x-4">
-      <button 
-        onClick={handlePreviewClick}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Generate Preview (Tracked)
-      </button>
-      <button 
-        onClick={handleNavigationClick}
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-      >
-        Navigate to Platform (Tracked)
-      </button>
-    </div>
+function cleanProps(props: AnalyticsProps): Record<string, AnalyticsValue> {
+  return Object.fromEntries(
+    Object.entries(props).filter((entry): entry is [string, AnalyticsValue] => entry[1] !== undefined),
   );
+}
+
+export function useLinkGlimpseAnalytics() {
+  const plausible = usePlausible();
+  const capture = (event: string, props: AnalyticsProps = {}) => {
+    const cleaned = cleanProps(props);
+    plausible(event, { props: cleaned });
+
+    if (process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN) {
+      capturePostHog(event, cleaned);
+    }
+  };
+
+  return {
+    trackPreviewStarted: (surface: string, url: string) => capture(PRODUCT_EVENTS.previewStarted, {
+      surface,
+      url_domain: getHostname(url),
+    }),
+    trackPreviewSucceeded: (surface: string, metadata: { url: string; diagnostics?: { score: number }; redirected?: boolean }, durationMs: number) => capture(PRODUCT_EVENTS.previewSucceeded, {
+      surface,
+      url_domain: getHostname(metadata.url),
+      diagnostic_score: metadata.diagnostics?.score,
+      redirected: metadata.redirected ?? false,
+      duration_ms: durationMs,
+    }),
+    trackPreviewFailed: (surface: string, url: string, reason: string) => capture(PRODUCT_EVENTS.previewFailed, {
+      surface,
+      url_domain: getHostname(url),
+      reason: reason.slice(0, 120),
+    }),
+    trackReportExported: (format: 'json' | 'clipboard', score?: number) => capture(PRODUCT_EVENTS.reportExported, {
+      format,
+      diagnostic_score: score,
+    }),
+    trackBulkProcessingStarted: (urlCount: number) => capture(PRODUCT_EVENTS.bulkProcessingStarted, {
+      url_count: urlCount,
+    }),
+    trackBulkProcessingSucceeded: (urlCount: number, successfulCount: number) => capture(PRODUCT_EVENTS.bulkProcessingSucceeded, {
+      url_count: urlCount,
+      successful_count: successfulCount,
+      success_rate: urlCount > 0 ? Math.round((successfulCount / urlCount) * 100) : 0,
+    }),
+    trackBulkReportExported: (format: 'json' | 'csv', urlCount: number) => capture(PRODUCT_EVENTS.bulkReportExported, {
+      format,
+      url_count: urlCount,
+    }),
+    trackApiTestCompleted: (success: boolean) => capture(PRODUCT_EVENTS.apiTestCompleted, { success }),
+    trackPlatformNavigation: (platform: string) => capture(PRODUCT_EVENTS.platformNavigation, { platform }),
+  };
 }

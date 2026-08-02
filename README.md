@@ -6,7 +6,6 @@ A modern Next.js web application that generates social media previews for any UR
 
 - **URL Input & Validation**: Enter any URL and get instant validation
 - **Multi-Platform Previews**: Generate previews for 9 different social platforms
-- **AI-Powered Enhancement**: Optimize titles, descriptions, and generate hashtags using AI
 - **Bulk URL Processing**: Process up to 100 URLs at once with batch export
 - **Real-time Metadata Extraction**: Fetches Open Graph, Twitter Cards, and meta tags
 - **API Access**: RESTful API for programmatic access to social preview data
@@ -132,47 +131,6 @@ Process multiple URLs in bulk.
 }
 ```
 
-### POST /api/enhance
-
-Enhance metadata using AI.
-
-**Parameters:**
-- `metadata` (required): Current metadata object
-- `platforms` (optional): Target platforms for optimization (default: ['facebook', 'twitter', 'linkedin'])
-- `enhancementType` (optional): Type of enhancement - 'title', 'description', 'hashtags', or 'all' (default: 'all')
-
-**Request Body:**
-```json
-{
-  "metadata": {
-    "title": "Example Title",
-    "description": "Example description",
-    "url": "https://example.com"
-  },
-  "platforms": ["facebook", "twitter"],
-  "enhancementType": "all"
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "enhancements": {
-    "original": { ... },
-    "enhanced": { ... },
-    "suggestions": {
-      "title": "Optimized Title",
-      "description": "Enhanced description",
-      "hashtags": ["#example", "#social"],
-      "improvements": ["Add more engaging content", "Include call-to-action"]
-    },
-    "confidence": 0.85
-  },
-  "timestamp": "2025-01-01T12:00:00.000Z"
-}
-```
-
 ## Project Structure
 
 ```
@@ -217,17 +175,7 @@ src/
 
 ### Environment Variables
 
-For AI features, create a `.env.local` file with:
-
-```bash
-# Get your API key from: https://makersuite.google.com/app/apikey
-GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key_here
-
-# Optional: Set to 'false' to disable AI features (default: true)
-ENABLE_AI_FEATURES=true
-```
-
-Basic functionality works without AI features.
+Optional analytics and Search Console settings are documented in `.env.example`.
 
 ## Deployment
 

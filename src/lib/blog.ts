@@ -13,6 +13,7 @@ export interface BlogPost {
   title: string;
   description: string;
   date: string;
+  updated?: string;
   author: string;
   category: string;
   tags: string[];
@@ -57,7 +58,7 @@ export function getAllBlogPosts(): BlogPost[] {
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     const fullPath = path.join(postsDirectory, `${slug}.md`);
-    
+
     if (!fs.existsSync(fullPath)) {
       return null;
     }
@@ -116,4 +117,4 @@ export function getRelatedPosts(currentSlug: string, limit: number = 3): BlogPos
   return allPosts
     .filter((post) => post.slug !== currentSlug)
     .slice(0, limit);
-} 
+}

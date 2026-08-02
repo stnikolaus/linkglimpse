@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | LinkGlimpse',
-  description: 'Learn how LinkGlimpse protects your privacy and handles your data. Our commitment to transparency and data security.',
+  title: 'Privacy Policy',
+  description: 'Read how LinkGlimpse handles submitted public URLs and analytics data, including what information is collected and why.',
+  alternates: { canonical: '/privacy' },
   robots: {
     index: true,
     follow: true,
@@ -15,22 +16,25 @@ export default function PrivacyPolicy() {
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
-          
+
           <div className="prose prose-lg max-w-none">
+            <p className="text-lg text-gray-700 mb-3">
+              Read how LinkGlimpse handles submitted public URLs and analytics data, including what information is collected and why.
+            </p>
             <p className="text-gray-600 mb-8">
-              Last updated: January 15, 2025
+              Last updated: August 2, 2026
             </p>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Information We Collect</h2>
               <p className="text-gray-700 mb-4">
-                LinkGlimpse collects minimal information to provide our social media preview service:
+                LinkGlimpse processes only the information needed to inspect links and understand whether the product is useful:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li>URLs you submit for preview generation</li>
-                <li>Usage analytics to improve our service</li>
-                <li>Technical information (browser type, device info)</li>
-                <li>Optional email for newsletter subscription</li>
+                <li>Public URLs you submit, which our server fetches to extract metadata and image information</li>
+                <li>Basic request and error information that may appear in short-lived infrastructure logs</li>
+                <li>Aggregate pageview and product-event analytics, such as whether a preview succeeded or a report was exported</li>
+                <li>The submitted URL&apos;s hostname in product events; LinkGlimpse does not intentionally send the full submitted URL as an analytics event property</li>
               </ul>
             </section>
 
@@ -40,27 +44,23 @@ export default function PrivacyPolicy() {
                 We use the collected information to:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li>Generate social media previews for your URLs</li>
-                <li>Improve our service and user experience</li>
-                <li>Send you relevant updates and tips (with consent)</li>
-                <li>Ensure security and prevent abuse</li>
+                <li>Fetch public metadata and generate previews and diagnostic reports</li>
+                <li>Measure preview success, report exports, and feature usage</li>
+                <li>Diagnose errors, protect the service, and improve product reliability</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Data Security</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Analytics Providers</h2>
               <p className="text-gray-700">
-                We implement industry-standard security measures to protect your data. 
-                All data is encrypted in transit and at rest. We never sell or share 
-                your personal information with third parties.
+                LinkGlimpse uses Plausible for aggregate web analytics and may use PostHog for explicit product events when configured. PostHog automatic element capture and session recording are disabled. These providers process analytics under their own data-processing and retention terms.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Cookies and Analytics</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Storage and Retention</h2>
               <p className="text-gray-700 mb-4">
-                We use essential cookies to provide our service and analytics cookies 
-                to understand usage patterns. You can control cookie settings in your browser.
+                LinkGlimpse does not require an account to run a preview. Diagnostic reports are generated on demand and returned to your browser; the application does not intentionally persist them in a LinkGlimpse user profile. Infrastructure and analytics providers may retain request or event data according to their configured retention periods.
               </p>
             </section>
 
@@ -70,10 +70,9 @@ export default function PrivacyPolicy() {
                 You have the right to:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li>Access your personal data</li>
-                <li>Request deletion of your data</li>
-                <li>Opt-out of marketing communications</li>
-                <li>Contact us with privacy concerns</li>
+                <li>Use browser privacy controls or content blockers to limit analytics requests</li>
+                <li>Request information or deletion where an event can reasonably be linked to you</li>
+                <li>Contact us with questions about processing or retention</li>
               </ul>
             </section>
 
@@ -91,4 +90,4 @@ export default function PrivacyPolicy() {
       </div>
     </div>
   );
-} 
+}

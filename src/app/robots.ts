@@ -8,5 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/api/', '/preview/'],
     },
     sitemap: 'https://www.linkglimpse.com/sitemap.xml',
+    host: 'https://www.linkglimpse.com',
   }
-} 
+}

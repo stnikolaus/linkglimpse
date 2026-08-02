@@ -9,11 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/google": "^2.0.0",
     "@automattic/social-previews": "2.1.0-beta.12",
     "@opennextjs/cloudflare": "^1.6.3",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "ai": "^5.0.0",
     "clsx": "^2.1.1",
     "critters": "^0.0.25",
     "date-fns": "^4.1.0",
@@ -22,14 +20,14 @@
     "next": "15.4.5",
     "next-mdx-remote": "^5.0.0",
     "next-plausible": "^3.12.4",
+    "posthog-js": "^1.409.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-syntax-highlighter": "^15.6.1",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
-    "sass": "^1.89.2",
-    "zod": "^4.0.14"
+    "sass": "^1.89.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -19,7 +19,9 @@
 
 .social-preview__section {
   margin-bottom: 2rem;
-  width: clamp(200px, 100%, 680px);
+  width: 100%;
+  max-width: 680px;
+  min-width: 0;
   margin-inline: auto;
 }
 
@@ -44,4 +46,52 @@
     align-items: center;
     gap: 0.25rem;
   }
-} 
+}
+
+/* Keep every platform renderer inside its card and mobile viewport. */
+.social-preview,
+.social-preview * {
+  box-sizing: border-box;
+}
+
+.social-preview {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.social-preview-strip-item .social-preview__section {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.social-preview-strip-item .twitter-preview,
+.social-preview-strip-item .threads-preview {
+  padding: 0;
+}
+
+.social-preview-strip {
+  overscroll-behavior-inline: contain;
+  scrollbar-color: #94a3b8 transparent;
+  scrollbar-width: thin;
+}
+
+.social-preview-strip::-webkit-scrollbar {
+  height: 8px;
+}
+
+.social-preview-strip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.social-preview-strip::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+.social-preview img,
+.social-preview video {
+  max-width: 100%;
+}
