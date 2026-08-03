@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeMetadata } from '@/lib/metadata-analysis';
-import type { ApiResponse, ImageInspection } from '@/types';
+import type { ApiResponse, ImageInspection, RedirectHop } from '@/types';
 
 const MAX_HTML_BYTES = 2_000_000;
 const MAX_IMAGE_HEADER_BYTES = 65_536;
 const REQUEST_TIMEOUT_MS = 12_000;
+const MAX_REDIRECTS = 8;
 
 export const runtime = 'nodejs';
 
@@ -17,16 +18,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const requestedUrl = validatePublicUrl(url);
-    const response = await fetch(requestedUrl, {
-      headers: {
-        Accept: 'text/html,application/xhtml+xml',
-        'User-Agent': 'LinkGlimpse/2.0 (+https://www.linkglimpse.com)',
-      },
-      redirect: 'follow',
-      cache: 'no-store',
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-    });
-    const finalUrl = validatePublicUrl(response.url || requestedUrl.toString());
+    const { response, finalUrl, redirectChain } = await fetchPageWithRedirects(requestedUrl);
     const contentType = response.headers.get('content-type') ?? '';
 
     if (!contentType.includes('text/html') && !contentType.includes('application/xhtml+xml')) {
@@ -46,7 +38,8 @@ export async function GET(request: NextRequest) {
       url: finalUrl.toString(),
       status: response.status,
       statusText: response.statusText,
-      redirected: response.redirected || requestedUrl.toString() !== finalUrl.toString(),
+      redirected: redirectChain.some((hop) => Boolean(hop.location)),
+      redirectChain,
       contentType,
       imageInfo,
     };
@@ -63,6 +56,47 @@ export async function GET(request: NextRequest) {
     console.error('Metadata inspection failed:', message);
     return NextResponse.json({ error: message, url }, { status });
   }
+}
+
+async function fetchPageWithRedirects(startUrl: URL): Promise<{
+  response: Response;
+  finalUrl: URL;
+  redirectChain: RedirectHop[];
+}> {
+  let currentUrl = startUrl;
+  const redirectChain: RedirectHop[] = [];
+
+  for (let attempt = 0; attempt <= MAX_REDIRECTS; attempt += 1) {
+    const response = await fetch(currentUrl, {
+      headers: {
+        Accept: 'text/html,application/xhtml+xml',
+        'User-Agent': 'LinkGlimpse/2.0 (+https://www.linkglimpse.com)',
+      },
+      redirect: 'manual',
+      cache: 'no-store',
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+    const location = response.headers.get('location');
+    const isRedirect = location && [300, 301, 302, 303, 307, 308].includes(response.status);
+    const resolvedLocation = isRedirect
+      ? validatePublicUrl(new URL(location, currentUrl).toString()).toString()
+      : undefined;
+
+    redirectChain.push({
+      url: currentUrl.toString(),
+      status: response.status,
+      statusText: response.statusText,
+      location: resolvedLocation,
+    });
+
+    if (!resolvedLocation) {
+      return { response, finalUrl: currentUrl, redirectChain };
+    }
+
+    currentUrl = new URL(resolvedLocation);
+  }
+
+  throw new Error(`Too many redirects (more than ${MAX_REDIRECTS})`);
 }
 
 function validatePublicUrl(input: string): URL {

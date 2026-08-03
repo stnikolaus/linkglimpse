@@ -181,6 +181,54 @@ export function analyzeMetadata(metadata: ApiResponse): DiagnosticReport {
       value: metadata.image,
       recommendation: 'Serve share images over HTTPS with an absolute URL.',
     }));
+
+    if (imageInfo?.contentType) {
+      checks.push(makeCheck({
+        id: 'image-content-type',
+        label: 'Share image content type',
+        category: 'image',
+        status: imageInfo.contentType.startsWith('image/') ? 'pass' : 'fail',
+        value: imageInfo.contentType,
+        recommendation: 'Return an image/* Content-Type header instead of HTML, JSON, or a generic download response.',
+        weight: 2,
+      }));
+    }
+
+    if (imageInfo?.width && imageInfo.height) {
+      const ratio = imageInfo.width / imageInfo.height;
+      checks.push(makeCheck({
+        id: 'image-dimensions',
+        label: 'Share image dimensions',
+        category: 'image',
+        status: imageInfo.width >= 1200 && imageInfo.height >= 630
+          ? 'pass'
+          : imageInfo.width >= 600 && imageInfo.height >= 315
+            ? 'warning'
+            : 'fail',
+        value: `${imageInfo.width}×${imageInfo.height}`,
+        recommendation: 'Use a 1200×630 source image for a reliable large cross-platform card.',
+        weight: 2,
+      }));
+      checks.push(makeCheck({
+        id: 'image-aspect-ratio',
+        label: 'Share image aspect ratio',
+        category: 'image',
+        status: ratio >= 1.8 && ratio <= 2 ? 'pass' : 'warning',
+        value: `${ratio.toFixed(2)}:1`,
+        recommendation: 'Use an image close to 1.91:1 and keep important content inside a crop-safe central area.',
+      }));
+    }
+
+    if (imageInfo?.contentLength) {
+      checks.push(makeCheck({
+        id: 'image-file-size',
+        label: 'Share image file size',
+        category: 'image',
+        status: imageInfo.contentLength <= 1_500_000 ? 'pass' : 'warning',
+        value: `${Math.round(imageInfo.contentLength / 1024)} KB`,
+        recommendation: 'Compress the share image to improve crawler fetch reliability while preserving visual quality.',
+      }));
+    }
   }
 
   const weightedTotal = checks.reduce((sum, check) => sum + check.weight, 0);

@@ -5,8 +5,8 @@ import { Search, Loader2 } from 'lucide-react';
 import { UrlInputProps } from '@/types';
 import { isValidUrl, normalizeUrl } from '@/lib/url-utils';
 
-export default function UrlInput({ onSubmit, isLoading, ctaLabel, placeholder }: UrlInputProps) {
-  const [url, setUrl] = useState('');
+export default function UrlInput({ onSubmit, isLoading, ctaLabel, placeholder, initialValue = '' }: UrlInputProps) {
+  const [url, setUrl] = useState(initialValue);
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -62,4 +62,4 @@ export default function UrlInput({ onSubmit, isLoading, ctaLabel, placeholder }:
       </form>
     </div>
   );
-} 
+}

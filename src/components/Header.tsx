@@ -58,6 +58,11 @@ export default function Header() {
               </button>
             </li>
             <li>
+              <Link href="/compare" className="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
+                Compare URLs
+              </Link>
+            </li>
+            <li>
               <Link href="/bulk" className="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
                 Bulk Processing
               </Link>

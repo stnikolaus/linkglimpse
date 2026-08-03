@@ -37,6 +37,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   const platforms = [
+    { name: 'Open Graph Checker', icon: CheckCircle, path: '/open-graph-checker', color: 'text-purple-600' },
     { name: 'Facebook', icon: Facebook, path: '/facebook-open-graph-debugger', color: 'text-blue-600' },
     { name: 'Twitter / X', icon: Twitter, path: '/twitter-card-validator', color: 'text-blue-400' },
     { name: 'LinkedIn', icon: Linkedin, path: '/linkedin-post-preview', color: 'text-blue-700' },
@@ -78,6 +79,11 @@ export default function Home() {
       icon: Code,
       title: 'URL Metadata API',
       description: 'Use the REST API with copy-ready examples in several common programming languages.'
+    },
+    {
+      icon: FileDown,
+      title: 'Actionable Diagnostic Reports',
+      description: 'Share reports, compare URLs, copy individual fixes, or hand the full repair prompt to an AI coding agent.'
     },
     {
       icon: Globe,

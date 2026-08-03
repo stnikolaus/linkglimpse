@@ -284,8 +284,9 @@ func main() {
   "description": "Page description",
   "image": "https://example.com/image.jpg",
   "url": "https://example.com",
-  "siteName": "Site Name",
-  "author": "Author Name"
+  "finalUrl": "https://example.com",
+  "redirectChain": [{ "url": "https://example.com", "status": 200 }],
+  "diagnostics": { "score": 92, "checks": [], "platforms": [] }
 }`, 'response')}
                 className="text-gray-400 hover:text-white transition-colors"
               >
@@ -298,8 +299,9 @@ func main() {
   "description": "Page description",
   "image": "https://example.com/image.jpg",
   "url": "https://example.com",
-  "siteName": "Site Name",
-  "author": "Author Name"
+  "finalUrl": "https://example.com",
+  "redirectChain": [{ "url": "https://example.com", "status": 200 }],
+  "diagnostics": { "score": 92, "checks": [], "platforms": [] }
 }`}</code>
             </pre>
           </div>
@@ -356,7 +358,7 @@ func main() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900">Free URL Metadata API</h3>
             </div>
-            <p className="text-gray-600">No authentication required. No rate limits. Completely free for everyone.</p>
+            <p className="text-gray-600">No API key required for reasonable interactive checks, prototypes, and release tooling.</p>
           </div>
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center mb-4">
@@ -381,8 +383,8 @@ func main() {
               </pre>
             </div>
             <div className="border-l-4 border-red-500 pl-4">
-              <h3 className="text-lg font-semibold text-gray-900">500 Server Error</h3>
-              <p className="text-gray-600 mb-2">Failed to fetch or process the URL</p>
+              <h3 className="text-lg font-semibold text-gray-900">422 or 504 Inspection Error</h3>
+              <p className="text-gray-600 mb-2">The target could not be safely fetched, parsed, or reached before timeout</p>
               <pre className="bg-gray-100 p-2 rounded text-sm">
                 <code>{`{"error": "Failed to fetch URL metadata"}`}</code>
               </pre>

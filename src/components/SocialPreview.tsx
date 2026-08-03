@@ -11,13 +11,15 @@ import SocialPreviewTabs from './SocialPreviewTabs';
 
 interface SocialPreviewProps {
   surface?: string;
+  initialUrl?: string;
 }
 
-export default function SocialPreview({ surface = 'all-platforms' }: SocialPreviewProps) {
+export default function SocialPreview({ surface = 'all-platforms', initialUrl }: SocialPreviewProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [urlMetadata, setUrlMetadata] = useState<ApiResponse | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const initialUrlLoaded = useRef(false);
   const analytics = useLinkGlimpseAnalytics();
 
   useEffect(() => {
@@ -58,12 +60,20 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
     }
   };
 
+  useEffect(() => {
+    if (!initialUrl || initialUrlLoaded.current) return;
+    initialUrlLoaded.current = true;
+    void handleUrlSubmit(initialUrl);
+    // The initial report URL should run once; later checks come from the form.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialUrl]);
+
   return (
     <div className="w-full">
       {/* URL Input */}
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8 text-left items-start">
-          <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} />
+          <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} initialValue={initialUrl} />
         </div>
       </div>
 

@@ -1,11 +1,14 @@
 import { MetadataRoute } from 'next';
 import { getAllBlogPosts } from '@/lib/blog';
 import { SITE_URL } from '@/lib/seo';
+import { exampleReports } from '@/lib/example-reports';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = [
     { url: SITE_URL, changeFrequency: 'weekly', priority: 1 },
     { url: `${SITE_URL}/open-graph-checker`, changeFrequency: 'weekly', priority: 1 },
+    { url: `${SITE_URL}/compare`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/examples`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/twitter-card-validator`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/linkedin-post-preview`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/facebook-open-graph-debugger`, changeFrequency: 'weekly', priority: 0.8 },
@@ -26,6 +29,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly',
     priority: 0.6,
   }));
+  const examples: MetadataRoute.Sitemap = exampleReports.map((example) => ({
+    url: `${SITE_URL}/examples/${example.slug}`,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }));
 
-  return [...pages, ...posts];
+  return [...pages, ...posts, ...examples];
 }

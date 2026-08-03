@@ -1,23 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   AlertTriangle,
+  Bot,
   CheckCircle2,
   Clipboard,
+  Clock3,
+  Copy,
   Download,
   FileCode2,
+  Link2,
   ShieldAlert,
+  Terminal,
   XCircle,
 } from 'lucide-react';
 import { useLinkGlimpseAnalytics } from '@/components/PlausibleEvents';
 import type { ApiResponse, DiagnosticStatus } from '@/types';
+import {
+  buildAiAgentPrompt,
+  buildApiCommand,
+  getRemediationCode,
+  platformCacheGuidance,
+} from '@/lib/report-actions';
 
 interface DiagnosticsPanelProps {
   metadata: ApiResponse;
   preview?: ReactNode;
   previewTitle?: string;
+}
+
+interface HistoryEntry {
+  capturedAt: string;
+  score: number;
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  finalUrl?: string;
+  fingerprint: string;
 }
 
 const statusStyles: Record<DiagnosticStatus, { icon: typeof CheckCircle2; className: string; label: string }> = {
@@ -39,9 +61,58 @@ export default function DiagnosticsPanel({
   previewTitle = 'Link preview',
 }: DiagnosticsPanelProps) {
   const [showRawTags, setShowRawTags] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
   const analytics = useLinkGlimpseAnalytics();
   const diagnostics = metadata.diagnostics;
+  const historyUrl = metadata.requestedUrl || metadata.url;
+  const historyScore = diagnostics?.score;
+  const historyFingerprint = JSON.stringify({
+    status: metadata.status,
+    finalUrl: metadata.finalUrl,
+    canonical: metadata.canonical,
+    title: metadata.title,
+    description: metadata.description,
+    image: metadata.image,
+    tags: metadata.tags,
+    score: historyScore,
+  });
+
+  useEffect(() => {
+    if (historyScore === undefined) return;
+
+    const storageKey = `linkglimpse:metadata-history:v1:${historyUrl}`;
+
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(storageKey) || '[]') as HistoryEntry[];
+      setHistory(stored.filter((entry) => entry.fingerprint !== historyFingerprint).slice(0, 4));
+
+      if (stored[0]?.fingerprint !== historyFingerprint) {
+        const current: HistoryEntry = {
+          capturedAt: new Date().toISOString(),
+          score: historyScore,
+          title: metadata.title,
+          description: metadata.description,
+          image: metadata.image,
+          canonical: metadata.canonical,
+          finalUrl: metadata.finalUrl,
+          fingerprint: historyFingerprint,
+        };
+        window.localStorage.setItem(storageKey, JSON.stringify([current, ...stored].slice(0, 5)));
+      }
+    } catch {
+      setHistory([]);
+    }
+  }, [
+    historyFingerprint,
+    historyScore,
+    historyUrl,
+    metadata.canonical,
+    metadata.description,
+    metadata.finalUrl,
+    metadata.image,
+    metadata.title,
+  ]);
 
   if (!diagnostics) return null;
 
@@ -58,11 +129,32 @@ export default function DiagnosticsPanel({
     tags: metadata.tags,
   }, null, 2);
 
+  const copyText = async (key: string, value: string) => {
+    await navigator.clipboard.writeText(value);
+    setCopied(key);
+    window.setTimeout(() => setCopied((current) => current === key ? null : current), 2000);
+  };
+
   const copyReport = async () => {
-    await navigator.clipboard.writeText(report);
-    setCopied(true);
+    await copyText('report', report);
     analytics.trackReportExported('clipboard', diagnostics.score);
-    window.setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyAiPrompt = async () => {
+    await copyText('ai-prompt', buildAiAgentPrompt(metadata));
+    analytics.trackAiPromptCopied(diagnostics.counts.warning + diagnostics.counts.fail, diagnostics.score);
+  };
+
+  const copyShareLink = async () => {
+    const targetUrl = metadata.requestedUrl || metadata.finalUrl || metadata.url;
+    const shareUrl = `${window.location.origin}/report?url=${encodeURIComponent(targetUrl)}`;
+    await copyText('share', shareUrl);
+    analytics.trackReportShared(diagnostics.score);
+  };
+
+  const copyApiCommand = async () => {
+    await copyText('api-command', buildApiCommand(metadata));
+    analytics.trackReportExported('api-command', diagnostics.score);
   };
 
   const downloadReport = () => {
@@ -117,11 +209,27 @@ export default function DiagnosticsPanel({
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
+                    onClick={copyAiPrompt}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 rounded-lg text-sm font-medium text-white hover:bg-purple-700"
+                  >
+                    <Bot className="h-4 w-4" />
+                    {copied === 'ai-prompt' ? 'AI prompt copied' : 'Copy for AI agent'}
+                  </button>
+                  <button
+                    type="button"
                     onClick={copyReport}
                     className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-white"
                   >
                     <Clipboard className="h-4 w-4" />
-                    {copied ? 'Copied' : 'Copy report'}
+                    {copied === 'report' ? 'Copied' : 'Copy report'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={copyShareLink}
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-white"
+                  >
+                    <Link2 className="h-4 w-4" />
+                    {copied === 'share' ? 'Link copied' : 'Share report'}
                   </button>
                   <button
                     type="button"
@@ -202,6 +310,19 @@ export default function DiagnosticsPanel({
                         </div>
                         {check.value && <p className="text-sm text-gray-700 mt-1 truncate" title={check.value}>{check.value}</p>}
                         {check.status !== 'pass' && <p className="text-sm text-gray-700 mt-2">{check.recommendation}</p>}
+                        {check.status !== 'pass' && (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              await copyText(`fix-${check.id}`, getRemediationCode(check, metadata));
+                              analytics.trackRemediationCopied(check.id, check.status);
+                            }}
+                            className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-gray-800 hover:text-black"
+                          >
+                            <Copy className="h-3.5 w-3.5" />
+                            {copied === `fix-${check.id}` ? 'Fix copied' : 'Copy suggested fix'}
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -225,9 +346,95 @@ export default function DiagnosticsPanel({
                 </pre>
               )}
             </div>
+
+            <div className="grid gap-6 mt-8 xl:grid-cols-2">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Redirect trace</h3>
+                <ol className="rounded-lg border border-gray-200 divide-y divide-gray-200 overflow-hidden">
+                  {(metadata.redirectChain?.length ? metadata.redirectChain : [{
+                    url: metadata.finalUrl || metadata.url,
+                    status: metadata.status || 0,
+                    statusText: metadata.statusText,
+                  }]).map((hop, index) => (
+                    <li key={`${hop.url}-${index}`} className="p-3 bg-white text-sm">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-medium text-gray-900">Hop {index + 1}</span>
+                        <span className="text-gray-600">{hop.status || 'Unknown'} {hop.statusText}</span>
+                      </div>
+                      <p className="text-gray-600 truncate mt-1" title={hop.url}>{hop.url}</p>
+                      {hop.location && <p className="text-xs text-blue-700 truncate mt-1" title={hop.location}>→ {hop.location}</p>}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Metadata history <span className="font-normal text-gray-500">(this browser)</span></h3>
+                {history.length > 0 ? (
+                  <ol className="rounded-lg border border-gray-200 divide-y divide-gray-200 overflow-hidden">
+                    {history.slice(0, 3).map((entry) => {
+                      const changes = getHistoryChanges(entry, metadata);
+                      return (
+                        <li key={`${entry.capturedAt}-${entry.fingerprint}`} className="p-3 bg-white text-sm">
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="inline-flex items-center gap-1.5 text-gray-600"><Clock3 className="h-3.5 w-3.5" /> {new Date(entry.capturedAt).toLocaleString()}</span>
+                            <span className="font-semibold text-gray-900">{entry.score} → {diagnostics.score}</span>
+                          </div>
+                          <p className="text-gray-600 mt-1">{changes.length ? `Changed: ${changes.join(', ')}` : 'No core metadata changes.'}</p>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                ) : (
+                  <div className="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-600">
+                    Recheck this URL after a deployment to compare its score and core metadata here.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="font-semibold text-gray-900 mb-3">Refresh platform caches after deployment</h3>
+              <div className="grid md:grid-cols-3 gap-3">
+                {platformCacheGuidance.map((item) => (
+                  <article key={item.platform} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="font-semibold text-gray-900">{item.platform}</h4>
+                    <p className="text-sm text-gray-600 mt-2">{item.steps}</p>
+                    <a className="inline-flex mt-3 text-sm font-medium text-blue-700 hover:text-blue-800" href={item.href} target="_blank" rel="noreferrer">
+                      Open official resource ↗
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-lg border border-gray-200 bg-gray-950 p-4 text-white">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <h3 className="inline-flex items-center gap-2 font-semibold"><Terminal className="h-4 w-4" /> Re-run through the API</h3>
+                  <p className="text-sm text-gray-300 mt-1">Use the same live inspection in a terminal, CI job, or release checklist.</p>
+                </div>
+                <button type="button" onClick={copyApiCommand} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white text-gray-950 text-sm font-semibold hover:bg-gray-100">
+                  <Copy className="h-4 w-4" />
+                  {copied === 'api-command' ? 'Command copied' : 'Copy curl command'}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+function getHistoryChanges(previous: HistoryEntry, current: ApiResponse): string[] {
+  const fields: Array<[string, string | undefined, string | undefined]> = [
+    ['title', previous.title, current.title],
+    ['description', previous.description, current.description],
+    ['image', previous.image, current.image],
+    ['canonical', previous.canonical, current.canonical],
+    ['final URL', previous.finalUrl, current.finalUrl],
+  ];
+
+  return fields.filter(([, before, after]) => before !== after).map(([label]) => label);
 }

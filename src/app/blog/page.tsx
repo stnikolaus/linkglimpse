@@ -29,7 +29,7 @@ export default function BlogPage() {
   const allPosts = getAllBlogPosts();
   const featuredPosts = getFeaturedBlogPosts();
   const featuredPost = featuredPosts[0] || allPosts[0];
-  const otherPosts = allPosts.filter(post => post.slug !== featuredPost?.slug).slice(0, 6);
+  const otherPosts = allPosts.filter(post => post.slug !== featuredPost?.slug);
 
   return (
     <>

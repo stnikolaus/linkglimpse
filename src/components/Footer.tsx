@@ -48,6 +48,18 @@ export default function Footer() {
             </h3>
             <div className="space-y-2">
               <Link
+                href="/compare"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Compare Open Graph Tags
+              </Link>
+              <Link
+                href="/examples"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Diagnostic Examples
+              </Link>
+              <Link
                 href="/api"
                 className="block text-sm text-gray-400 hover:text-gray-200"
               >

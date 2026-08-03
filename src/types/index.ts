@@ -20,6 +20,7 @@ export interface ApiResponse {
   status?: number;
   statusText?: string;
   redirected?: boolean;
+  redirectChain?: RedirectHop[];
   contentType?: string;
   canonical?: string;
   robots?: string;
@@ -28,6 +29,13 @@ export interface ApiResponse {
   twitter?: Record<string, string>;
   imageInfo?: ImageInspection;
   diagnostics?: DiagnosticReport;
+}
+
+export interface RedirectHop {
+  url: string;
+  status: number;
+  statusText?: string;
+  location?: string;
 }
 
 export type DiagnosticStatus = 'pass' | 'warning' | 'fail';
@@ -83,4 +91,5 @@ export interface UrlInputProps {
   isLoading: boolean;
   ctaLabel?: string;
   placeholder?: string;
+  initialValue?: string;
 }

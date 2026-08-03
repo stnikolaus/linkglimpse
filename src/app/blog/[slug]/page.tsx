@@ -4,6 +4,7 @@ import { getBlogPostBySlug, getAllBlogPosts, getRelatedPosts } from '@/lib/blog'
 import { format } from 'date-fns';
 import { Calendar, Clock, User, Tag, ArrowLeft, Share2, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import BlogStructuredData from '@/components/BlogStructuredData';
 
 interface BlogPostPageProps {
@@ -105,10 +106,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Hero Image */}
               {post.image ? (
                 <div className="h-64 md:h-96 relative overflow-hidden">
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 1280px) 100vw, 1280px"
+                    className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/20"></div>
                 </div>

@@ -11,6 +11,10 @@ export const PRODUCT_EVENTS = {
   previewSucceeded: 'Preview Succeeded',
   previewFailed: 'Preview Failed',
   reportExported: 'Report Exported',
+  reportShared: 'Report Shared',
+  remediationCopied: 'Remediation Copied',
+  aiPromptCopied: 'AI Prompt Copied',
+  comparisonCompleted: 'Comparison Completed',
   bulkProcessingStarted: 'Bulk Processing Started',
   bulkProcessingSucceeded: 'Bulk Processing Succeeded',
   bulkReportExported: 'Bulk Report Exported',
@@ -60,9 +64,23 @@ export function useLinkGlimpseAnalytics() {
       url_domain: getHostname(url),
       reason: reason.slice(0, 120),
     }),
-    trackReportExported: (format: 'json' | 'clipboard', score?: number) => capture(PRODUCT_EVENTS.reportExported, {
+    trackReportExported: (format: 'json' | 'clipboard' | 'api-command', score?: number) => capture(PRODUCT_EVENTS.reportExported, {
       format,
       diagnostic_score: score,
+    }),
+    trackReportShared: (score?: number) => capture(PRODUCT_EVENTS.reportShared, {
+      diagnostic_score: score,
+    }),
+    trackRemediationCopied: (checkId: string, status: string) => capture(PRODUCT_EVENTS.remediationCopied, {
+      check_id: checkId,
+      status,
+    }),
+    trackAiPromptCopied: (issueCount: number, score?: number) => capture(PRODUCT_EVENTS.aiPromptCopied, {
+      issue_count: issueCount,
+      diagnostic_score: score,
+    }),
+    trackComparisonCompleted: (scoreDelta: number) => capture(PRODUCT_EVENTS.comparisonCompleted, {
+      score_delta: scoreDelta,
     }),
     trackBulkProcessingStarted: (urlCount: number) => capture(PRODUCT_EVENTS.bulkProcessingStarted, {
       url_count: urlCount,
