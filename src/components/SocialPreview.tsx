@@ -2,23 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { AlertCircle } from 'lucide-react';
-import { 
-  FacebookPreview, 
-  GoogleSearchPreview,
-  TumblrPreview,
-  TwitterPreview,
-  LinkedInPreview,
-  MastodonPreview,
-  NextdoorPreview,
-  BlueskyPreview,
-  InstagramPreview,
-  ThreadsPreview
-} from './social-previews';
-import { ApiResponse } from '@/types';
+import type { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from './UrlInput';
 import DiagnosticsPanel from './DiagnosticsPanel';
 import { useLinkGlimpseAnalytics } from './PlausibleEvents';
+import SocialPreviewTabs from './SocialPreviewTabs';
 
 interface SocialPreviewProps {
   surface?: string;
@@ -69,14 +58,6 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
     }
   };
 
-  const getDomain = (url: string) => {
-    try {
-      return new URL(url).hostname;
-    } catch {
-      return url;
-    }
-  };
-
   return (
     <div className="w-full">
       {/* URL Input */}
@@ -102,160 +83,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
           <DiagnosticsPanel
             metadata={urlMetadata}
             previewTitle="Social media previews"
-            preview={(
-              <div
-                aria-label="Social preview gallery"
-                className="social-preview-strip flex w-full snap-x snap-proximity items-start gap-3 overflow-x-auto pb-4"
-                role="region"
-                tabIndex={0}
-              >
-            {/* Facebook Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Facebook</p>
-              <FacebookPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                url={urlMetadata.url}
-                image={urlMetadata.image}
-                user={{ displayName: getDomain(urlMetadata.url) }}
-              />
-            </div>
-
-            {/* Instagram Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Instagram</p>
-              <InstagramPreview
-                image={urlMetadata.image}
-                name={getDomain(urlMetadata.url)}
-                profileImage="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
-                caption={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
-              />
-            </div>
-
-            {/* Threads Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Threads</p>
-              <ThreadsPreview
-                posts={[{
-                  date: new Date(),
-                  name: getDomain(urlMetadata.url),
-                  profileImage: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                  caption: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`,
-                  image: urlMetadata.image,
-                  title: urlMetadata.title || 'No title available',
-                  url: urlMetadata.url,
-                  media: urlMetadata.image ? [{
-                    alt: urlMetadata.title || 'Image',
-                    url: urlMetadata.image,
-                    type: 'image/jpeg'
-                  }] : undefined
-                }]}
-              />
-            </div>
-
-            {/* LinkedIn Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">LinkedIn</p>
-              <LinkedInPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                url={urlMetadata.url}
-                image={urlMetadata.image}
-                name={getDomain(urlMetadata.url)}
-                profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
-                jobTitle="Website"
-              />
-            </div>
-
-            {/* Twitter Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Twitter</p>
-              <TwitterPreview
-                tweets={[{
-                  date: new Date(),
-                  name: getDomain(urlMetadata.url),
-                  profileImage: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                  screenName: `@${getDomain(urlMetadata.url).replace(/\./g, '')}`,
-                  text: `${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`,
-                  media: urlMetadata.image ? [{
-                    alt: urlMetadata.title || 'Image',
-                    url: urlMetadata.image,
-                    type: 'image/jpeg'
-                  }] : undefined
-                }]}
-              />
-            </div>
-
-            {/* Google Search Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Google Search</p>
-              <GoogleSearchPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                url={urlMetadata.url}
-                siteTitle={urlMetadata.siteName}
-              />
-            </div>
-
-            {/* Tumblr Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Tumblr</p>
-              <TumblrPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                url={urlMetadata.url}
-                image={urlMetadata.image}
-                user={{ displayName: getDomain(urlMetadata.url) }}
-              />
-            </div>
-
-            {/* Mastodon Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Mastodon</p>
-              <MastodonPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                url={urlMetadata.url}
-                image={urlMetadata.image}
-                user={{ 
-                  displayName: getDomain(urlMetadata.url),
-                  avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                  address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}@mastodon.social`
-                }}
-              />
-            </div>
-
-            {/* Nextdoor Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Nextdoor</p>
-              <NextdoorPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                url={urlMetadata.url}
-                image={urlMetadata.image}
-                name={getDomain(urlMetadata.url)}
-                profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
-              />
-            </div>
-
-            {/* Bluesky Preview */}
-            <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Bluesky</p>
-              <BlueskyPreview
-                title={urlMetadata.title || 'No title available'}
-                description={urlMetadata.description || 'No description available'}
-                customText={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
-                url={urlMetadata.url}
-                image={urlMetadata.image}
-                user={{ 
-                  displayName: getDomain(urlMetadata.url),
-                  avatarUrl: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
-                  address: `@${getDomain(urlMetadata.url).replace(/\./g, '')}.bsky.social`
-                }}
-              />
-            </div>
-              </div>
-            )}
+            preview={<SocialPreviewTabs metadata={urlMetadata} />}
           />
         </div>
       )}

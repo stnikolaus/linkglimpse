@@ -87,78 +87,90 @@ export default function DiagnosticsPanel({
   return (
     <section className="w-full mb-10" aria-labelledby="diagnostics-heading">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
-        <div className="p-6 border-b border-gray-200 bg-gray-50">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-            <div className="flex items-center gap-4">
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center border-4 font-bold text-xl ${
-                diagnostics.score >= 80
-                  ? 'border-green-200 text-green-700 bg-green-50'
-                  : diagnostics.score >= 55
-                    ? 'border-amber-200 text-amber-700 bg-amber-50'
-                    : 'border-red-200 text-red-700 bg-red-50'
+        <div className={`grid border-b border-gray-200 ${
+          preview ? 'xl:grid-cols-[minmax(360px,0.9fr)_minmax(0,1.1fr)]' : ''
+        }`}>
+          <div className={`min-w-0 ${preview ? 'xl:border-r xl:border-gray-200' : ''}`}>
+            <div className="p-6 border-b border-gray-200 bg-gray-50">
+              <div className={`flex gap-5 ${
+                preview
+                  ? 'flex-col items-start'
+                  : 'flex-col lg:flex-row lg:items-center lg:justify-between'
               }`}>
-                {diagnostics.score}
-              </div>
-              <div>
-                <h2 id="diagnostics-heading" className="text-2xl font-bold text-gray-900">Metadata diagnostics</h2>
-                <p className="text-gray-600 mt-1">
-                  {diagnostics.counts.pass} passed · {diagnostics.counts.warning} to review · {diagnostics.counts.fail} to fix
-                </p>
+                <div className="flex items-center gap-4">
+                  <div className={`w-16 h-16 shrink-0 rounded-full flex items-center justify-center border-4 font-bold text-xl ${
+                    diagnostics.score >= 80
+                      ? 'border-green-200 text-green-700 bg-green-50'
+                      : diagnostics.score >= 55
+                        ? 'border-amber-200 text-amber-700 bg-amber-50'
+                        : 'border-red-200 text-red-700 bg-red-50'
+                  }`}>
+                    {diagnostics.score}
+                  </div>
+                  <div>
+                    <h2 id="diagnostics-heading" className="text-2xl font-bold text-gray-900">Metadata diagnostics</h2>
+                    <p className="text-gray-600 mt-1">
+                      {diagnostics.counts.pass} passed · {diagnostics.counts.warning} to review · {diagnostics.counts.fail} to fix
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={copyReport}
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-white"
+                  >
+                    <Clipboard className="h-4 w-4" />
+                    {copied ? 'Copied' : 'Copy report'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={downloadReport}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700"
+                  >
+                    <Download className="h-4 w-4" />
+                    Download JSON
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={copyReport}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-white"
-              >
-                <Clipboard className="h-4 w-4" />
-                {copied ? 'Copied' : 'Copy report'}
-              </button>
-              <button
-                type="button"
-                onClick={downloadReport}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700"
-              >
-                <Download className="h-4 w-4" />
-                Download JSON
-              </button>
-            </div>
+
+            <dl className={`grid gap-3 p-6 text-sm ${
+              preview ? '' : 'md:grid-cols-2 xl:grid-cols-4'
+            }`}>
+              <div className="bg-white border border-gray-200 rounded-lg p-3">
+                <dt className="text-gray-500">HTTP response</dt>
+                <dd className="font-semibold text-gray-900 mt-1">{metadata.status} {metadata.statusText}</dd>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-3">
+                <dt className="text-gray-500">Final URL</dt>
+                <dd className="font-semibold text-gray-900 mt-1 truncate" title={metadata.finalUrl}>{metadata.redirected ? 'Redirected' : 'Direct'}</dd>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-3">
+                <dt className="text-gray-500">Canonical</dt>
+                <dd className="font-semibold text-gray-900 mt-1 truncate" title={metadata.canonical}>{metadata.canonical ? 'Declared' : 'Missing'}</dd>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-3">
+                <dt className="text-gray-500">Share image</dt>
+                <dd className="font-semibold text-gray-900 mt-1 truncate" title={imageDetails}>{imageDetails || 'Not detected'}</dd>
+              </div>
+            </dl>
           </div>
 
-          <dl className="grid md:grid-cols-2 xl:grid-cols-4 gap-3 mt-6 text-sm">
-            <div className="bg-white border border-gray-200 rounded-lg p-3">
-              <dt className="text-gray-500">HTTP response</dt>
-              <dd className="font-semibold text-gray-900 mt-1">{metadata.status} {metadata.statusText}</dd>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-3">
-              <dt className="text-gray-500">Final URL</dt>
-              <dd className="font-semibold text-gray-900 mt-1 truncate" title={metadata.finalUrl}>{metadata.redirected ? 'Redirected' : 'Direct'}</dd>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-3">
-              <dt className="text-gray-500">Canonical</dt>
-              <dd className="font-semibold text-gray-900 mt-1 truncate" title={metadata.canonical}>{metadata.canonical ? 'Declared' : 'Missing'}</dd>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-3">
-              <dt className="text-gray-500">Share image</dt>
-              <dd className="font-semibold text-gray-900 mt-1 truncate" title={imageDetails}>{imageDetails || 'Not detected'}</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className={`grid gap-8 p-6 ${preview ? 'xl:grid-cols-2' : ''}`}>
           {preview && (
-            <div className="min-w-0 xl:order-2 xl:border-l xl:border-gray-200 xl:pl-8">
+            <div className="min-w-0 p-6">
               <h3 className="font-semibold text-gray-900 mb-3">{previewTitle}</h3>
               <div className="min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 p-4">
                 {preview}
               </div>
             </div>
           )}
+        </div>
 
-          <div className="min-w-0 xl:order-1">
+        <div className="p-6">
+          <div className="min-w-0">
             <h3 className="font-semibold text-gray-900 mb-3">Platform readiness</h3>
-            <div className={`grid md:grid-cols-3 gap-3 mb-8 ${preview ? 'xl:grid-cols-1' : ''}`}>
+            <div className="grid md:grid-cols-3 gap-3 mb-8">
               {diagnostics.platforms.map((platform) => (
                 <div key={platform.platform} className={`border rounded-lg p-4 ${
                   platform.status === 'ready' ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
@@ -175,7 +187,7 @@ export default function DiagnosticsPanel({
             </div>
 
             <h3 className="font-semibold text-gray-900 mb-3">Actionable checks</h3>
-            <div className={`grid gap-3 ${preview ? '' : 'lg:grid-cols-2'}`}>
+            <div className="grid gap-3 lg:grid-cols-2">
               {diagnostics.checks.map((check) => {
                 const config = statusStyles[check.status];
                 const Icon = config.icon;
