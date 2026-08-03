@@ -6,6 +6,7 @@ import { InstagramPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
+import DiagnosticsPanel from '@/components/DiagnosticsPanel';
 
 export default function InstagramSocialPreview() {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +44,7 @@ export default function InstagramSocialPreview() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pt-16">
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
@@ -74,51 +75,23 @@ export default function InstagramSocialPreview() {
 
         {/* Instagram Preview */}
         {urlMetadata && (
-          <div className="space-y-8">
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <div className="flex items-center mb-6">
-                <Instagram className="h-6 w-6 text-pink-600 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">Instagram Post Preview Result</h2>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-6">
-                <InstagramPreview
-                  image={urlMetadata.image}
-                  media={urlMetadata.image ? [{
-                    url: urlMetadata.image,
-                    type: 'image/jpeg',
-                    alt: urlMetadata.title || 'Instagram post image'
-                  }] : undefined}
-                  name={getDomain(urlMetadata.url)}
-                  profileImage="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
-                  caption={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
-                />
-              </div>
-
-              {/* Metadata Info */}
-              <div className="mt-8 p-6 bg-pink-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Instagram Preview Metadata</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-700">Title:</span>
-                    <p className="text-gray-600 mt-1">{urlMetadata.title || 'Not found'}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Description:</span>
-                    <p className="text-gray-600 mt-1">{urlMetadata.description || 'Not found'}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">URL:</span>
-                    <p className="text-gray-600 mt-1 break-all">{urlMetadata.url}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Image:</span>
-                    <p className="text-gray-600 mt-1 break-all">{urlMetadata.image || 'Not found'}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <DiagnosticsPanel
+            metadata={urlMetadata}
+            previewTitle="Instagram post preview"
+            preview={(
+              <InstagramPreview
+                image={urlMetadata.image}
+                media={urlMetadata.image ? [{
+                  url: urlMetadata.image,
+                  type: 'image/jpeg',
+                  alt: urlMetadata.title || 'Instagram post image'
+                }] : undefined}
+                name={getDomain(urlMetadata.url)}
+                profileImage="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                caption={`${urlMetadata.title || 'No title'}\n\n${urlMetadata.description || 'No description'}\n\n${urlMetadata.url}`}
+              />
+            )}
+          />
         )}
 
         {/* Loading State */}

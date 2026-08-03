@@ -80,7 +80,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
   return (
     <div className="w-full">
       {/* URL Input */}
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8 text-left items-start">
           <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} />
         </div>
@@ -88,7 +88,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
       {/* Error Display */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="max-w-6xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-center">
             <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
             <p className="text-red-700">{error}</p>
@@ -98,18 +98,20 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
       {/* Social Previews Wall */}
       {urlMetadata && (
-        <div ref={resultsRef} className="scroll-mt-24 space-y-8">
-          <h2 className="text-2xl font-semibold text-gray-900 text-center">Social Media Previews</h2>
-          
-          <div
-            aria-label="Social preview gallery"
-            className="social-preview-strip flex w-full snap-x snap-proximity items-start gap-3 overflow-x-auto px-3 pb-4"
-            role="region"
-            tabIndex={0}
-          >
+        <div ref={resultsRef} className="max-w-6xl mx-auto px-4 scroll-mt-24">
+          <DiagnosticsPanel
+            metadata={urlMetadata}
+            previewTitle="Social media previews"
+            preview={(
+              <div
+                aria-label="Social preview gallery"
+                className="social-preview-strip flex w-full snap-x snap-proximity items-start gap-3 overflow-x-auto pb-4"
+                role="region"
+                tabIndex={0}
+              >
             {/* Facebook Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Facebook</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Facebook</p>
               <FacebookPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -121,7 +123,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Instagram Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Instagram</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Instagram</p>
               <InstagramPreview
                 image={urlMetadata.image}
                 name={getDomain(urlMetadata.url)}
@@ -132,7 +134,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Threads Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Threads</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Threads</p>
               <ThreadsPreview
                 posts={[{
                   date: new Date(),
@@ -153,7 +155,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* LinkedIn Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">LinkedIn</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">LinkedIn</p>
               <LinkedInPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -167,7 +169,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Twitter Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Twitter</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Twitter</p>
               <TwitterPreview
                 tweets={[{
                   date: new Date(),
@@ -186,7 +188,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Google Search Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Google Search</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Google Search</p>
               <GoogleSearchPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -197,7 +199,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Tumblr Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Tumblr</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Tumblr</p>
               <TumblrPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -209,7 +211,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Mastodon Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Mastodon</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Mastodon</p>
               <MastodonPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -225,7 +227,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Nextdoor Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Nextdoor</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Nextdoor</p>
               <NextdoorPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -238,7 +240,7 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
 
             {/* Bluesky Preview */}
             <div className="social-preview-strip-item w-[clamp(320px,32vw,500px)] min-w-0 flex-none snap-start overflow-hidden">
-              <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Bluesky</h3>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">Bluesky</p>
               <BlueskyPreview
                 title={urlMetadata.title || 'No title available'}
                 description={urlMetadata.description || 'No description available'}
@@ -252,15 +254,15 @@ export default function SocialPreview({ surface = 'all-platforms' }: SocialPrevi
                 }}
               />
             </div>
-          </div>
-
-          <DiagnosticsPanel metadata={urlMetadata} />
+              </div>
+            )}
+          />
         </div>
       )}
 
       {/* Loading State */}
       {isLoading && (
-        <div className="text-center py-12">
+        <div className="max-w-6xl mx-auto text-center py-12">
           <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
             <span className="text-blue-700">Generating previews...</span>

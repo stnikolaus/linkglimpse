@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import {
   AlertTriangle,
   CheckCircle2,
@@ -15,6 +16,8 @@ import type { ApiResponse, DiagnosticStatus } from '@/types';
 
 interface DiagnosticsPanelProps {
   metadata: ApiResponse;
+  preview?: ReactNode;
+  previewTitle?: string;
 }
 
 const statusStyles: Record<DiagnosticStatus, { icon: typeof CheckCircle2; className: string; label: string }> = {
@@ -30,7 +33,11 @@ function formatBytes(bytes?: number): string | undefined {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function DiagnosticsPanel({ metadata }: DiagnosticsPanelProps) {
+export default function DiagnosticsPanel({
+  metadata,
+  preview,
+  previewTitle = 'Link preview',
+}: DiagnosticsPanelProps) {
   const [showRawTags, setShowRawTags] = useState(false);
   const [copied, setCopied] = useState(false);
   const analytics = useLinkGlimpseAnalytics();
@@ -78,7 +85,7 @@ export default function DiagnosticsPanel({ metadata }: DiagnosticsPanelProps) {
   ].filter(Boolean).join(' · ');
 
   return (
-    <section className="max-w-7xl mx-auto px-4 mb-10" aria-labelledby="diagnostics-heading">
+    <section className="w-full mb-10" aria-labelledby="diagnostics-heading">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
         <div className="p-6 border-b border-gray-200 bg-gray-50">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
@@ -139,62 +146,73 @@ export default function DiagnosticsPanel({ metadata }: DiagnosticsPanelProps) {
           </dl>
         </div>
 
-        <div className="p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Platform readiness</h3>
-          <div className="grid md:grid-cols-3 gap-3 mb-8">
-            {diagnostics.platforms.map((platform) => (
-              <div key={platform.platform} className={`border rounded-lg p-4 ${
-                platform.status === 'ready' ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
-              }`}>
-                <div className="flex items-center gap-2 font-semibold text-gray-900">
-                  {platform.status === 'ready' ? <CheckCircle2 className="h-5 w-5 text-green-700" /> : <ShieldAlert className="h-5 w-5 text-amber-700" />}
-                  {platform.platform}
-                </div>
-                <p className="text-sm text-gray-700 mt-2">
-                  {platform.status === 'ready' ? 'Core tags are ready.' : `Missing: ${platform.missing.join(', ')}`}
-                </p>
+        <div className={`grid gap-8 p-6 ${preview ? 'xl:grid-cols-2' : ''}`}>
+          {preview && (
+            <div className="min-w-0 xl:order-2 xl:border-l xl:border-gray-200 xl:pl-8">
+              <h3 className="font-semibold text-gray-900 mb-3">{previewTitle}</h3>
+              <div className="min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 p-4">
+                {preview}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
 
-          <h3 className="font-semibold text-gray-900 mb-3">Actionable checks</h3>
-          <div className="grid lg:grid-cols-2 gap-3">
-            {diagnostics.checks.map((check) => {
-              const config = statusStyles[check.status];
-              const Icon = config.icon;
-              return (
-                <div key={check.id} className={`border rounded-lg p-4 ${config.className}`}>
-                  <div className="flex items-start gap-3">
-                    <Icon className="h-5 w-5 mt-0.5 shrink-0" />
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-gray-900">{check.label}</h4>
-                        <span className="text-xs font-medium uppercase tracking-wide">{config.label}</span>
+          <div className="min-w-0 xl:order-1">
+            <h3 className="font-semibold text-gray-900 mb-3">Platform readiness</h3>
+            <div className={`grid md:grid-cols-3 gap-3 mb-8 ${preview ? 'xl:grid-cols-1' : ''}`}>
+              {diagnostics.platforms.map((platform) => (
+                <div key={platform.platform} className={`border rounded-lg p-4 ${
+                  platform.status === 'ready' ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
+                }`}>
+                  <div className="flex items-center gap-2 font-semibold text-gray-900">
+                    {platform.status === 'ready' ? <CheckCircle2 className="h-5 w-5 text-green-700" /> : <ShieldAlert className="h-5 w-5 text-amber-700" />}
+                    {platform.platform}
+                  </div>
+                  <p className="text-sm text-gray-700 mt-2">
+                    {platform.status === 'ready' ? 'Core tags are ready.' : `Missing: ${platform.missing.join(', ')}`}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="font-semibold text-gray-900 mb-3">Actionable checks</h3>
+            <div className={`grid gap-3 ${preview ? '' : 'lg:grid-cols-2'}`}>
+              {diagnostics.checks.map((check) => {
+                const config = statusStyles[check.status];
+                const Icon = config.icon;
+                return (
+                  <div key={check.id} className={`border rounded-lg p-4 ${config.className}`}>
+                    <div className="flex items-start gap-3">
+                      <Icon className="h-5 w-5 mt-0.5 shrink-0" />
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold text-gray-900">{check.label}</h4>
+                          <span className="text-xs font-medium uppercase tracking-wide">{config.label}</span>
+                        </div>
+                        {check.value && <p className="text-sm text-gray-700 mt-1 truncate" title={check.value}>{check.value}</p>}
+                        {check.status !== 'pass' && <p className="text-sm text-gray-700 mt-2">{check.recommendation}</p>}
                       </div>
-                      {check.value && <p className="text-sm text-gray-700 mt-1 truncate" title={check.value}>{check.value}</p>}
-                      {check.status !== 'pass' && <p className="text-sm text-gray-700 mt-2">{check.recommendation}</p>}
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
-          <div className="mt-6">
-            <button
-              type="button"
-              onClick={() => setShowRawTags((current) => !current)}
-              className="inline-flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-800"
-              aria-expanded={showRawTags}
-            >
-              <FileCode2 className="h-4 w-4" />
-              {showRawTags ? 'Hide extracted tags' : `Inspect raw tags (${Object.keys(metadata.tags ?? {}).length})`}
-            </button>
-            {showRawTags && (
-              <pre className="mt-3 p-4 bg-gray-950 text-green-300 rounded-lg overflow-x-auto text-xs leading-relaxed">
-                {JSON.stringify(metadata.tags ?? {}, null, 2)}
-              </pre>
-            )}
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => setShowRawTags((current) => !current)}
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-800"
+                aria-expanded={showRawTags}
+              >
+                <FileCode2 className="h-4 w-4" />
+                {showRawTags ? 'Hide extracted tags' : `Inspect raw tags (${Object.keys(metadata.tags ?? {}).length})`}
+              </button>
+              {showRawTags && (
+                <pre className="mt-3 p-4 bg-gray-950 text-green-300 rounded-lg overflow-x-auto text-xs leading-relaxed">
+                  {JSON.stringify(metadata.tags ?? {}, null, 2)}
+                </pre>
+              )}
+            </div>
           </div>
         </div>
       </div>

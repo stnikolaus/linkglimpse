@@ -68,7 +68,7 @@ export default function LinkedInSocialPreviewClient() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-blue-700 p-3 rounded-full">
@@ -95,49 +95,21 @@ export default function LinkedInSocialPreviewClient() {
         )}
 
         {urlMetadata && (
-          <div className="space-y-8">
-            <DiagnosticsPanel metadata={urlMetadata} />
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <div className="flex items-center mb-6">
-                <Linkedin className="h-6 w-6 text-blue-700 mr-3" />
-                <h2 className="text-2xl font-semibold text-gray-900">LinkedIn Link Preview Result</h2>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-6">
-                <LinkedInPreview
-                  title={urlMetadata.title || 'No title available'}
-                  description={urlMetadata.description || 'No description available'}
-                  url={urlMetadata.url}
-                  image={urlMetadata.image}
-                  name={getDomain(urlMetadata.url)}
-                  profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
-                  jobTitle="Website"
-                />
-              </div>
-
-              <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">LinkedIn Open Graph Metadata</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-700">Title:</span>
-                    <p className="text-gray-600 mt-1">{urlMetadata.title || 'Not found'}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Description:</span>
-                    <p className="text-gray-600 mt-1">{urlMetadata.description || 'Not found'}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">URL:</span>
-                    <p className="text-gray-600 mt-1 break-all">{urlMetadata.url}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Image:</span>
-                    <p className="text-gray-600 mt-1 break-all">{urlMetadata.image || 'Not found'}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <DiagnosticsPanel
+            metadata={urlMetadata}
+            previewTitle="LinkedIn link preview"
+            preview={(
+              <LinkedInPreview
+                title={urlMetadata.title || 'No title available'}
+                description={urlMetadata.description || 'No description available'}
+                url={urlMetadata.url}
+                image={urlMetadata.image}
+                name={getDomain(urlMetadata.url)}
+                profileImage="https://static.licdn.com/sc/h/1c5u578iilxfi4m4dvc4q810q"
+                jobTitle="Website"
+              />
+            )}
+          />
         )}
 
         {isLoading && (
