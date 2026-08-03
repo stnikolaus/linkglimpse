@@ -20,6 +20,7 @@ export const PRODUCT_EVENTS = {
   bulkReportExported: 'Bulk Report Exported',
   apiTestCompleted: 'API Test Completed',
   platformNavigation: 'Platform Navigation',
+  distributionClicked: 'Distribution Link Clicked',
 } as const;
 
 function getHostname(url: string): string {
@@ -96,5 +97,9 @@ export function useLinkGlimpseAnalytics() {
     }),
     trackApiTestCompleted: (success: boolean) => capture(PRODUCT_EVENTS.apiTestCompleted, { success }),
     trackPlatformNavigation: (platform: string) => capture(PRODUCT_EVENTS.platformNavigation, { platform }),
+    trackDistributionClicked: (channel: string, destination: string) => capture(PRODUCT_EVENTS.distributionClicked, {
+      channel,
+      destination,
+    }),
   };
 }

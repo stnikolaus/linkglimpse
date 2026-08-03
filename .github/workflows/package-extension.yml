@@ -1,0 +1,29 @@
+name: Package browser extension
+
+on:
+  push:
+    tags:
+      - extension-v*
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run extension:package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linkglimpse-browser-extensions
+          path: release/*.zip
+      - name: Attach packages to tagged release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" release/*.zip --generate-notes --verify-tag
