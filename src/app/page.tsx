@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: 'https://www.linkglimpse.com',
     siteName: 'LinkGlimpse',
     images: [{
-      url: '/images/icon/social-preview.jpeg',
+      url: '/images/icon/social-preview-1200x630.jpeg',
       width: 1200,
       height: 630,
       alt: 'LinkGlimpse link preview and metadata diagnostics',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Link Preview Checker for Social Media',
     description: 'Check how any URL may appear on Facebook, X, LinkedIn and more. Preview social cards, inspect Open Graph tags, and find missing images or text.',
-    images: ['/images/icon/social-preview.jpeg'],
+    images: ['/images/icon/social-preview-1200x630.jpeg'],
   },
   robots: {
     index: true,
@@ -123,7 +123,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
           <div className="text-center">
             <div className="flex items-center justify-center mb-6">
-              <div className="bg-white rounded-full p-2 shadow-lg">
+              <div className="rounded-full border border-gray-200 bg-white p-2">
                 <Image src="/images/link-icon.svg" alt="LinkGlimpse" width={42} height={42} />
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function Home() {
               <Link
                 key={index}
                 href={platform.path}
-                className="group bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 hover:border-gray-300"
+                className="group rounded-lg border border-gray-200 bg-white p-6 transition-colors duration-200 hover:border-gray-300"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -216,11 +216,11 @@ export default function Home() {
       <section className="bg-white py-8">
         {/* Bulk Processing Section */}
         <div className="py-8">
-          <div className="max-w-7xl mx-auto p-8 bg-gradient-to-l from-blue-50 to-white border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
+          <div className="mx-auto max-w-7xl rounded-lg border border-gray-200 bg-gradient-to-l from-blue-50 to-white p-8 transition-colors duration-200 hover:border-gray-300">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl">
-                  <div className="bg-white p-6 rounded-xl shadow-lg">
+                  <div className="rounded-xl border border-gray-200 bg-white p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Bulk URL Checker Features</h3>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
@@ -274,7 +274,7 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/bulk"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:from-blue-700 hover:to-indigo-700"
                 >
                   Start Bulk Processing
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -286,7 +286,7 @@ export default function Home() {
 
         {/* API Section */}
         <div className="py-8">
-          <div className="max-w-7xl mx-auto p-8 bg-gradient-to-r from-green-50 to-white border border-gray-100 rounded-lg hover:shadow-sm transition ease-in-out duration-200">
+          <div className="mx-auto max-w-7xl rounded-lg border border-gray-200 bg-gradient-to-r from-green-50 to-white p-8 transition-colors duration-200 hover:border-gray-300">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="flex items-center mb-6">
@@ -323,14 +323,14 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/api"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:from-emerald-700 hover:to-teal-700"
                 >
                   View API Documentation
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </div>
               <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl">
-                <div className="bg-white p-6 rounded-xl shadow-lg">
+                <div className="rounded-xl border border-gray-200 bg-white p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">URL Metadata API Example</h3>
                   <div className="space-y-4">
                     <div>

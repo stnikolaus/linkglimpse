@@ -6,6 +6,7 @@ author: "LinkGlimpse Team"
 category: "Troubleshooting"
 tags: ["twitter card", "x preview", "twitter preview", "open graph", "debugging"]
 readTime: "9 min read"
+image: "/images/blog/twitter-card-preview-not-showing/hero.jpg"
 featured: true
 ---
 

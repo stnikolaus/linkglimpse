@@ -181,7 +181,7 @@ func main() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-3 rounded-full shadow-lg">
+            <div className="rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 p-3">
               <Code className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -192,7 +192,7 @@ func main() {
         </div>
 
         {/* Quick Start */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="mb-8 rounded-xl border border-gray-200 bg-white p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
             <Terminal className="h-6 w-6 mr-2 text-blue-600" />
             URL Metadata API Quick Start
@@ -225,7 +225,7 @@ func main() {
 
         {/* API Endpoints */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-6">
             <div className="flex items-center mb-4">
               <div className="bg-green-100 rounded-full p-2 mr-3">
                 <Globe className="h-5 w-5 text-green-600" />
@@ -246,7 +246,7 @@ func main() {
             </button>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-6">
             <div className="flex items-center mb-4">
               <div className="bg-blue-100 rounded-full p-2 mr-3">
                 <FileText className="h-5 w-5 text-blue-600" />
@@ -273,7 +273,7 @@ func main() {
         <CodeExamples examples={codeExamples} />
 
         {/* Response Format */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="mb-8 rounded-xl border border-gray-200 bg-white p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Open Graph API Response Format</h2>
           <div className="bg-gray-900 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
@@ -308,7 +308,7 @@ func main() {
         </div>
 
         {/* Test API */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="mb-8 rounded-xl border border-gray-200 bg-white p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Test the URL Metadata API</h2>
           <div className="space-y-4">
             <div>
@@ -351,7 +351,7 @@ func main() {
 
         {/* Features */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-6">
             <div className="flex items-center mb-4">
               <div className="bg-green-100 rounded-full p-2 mr-3">
                 <Shield className="h-5 w-5 text-green-600" />
@@ -360,7 +360,7 @@ func main() {
             </div>
             <p className="text-gray-600">No API key required for reasonable interactive checks, prototypes, and release tooling.</p>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-6">
             <div className="flex items-center mb-4">
               <div className="bg-blue-100 rounded-full p-2 mr-3">
                 <Zap className="h-5 w-5 text-blue-600" />
@@ -372,7 +372,7 @@ func main() {
         </div>
 
         {/* Error Handling */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <div className="mb-8 rounded-xl border border-gray-200 bg-white p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Metadata API Error Handling</h2>
           <div className="grid gap-6">
             <div className="border-l-4 border-red-500 pl-4">
@@ -398,7 +398,7 @@ func main() {
           <div className="grid gap-6">
             <Link
               href="/bulk"
-              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+              className="rounded-lg border border-gray-200 bg-white p-6 transition-colors hover:border-gray-300"
             >
               <div className="flex items-center mb-3">
                 <FileText className="h-6 w-6 text-blue-600 mr-2" />

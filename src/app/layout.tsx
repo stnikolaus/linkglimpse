@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "LinkGlimpse",
     images: [
       {
-        url: "/images/icon/social-preview.jpeg",
+        url: "/images/icon/social-preview-1200x630.jpeg",
         width: 1200,
         height: 630,
         alt: "LinkGlimpse - Generate social media previews for any URL",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Social Media Link Preview & Open Graph Checker",
     description: "Check how any URL may appear across social networks, inspect its Open Graph tags, and find missing images, titles, or descriptions.",
-    images: ["/images/icon/social-preview.jpeg"],
+    images: ["/images/icon/social-preview-1200x630.jpeg"],
     creator: "@linkglimpse",
     site: "@linkglimpse",
   },

@@ -6,6 +6,7 @@ author: "LinkGlimpse Team"
 category: "Troubleshooting"
 tags: ["linkedin preview", "linkedin post inspector", "open graph", "linkedin cache", "debugging"]
 readTime: "8 min read"
+image: "/images/blog/linkedin-link-preview-not-updating/hero.jpg"
 featured: true
 ---
 

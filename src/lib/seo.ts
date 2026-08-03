@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const SITE_URL = 'https://www.linkglimpse.com';
-export const DEFAULT_OG_IMAGE = '/images/icon/social-preview.jpeg';
+export const DEFAULT_OG_IMAGE = '/images/icon/social-preview-1200x630.jpeg';
 
 interface PageMetadataInput {
   title: string;

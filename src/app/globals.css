@@ -44,8 +44,8 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 -1px 0 rgb(0 0 0 / 5%);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, ".SFNSText-Regular", sans-serif;
 }
 
@@ -611,7 +611,7 @@
 }
 
 .linkedin-preview__container {
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -737,7 +737,7 @@
 }
 
 .instagram-preview__container {
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
   overflow: hidden;
 }
 
@@ -1274,9 +1274,9 @@
   border-collapse: collapse;
   margin: 1.5rem 0;
   background-color: white;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .markdown-content thead {
@@ -1320,9 +1320,9 @@
 .markdown-content img {
   max-width: 100%;
   height: auto;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   margin: 1.5rem 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Emphasis */

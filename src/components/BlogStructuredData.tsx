@@ -18,7 +18,7 @@ export default function BlogStructuredData({
   title,
   description,
   url,
-  image = 'https://www.linkglimpse.com/images/icon/social-preview.jpeg',
+  image = 'https://www.linkglimpse.com/images/icon/social-preview-1200x630.jpeg',
   author,
   datePublished,
   dateModified,
@@ -70,4 +70,4 @@ export default function BlogStructuredData({
       }}
     />
   )
-} 
+}

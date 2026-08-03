@@ -44,13 +44,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       authors: [post.author],
       tags: post.tags,
       url: `/blog/${post.slug}`,
-      images: [post.image || '/images/icon/social-preview.jpeg'],
+      images: [post.image],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
-      images: [post.image || '/images/icon/social-preview.jpeg'],
+      images: [post.image],
     },
   };
 }
@@ -78,6 +78,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         category={post.category}
         tags={post.tags}
         readTime={post.readTime}
+        image={`https://www.linkglimpse.com${post.image}`}
         featured={post.featured}
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -102,7 +103,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             {/* Article Header */}
-            <article className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
               {/* Hero Image */}
               {post.image ? (
                 <div className="h-64 md:h-96 relative overflow-hidden">
@@ -206,7 +207,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Related Posts Section */}
             <div className="mt-12">
-              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+              <div className="rounded-2xl border border-gray-200 bg-white p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Posts</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {relatedPosts.length > 0 ? (
@@ -214,7 +215,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       <Link
                         key={relatedPost.slug}
                         href={`/blog/${relatedPost.slug}`}
-                        className="group block bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-all duration-200 hover:shadow-md"
+                        className="group block rounded-lg border border-transparent bg-gray-50 p-6 transition-colors duration-200 hover:border-gray-200 hover:bg-gray-100"
                       >
                         <div className="mb-4">
                           <div className="flex items-center gap-2 mb-2">

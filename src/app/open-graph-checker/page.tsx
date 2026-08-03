@@ -49,7 +49,7 @@ export default function OpenGraphCheckerPage() {
             { icon: ImageIcon, title: 'OG Image Validation', text: 'Check whether the image responds publicly, its format, byte size, and dimensions.' },
             { icon: FileDown, title: 'Shareable Metadata Report', text: 'Copy, share, or download the live report for a developer, client, or release checklist.' },
           ].map((item) => (
-            <article key={item.title} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <article key={item.title} className="bg-white border border-gray-200 rounded-xl p-6">
               <item.icon className="h-7 w-7 text-blue-600 mb-4" />
               <h3 className="font-semibold text-gray-900 text-lg">{item.title}</h3>
               <p className="text-gray-600 mt-2">{item.text}</p>
@@ -68,7 +68,7 @@ export default function OpenGraphCheckerPage() {
             { icon: GitCompareArrows, title: 'Compare before and after', text: 'Diff a production URL against staging or a replacement page before you ship metadata changes.', href: '/compare', link: 'Compare two URLs' },
             { icon: Link2, title: 'Keep a live report URL', text: 'Share a re-runnable report link. It fetches the page again so collaborators see the latest deployed metadata.', href: '/examples', link: 'View report examples' },
           ].map((item) => (
-            <article key={item.title} className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <article key={item.title} className="rounded-xl border border-gray-200 bg-white p-6">
               <item.icon className="h-7 w-7 text-purple-600" />
               <h3 className="mt-4 text-lg font-semibold text-gray-900">{item.title}</h3>
               <p className="mt-2 text-gray-600">{item.text}</p>
@@ -77,7 +77,7 @@ export default function OpenGraphCheckerPage() {
           ))}
         </div>
 
-        <div className="mt-16 rounded-2xl border border-gray-200 bg-white p-8 text-left shadow-sm">
+        <div className="mt-16 rounded-2xl border border-gray-200 bg-white p-8 text-left">
           <h2 className="text-3xl font-bold text-gray-900">How to Run an Open Graph Test</h2>
           <ol className="mt-6 grid gap-5 md:grid-cols-3">
             <li><span className="font-semibold text-gray-900">1. Enter the final public URL.</span><p className="mt-1 text-gray-600">The checker follows and records redirects, fetches the HTML, and inspects the declared share image.</p></li>

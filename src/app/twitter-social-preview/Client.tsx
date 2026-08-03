@@ -121,7 +121,7 @@ export default function TwitterSocialPreviewClient() {
           </div>
         )}
 
-        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+        <div className="mt-12 rounded-lg border border-gray-200 bg-white p-8">
           <FAQStructuredData items={faqItems} />
           <h2 className="text-2xl font-bold text-gray-900 mb-4">How to Test a Twitter Card</h2>
           <div className="prose prose-gray max-w-none">

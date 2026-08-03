@@ -37,6 +37,7 @@ export default function BlogListStructuredData({ posts, baseUrl }: BlogListStruc
         },
         datePublished: post.date,
         dateModified: post.updated || post.date,
+        image: `${baseUrl}${post.image}`,
         mainEntityOfPage: {
           '@type': 'WebPage',
           '@id': `${baseUrl}/blog/${post.slug}`,

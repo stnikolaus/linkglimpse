@@ -68,7 +68,7 @@ export default function PreviewCard({ preview, platform }: PreviewCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       {/* Platform Header */}
       <div className={`px-4 py-2 ${config.color} text-white flex items-center justify-between`}>
         <span className="font-medium">{config.name}</span>
@@ -120,4 +120,4 @@ export default function PreviewCard({ preview, platform }: PreviewCardProps) {
       )}
     </div>
   );
-} 
+}

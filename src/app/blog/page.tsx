@@ -15,13 +15,13 @@ export const metadata: Metadata = {
     description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',
     type: 'website',
     url: '/blog',
-    images: ['/images/icon/social-preview.jpeg'],
+    images: ['/images/icon/social-preview-1200x630.jpeg'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Open Graph & Social Preview Guides',
     description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',
-    images: ['/images/icon/social-preview.jpeg'],
+    images: ['/images/icon/social-preview-1200x630.jpeg'],
   },
 };
 
@@ -49,7 +49,7 @@ export default function BlogPage() {
           {/* Featured Post */}
           <div className="mb-16">
             <Link href={`/blog/${featuredPost.slug}`} className="block">
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+              <div className="cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white transition-colors duration-300 hover:border-gray-300">
                 <div className="md:flex">
                   <div className="md:w-1/2">
                     {featuredPost.image ? (
@@ -103,7 +103,7 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {otherPosts.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="block">
-                <article className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                <article className="cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white transition-colors duration-300 hover:border-gray-300">
                   {post.image ? (
                     <div className="h-48 relative overflow-hidden">
                       <Image

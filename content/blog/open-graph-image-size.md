@@ -6,6 +6,7 @@ author: "LinkGlimpse Team"
 category: "Reference"
 tags: ["open graph image size", "og image dimensions", "social media image", "aspect ratio", "open graph"]
 readTime: "8 min read"
+image: "/images/blog/open-graph-image-size/hero.jpg"
 featured: true
 ---
 

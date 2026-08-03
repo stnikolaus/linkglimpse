@@ -6,6 +6,7 @@ author: "LinkGlimpse Team"
 category: "Troubleshooting"
 tags: ["open graph image", "og:image", "social preview", "debugging", "meta tags"]
 readTime: "10 min read"
+image: "/images/blog/open-graph-image-not-showing/hero.jpg"
 featured: true
 ---
 

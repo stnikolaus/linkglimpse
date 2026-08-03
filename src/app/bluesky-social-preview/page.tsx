@@ -105,7 +105,7 @@ export default function BlueskySocialPreview() {
         )}
 
         {/* Info Section */}
-        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+        <div className="mt-12 rounded-lg border border-gray-200 bg-white p-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">How Bluesky Link Previews Use Metadata</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">

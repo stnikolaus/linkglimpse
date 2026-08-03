@@ -7,6 +7,7 @@ author: "LinkGlimpse Team"
 category: "Technical SEO"
 tags: ["open graph tags", "og tag template", "open graph example", "next.js metadata", "twitter cards"]
 readTime: "12 min read"
+image: "/images/blog/open-graph-tags-guide/hero.jpg"
 featured: true
 ---
 

@@ -12,13 +12,13 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://www.linkglimpse.com/bulk',
     siteName: 'LinkGlimpse',
-    images: ['/images/icon/social-preview.jpeg'],
+    images: ['/images/icon/social-preview-1200x630.jpeg'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Bulk URL Metadata Checker',
     description: 'Check Open Graph, Twitter Card and page metadata for up to 100 URLs at once. Compare issues and export the results as CSV or JSON.',
-    images: ['/images/icon/social-preview.jpeg'],
+    images: ['/images/icon/social-preview-1200x630.jpeg'],
   },
   robots: {
     index: true,

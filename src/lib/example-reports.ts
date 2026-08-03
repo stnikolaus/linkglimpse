@@ -10,7 +10,7 @@ export interface ExampleReport {
   report: ApiResponse;
 }
 
-const sharedImage = 'https://www.linkglimpse.com/images/icon/social-preview.jpeg';
+const sharedImage = 'https://www.linkglimpse.com/images/icon/social-preview-1200x630.jpeg';
 
 function withDiagnostics(report: ApiResponse): ApiResponse {
   return { ...report, diagnostics: analyzeMetadata(report) };

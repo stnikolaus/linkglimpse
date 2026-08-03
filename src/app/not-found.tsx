@@ -28,7 +28,7 @@ export default function NotFound() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <Link
               href="/"
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300"
+              className="bg-white p-6 rounded-xl border border-gray-200 transition-colors duration-300 hover:border-gray-300"
             >
               <Home className="h-8 w-8 text-blue-600 mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Go Home</h3>
@@ -37,7 +37,7 @@ export default function NotFound() {
 
             <Link
               href="/bulk"
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300"
+              className="bg-white p-6 rounded-xl border border-gray-200 transition-colors duration-300 hover:border-gray-300"
             >
               <Globe className="h-8 w-8 text-green-600 mx-auto mb-4" />
               <h3 className="font-semibold text-gray-900 mb-2">Bulk Processing</h3>
@@ -46,7 +46,7 @@ export default function NotFound() {
           </div>
 
           {/* Popular Pages */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="bg-white rounded-2xl border border-gray-200 p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Popular Pages</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link

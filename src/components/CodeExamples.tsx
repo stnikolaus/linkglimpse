@@ -39,7 +39,7 @@ export default function CodeExamples({ examples }: CodeExamplesProps) {
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+    <div className="bg-white rounded-xl border border-gray-200 p-8 mb-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Code Examples</h2>
       
       {/* Language Selector */}
@@ -57,7 +57,7 @@ export default function CodeExamples({ examples }: CodeExamplesProps) {
                 disabled={!hasExample}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   selectedLanguage === option.value
-                    ? 'bg-blue-600 text-white shadow-md'
+                    ? 'bg-gray-950 text-white'
                     : hasExample
                     ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     : 'bg-gray-50 text-gray-400 cursor-not-allowed'
@@ -116,4 +116,4 @@ export default function CodeExamples({ examples }: CodeExamplesProps) {
       </div>
     </div>
   );
-} 
+}

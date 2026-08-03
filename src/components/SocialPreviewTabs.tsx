@@ -258,13 +258,13 @@ export default function SocialPreviewTabs({ metadata }: SocialPreviewTabsProps) 
               title={tab.label}
               onClick={() => selectPlatform(tab.id)}
               onKeyDown={(event) => handleTabKeyDown(event, index)}
-              className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-md border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 ${
                 isActive
-                  ? 'border-gray-300 bg-white shadow-sm ring-2 ring-blue-100'
-                  : 'border-transparent hover:border-gray-200 hover:bg-white'
+                  ? 'border-gray-300 bg-gray-100'
+                  : 'border-transparent bg-transparent hover:border-gray-200 hover:bg-gray-50'
               }`}
             >
-              <Icon className={`h-6 w-6 ${tab.iconClassName}`} aria-hidden="true" />
+              <Icon className={`h-6 w-6 ${isActive ? tab.iconClassName : 'text-gray-950'}`} aria-hidden="true" />
               <span className="sr-only">{tab.label}</span>
             </button>
           );

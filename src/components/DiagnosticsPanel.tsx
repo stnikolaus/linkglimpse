@@ -6,10 +6,8 @@ import {
   AlertTriangle,
   Bot,
   CheckCircle2,
-  Clipboard,
   Clock3,
   Copy,
-  Download,
   FileCode2,
   Link2,
   ShieldAlert,
@@ -42,10 +40,34 @@ interface HistoryEntry {
   fingerprint: string;
 }
 
-const statusStyles: Record<DiagnosticStatus, { icon: typeof CheckCircle2; className: string; label: string }> = {
-  pass: { icon: CheckCircle2, className: 'text-green-700 bg-green-50 border-green-200', label: 'Pass' },
-  warning: { icon: AlertTriangle, className: 'text-amber-700 bg-amber-50 border-amber-200', label: 'Review' },
-  fail: { icon: XCircle, className: 'text-red-700 bg-red-50 border-red-200', label: 'Fix' },
+const statusStyles: Record<DiagnosticStatus, {
+  icon: typeof CheckCircle2;
+  accentClassName: string;
+  iconClassName: string;
+  labelClassName: string;
+  label: string;
+}> = {
+  pass: {
+    icon: CheckCircle2,
+    accentClassName: 'border-l-emerald-500',
+    iconClassName: 'text-emerald-600',
+    labelClassName: 'bg-emerald-50 text-emerald-700',
+    label: 'Pass',
+  },
+  warning: {
+    icon: AlertTriangle,
+    accentClassName: 'border-l-amber-500',
+    iconClassName: 'text-amber-600',
+    labelClassName: 'bg-amber-50 text-amber-800',
+    label: 'Review',
+  },
+  fail: {
+    icon: XCircle,
+    accentClassName: 'border-l-red-500',
+    iconClassName: 'text-red-600',
+    labelClassName: 'bg-red-50 text-red-700',
+    label: 'Fix',
+  },
 };
 
 function formatBytes(bytes?: number): string | undefined {
@@ -116,28 +138,10 @@ export default function DiagnosticsPanel({
 
   if (!diagnostics) return null;
 
-  const report = JSON.stringify({
-    inspectedAt: new Date().toISOString(),
-    requestedUrl: metadata.requestedUrl,
-    finalUrl: metadata.finalUrl,
-    status: metadata.status,
-    contentType: metadata.contentType,
-    canonical: metadata.canonical,
-    robots: metadata.robots,
-    image: metadata.imageInfo,
-    diagnostics,
-    tags: metadata.tags,
-  }, null, 2);
-
   const copyText = async (key: string, value: string) => {
     await navigator.clipboard.writeText(value);
     setCopied(key);
     window.setTimeout(() => setCopied((current) => current === key ? null : current), 2000);
-  };
-
-  const copyReport = async () => {
-    await copyText('report', report);
-    analytics.trackReportExported('clipboard', diagnostics.score);
   };
 
   const copyAiPrompt = async () => {
@@ -157,17 +161,6 @@ export default function DiagnosticsPanel({
     analytics.trackReportExported('api-command', diagnostics.score);
   };
 
-  const downloadReport = () => {
-    const blob = new Blob([report], { type: 'application/json' });
-    const href = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = `linkglimpse-report-${new Date().toISOString().slice(0, 10)}.json`;
-    link.click();
-    URL.revokeObjectURL(href);
-    analytics.trackReportExported('json', diagnostics.score);
-  };
-
   const imageDetails = [
     metadata.imageInfo?.width && metadata.imageInfo.height
       ? `${metadata.imageInfo.width}×${metadata.imageInfo.height}`
@@ -175,69 +168,64 @@ export default function DiagnosticsPanel({
     metadata.imageInfo?.contentType,
     formatBytes(metadata.imageInfo?.contentLength),
   ].filter(Boolean).join(' · ');
+  const scoreStyles = diagnostics.score >= 80
+    ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+    : diagnostics.score >= 55
+      ? 'border-amber-200 bg-amber-50 text-amber-800'
+      : 'border-red-200 bg-red-50 text-red-700';
+  const httpStatusClassName = metadata.status !== undefined && metadata.status >= 200 && metadata.status < 300
+    ? 'text-emerald-700'
+    : metadata.status !== undefined && metadata.status >= 400
+      ? 'text-red-700'
+      : 'text-amber-700';
+  const hasIssues = diagnostics.counts.warning + diagnostics.counts.fail > 0;
 
   return (
     <section className="w-full mb-10" aria-labelledby="diagnostics-heading">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className={`grid border-b border-gray-200 ${
           preview ? 'xl:grid-cols-[minmax(360px,0.9fr)_minmax(0,1.1fr)]' : ''
         }`}>
           <div className={`min-w-0 ${preview ? 'xl:border-r xl:border-gray-200' : ''}`}>
-            <div className="p-6 border-b border-gray-200 bg-gray-50">
+            <div className="p-6 border-b border-gray-200 bg-white">
               <div className={`flex gap-5 ${
                 preview
                   ? 'flex-col items-start'
                   : 'flex-col lg:flex-row lg:items-center lg:justify-between'
               }`}>
                 <div className="flex items-center gap-4">
-                  <div className={`w-16 h-16 shrink-0 rounded-full flex items-center justify-center border-4 font-bold text-xl ${
-                    diagnostics.score >= 80
-                      ? 'border-green-200 text-green-700 bg-green-50'
-                      : diagnostics.score >= 55
-                        ? 'border-amber-200 text-amber-700 bg-amber-50'
-                        : 'border-red-200 text-red-700 bg-red-50'
-                  }`}>
+                  <div className={`w-14 h-14 shrink-0 rounded-full flex items-center justify-center border-2 font-bold text-lg ${scoreStyles}`}>
                     {diagnostics.score}
                   </div>
                   <div>
-                    <h2 id="diagnostics-heading" className="text-2xl font-bold text-gray-900">Metadata diagnostics</h2>
+                    <h2 id="diagnostics-heading" className="text-xl font-bold text-gray-900">Metadata diagnostics</h2>
                     <p className="text-gray-600 mt-1">
-                      {diagnostics.counts.pass} passed · {diagnostics.counts.warning} to review · {diagnostics.counts.fail} to fix
+                      <span className="font-medium text-emerald-700">{diagnostics.counts.pass} passed</span>
+                      <span aria-hidden="true"> · </span>
+                      <span className={diagnostics.counts.warning ? 'font-medium text-amber-700' : 'text-gray-500'}>{diagnostics.counts.warning} to review</span>
+                      <span aria-hidden="true"> · </span>
+                      <span className={diagnostics.counts.fail ? 'font-medium text-red-700' : 'text-gray-500'}>{diagnostics.counts.fail} to fix</span>
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={copyAiPrompt}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 rounded-lg text-sm font-medium text-white hover:bg-purple-700"
-                  >
-                    <Bot className="h-4 w-4" />
-                    {copied === 'ai-prompt' ? 'AI prompt copied' : 'Copy for AI agent'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={copyReport}
-                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-white"
-                  >
-                    <Clipboard className="h-4 w-4" />
-                    {copied === 'report' ? 'Copied' : 'Copy report'}
-                  </button>
+                  {hasIssues && (
+                    <button
+                      type="button"
+                      onClick={copyAiPrompt}
+                      className="inline-flex items-center gap-2 px-3 py-2 bg-gray-950 border border-gray-950 rounded-md text-sm font-medium text-white hover:bg-gray-800"
+                    >
+                      <Bot className="h-4 w-4" />
+                      {copied === 'ai-prompt' ? 'AI prompt copied' : 'Copy fixes for AI'}
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={copyShareLink}
-                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-white"
+                    className="inline-flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-800 hover:bg-gray-50"
                   >
                     <Link2 className="h-4 w-4" />
-                    {copied === 'share' ? 'Link copied' : 'Share report'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={downloadReport}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download JSON
+                    {copied === 'share' ? 'Link copied' : 'Copy result link'}
                   </button>
                 </div>
               </div>
@@ -248,19 +236,19 @@ export default function DiagnosticsPanel({
             }`}>
               <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <dt className="text-gray-500">HTTP response</dt>
-                <dd className="font-semibold text-gray-900 mt-1">{metadata.status} {metadata.statusText}</dd>
+                <dd className={`font-semibold mt-1 ${httpStatusClassName}`}>{metadata.status ?? 'Unknown'} {metadata.statusText}</dd>
               </div>
               <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <dt className="text-gray-500">Final URL</dt>
-                <dd className="font-semibold text-gray-900 mt-1 truncate" title={metadata.finalUrl}>{metadata.redirected ? 'Redirected' : 'Direct'}</dd>
+                <dd className={`font-semibold mt-1 truncate ${metadata.redirected ? 'text-amber-700' : 'text-emerald-700'}`} title={metadata.finalUrl}>{metadata.redirected ? 'Redirected' : 'Direct'}</dd>
               </div>
               <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <dt className="text-gray-500">Canonical</dt>
-                <dd className="font-semibold text-gray-900 mt-1 truncate" title={metadata.canonical}>{metadata.canonical ? 'Declared' : 'Missing'}</dd>
+                <dd className={`font-semibold mt-1 truncate ${metadata.canonical ? 'text-emerald-700' : 'text-red-700'}`} title={metadata.canonical}>{metadata.canonical ? 'Declared' : 'Missing'}</dd>
               </div>
               <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <dt className="text-gray-500">Share image</dt>
-                <dd className="font-semibold text-gray-900 mt-1 truncate" title={imageDetails}>{imageDetails || 'Not detected'}</dd>
+                <dd className={`font-semibold mt-1 truncate ${imageDetails ? 'text-emerald-700' : 'text-red-700'}`} title={imageDetails}>{imageDetails || 'Not detected'}</dd>
               </div>
             </dl>
           </div>
@@ -268,7 +256,7 @@ export default function DiagnosticsPanel({
           {preview && (
             <div className="min-w-0 p-6">
               <h3 className="font-semibold text-gray-900 mb-3">{previewTitle}</h3>
-              <div className="min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-50 p-4">
+              <div className="min-w-0 overflow-hidden rounded-lg border border-gray-200 bg-white p-4">
                 {preview}
               </div>
             </div>
@@ -280,12 +268,13 @@ export default function DiagnosticsPanel({
             <h3 className="font-semibold text-gray-900 mb-3">Platform readiness</h3>
             <div className="grid md:grid-cols-3 gap-3 mb-8">
               {diagnostics.platforms.map((platform) => (
-                <div key={platform.platform} className={`border rounded-lg p-4 ${
-                  platform.status === 'ready' ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
-                }`}>
+                <div key={platform.platform} className="border border-gray-200 rounded-lg bg-white p-4">
                   <div className="flex items-center gap-2 font-semibold text-gray-900">
-                    {platform.status === 'ready' ? <CheckCircle2 className="h-5 w-5 text-green-700" /> : <ShieldAlert className="h-5 w-5 text-amber-700" />}
+                    {platform.status === 'ready' ? <CheckCircle2 className="h-5 w-5 text-emerald-600" /> : <ShieldAlert className="h-5 w-5 text-amber-600" />}
                     {platform.platform}
+                    <span className={`ml-auto rounded-full px-2 py-0.5 text-xs font-medium ${platform.status === 'ready' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-800'}`}>
+                      {platform.status === 'ready' ? 'Ready' : 'Review'}
+                    </span>
                   </div>
                   <p className="text-sm text-gray-700 mt-2">
                     {platform.status === 'ready' ? 'Core tags are ready.' : `Missing: ${platform.missing.join(', ')}`}
@@ -300,13 +289,13 @@ export default function DiagnosticsPanel({
                 const config = statusStyles[check.status];
                 const Icon = config.icon;
                 return (
-                  <div key={check.id} className={`border rounded-lg p-4 ${config.className}`}>
+                  <div key={check.id} className={`rounded-lg border border-l-4 border-gray-200 bg-white p-4 ${config.accentClassName}`}>
                     <div className="flex items-start gap-3">
-                      <Icon className="h-5 w-5 mt-0.5 shrink-0" />
+                      <Icon className={`h-5 w-5 mt-0.5 shrink-0 ${config.iconClassName}`} />
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <h4 className="font-semibold text-gray-900">{check.label}</h4>
-                          <span className="text-xs font-medium uppercase tracking-wide">{config.label}</span>
+                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium uppercase tracking-wide ${config.labelClassName}`}>{config.label}</span>
                         </div>
                         {check.value && <p className="text-sm text-gray-700 mt-1 truncate" title={check.value}>{check.value}</p>}
                         {check.status !== 'pass' && <p className="text-sm text-gray-700 mt-2">{check.recommendation}</p>}
@@ -334,14 +323,14 @@ export default function DiagnosticsPanel({
               <button
                 type="button"
                 onClick={() => setShowRawTags((current) => !current)}
-                className="inline-flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-800"
+                className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 hover:decoration-gray-900"
                 aria-expanded={showRawTags}
               >
                 <FileCode2 className="h-4 w-4" />
                 {showRawTags ? 'Hide extracted tags' : `Inspect raw tags (${Object.keys(metadata.tags ?? {}).length})`}
               </button>
               {showRawTags && (
-                <pre className="mt-3 p-4 bg-gray-950 text-green-300 rounded-lg overflow-x-auto text-xs leading-relaxed">
+                <pre className="mt-3 p-4 bg-gray-950 text-gray-100 rounded-lg overflow-x-auto text-xs leading-relaxed">
                   {JSON.stringify(metadata.tags ?? {}, null, 2)}
                 </pre>
               )}
@@ -362,7 +351,7 @@ export default function DiagnosticsPanel({
                         <span className="text-gray-600">{hop.status || 'Unknown'} {hop.statusText}</span>
                       </div>
                       <p className="text-gray-600 truncate mt-1" title={hop.url}>{hop.url}</p>
-                      {hop.location && <p className="text-xs text-blue-700 truncate mt-1" title={hop.location}>→ {hop.location}</p>}
+                      {hop.location && <p className="text-xs text-gray-700 truncate mt-1" title={hop.location}>→ {hop.location}</p>}
                     </li>
                   ))}
                 </ol>
@@ -400,7 +389,7 @@ export default function DiagnosticsPanel({
                   <article key={item.platform} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                     <h4 className="font-semibold text-gray-900">{item.platform}</h4>
                     <p className="text-sm text-gray-600 mt-2">{item.steps}</p>
-                    <a className="inline-flex mt-3 text-sm font-medium text-blue-700 hover:text-blue-800" href={item.href} target="_blank" rel="noreferrer">
+                    <a className="inline-flex mt-3 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 hover:decoration-gray-900" href={item.href} target="_blank" rel="noreferrer">
                       Open official resource ↗
                     </a>
                   </article>

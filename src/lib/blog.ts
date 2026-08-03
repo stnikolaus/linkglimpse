@@ -18,7 +18,7 @@ export interface BlogPost {
   category: string;
   tags: string[];
   readTime: string;
-  image?: string;
+  image: string;
   featured?: boolean;
   content: string;
   html: string;
@@ -43,6 +43,7 @@ export function getAllBlogPosts(): BlogPost[] {
 
       // Use gray-matter to parse the post metadata section
       const matterResult = matter(fileContents);
+      assertBlogImage(slug, matterResult.data.image);
 
       return {
         slug,
@@ -65,6 +66,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const matterResult = matter(fileContents);
+    assertBlogImage(slug, matterResult.data.image);
 
     // Use remark to convert markdown into HTML string
     const processedContent = await remark()
@@ -117,4 +119,10 @@ export function getRelatedPosts(currentSlug: string, limit: number = 3): BlogPos
   return allPosts
     .filter((post) => post.slug !== currentSlug)
     .slice(0, limit);
+}
+
+function assertBlogImage(slug: string, image: unknown): asserts image is string {
+  if (typeof image !== 'string' || !image.trim()) {
+    throw new Error(`Blog post "${slug}" must declare an image in its frontmatter.`);
+  }
 }

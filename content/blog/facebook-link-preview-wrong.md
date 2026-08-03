@@ -6,6 +6,7 @@ author: "LinkGlimpse Team"
 category: "Troubleshooting"
 tags: ["facebook preview", "facebook debugger", "open graph", "facebook image", "debugging"]
 readTime: "9 min read"
+image: "/images/blog/facebook-link-preview-wrong/hero.jpg"
 featured: true
 ---
 

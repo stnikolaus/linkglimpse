@@ -163,7 +163,7 @@ export default function BulkProcessor() {
       {/* Header */}
       <div className="text-center">
         <div className="flex items-center justify-center mb-4">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-full shadow-lg">
+          <div className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 p-3">
             <BarChart3 className="h-8 w-8 text-white" />
           </div>
         </div>
@@ -174,7 +174,7 @@ export default function BulkProcessor() {
       </div>
 
       {/* Configuration Panel */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-center mb-4">
           <Settings className="h-5 w-5 text-gray-600 mr-2" />
           <h2 className="text-lg font-semibold text-gray-900">Bulk Check Settings</h2>
@@ -215,7 +215,7 @@ export default function BulkProcessor() {
       </div>
 
       {/* URL Input Section */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <Globe className="h-5 w-5 text-gray-600 mr-2" />
@@ -287,7 +287,7 @@ export default function BulkProcessor() {
 
       {/* Results Section */}
       {summary && (
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
           <div className="flex items-center mb-4">
             <BarChart3 className="h-5 w-5 text-gray-600 mr-2" />
             <h2 className="text-lg font-semibold text-gray-900">Bulk Metadata Results Summary</h2>
@@ -326,7 +326,7 @@ export default function BulkProcessor() {
 
       {/* Detailed Results */}
       {results.length > 0 && (
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
           <div className="flex items-center mb-4">
             <FileText className="h-5 w-5 text-gray-600 mr-2" />
             <h2 className="text-lg font-semibold text-gray-900">Metadata Results by URL</h2>

@@ -65,7 +65,7 @@ export default function ComparisonTool() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 pb-16">
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
+      <form onSubmit={handleSubmit} className="rounded-2xl border border-gray-200 bg-white p-6">
         <div className="grid gap-5 md:grid-cols-2">
           <label className="block text-sm font-semibold text-gray-800">
             Before or production URL
@@ -104,7 +104,7 @@ export default function ComparisonTool() {
       )}
 
       {before && after && (
-        <section className="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg" aria-labelledby="comparison-heading">
+        <section className="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white" aria-labelledby="comparison-heading">
           <div className="border-b border-gray-200 bg-gray-50 p-6">
             <h2 id="comparison-heading" className="text-2xl font-bold text-gray-900">Metadata comparison</h2>
             <p className="mt-1 text-gray-600">{changedCount} of {comparisonFields.length} core signals changed.</p>
