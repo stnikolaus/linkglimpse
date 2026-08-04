@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "LinkGlimpse audit output",
+  "description": "Structured diagnostics in the dataset and generated PNG previews in the key-value store.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Audit results",
+      "description": "One structured diagnostic record per requested URL.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "previewImages": {
+      "type": "string",
+      "title": "Visual preview images",
+      "description": "PNG social and Google preview sheets generated from live metadata.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

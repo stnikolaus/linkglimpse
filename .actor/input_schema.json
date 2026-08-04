@@ -1,0 +1,39 @@
+{
+  "title": "Social preview audit input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "URLs to audit",
+      "type": "array",
+      "description": "One to 100 public HTTP or HTTPS page URLs.",
+      "editor": "stringList",
+      "default": ["https://www.example.com/"],
+      "items": { "type": "string" }
+    },
+    "renderPreviews": {
+      "title": "Generate visual previews",
+      "type": "boolean",
+      "description": "Store a deterministic PNG preview for every successful URL.",
+      "default": true
+    },
+    "previewPlatform": {
+      "title": "Preview image",
+      "type": "string",
+      "description": "Generate a contact sheet or one platform-specific image.",
+      "editor": "select",
+      "default": "all",
+      "enum": ["all", "facebook", "x", "linkedin", "slack", "discord", "whatsapp", "google"],
+      "enumTitles": ["All previews", "Facebook", "X / Twitter", "LinkedIn", "Slack", "Discord", "WhatsApp", "Google search"]
+    },
+    "concurrency": {
+      "title": "Concurrency",
+      "type": "integer",
+      "description": "Number of URLs inspected simultaneously.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 8
+    }
+  },
+  "required": ["urls"]
+}

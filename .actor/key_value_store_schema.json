@@ -1,0 +1,13 @@
+{
+  "actorKeyValueStoreSchemaVersion": 1,
+  "title": "Generated visual previews",
+  "description": "Deterministic PNG previews rendered from each audited page's live metadata.",
+  "collections": {
+    "previews": {
+      "title": "Social and search previews",
+      "description": "One platform preview or a multi-platform contact sheet for each successful audit.",
+      "keyPrefix": "preview-",
+      "contentTypes": ["image/png"]
+    }
+  }
+}

@@ -6,12 +6,14 @@ This roadmap communicates direction, not a promise of dates. Maintainers may reo
 
 - Publish the `linkglimpse` npm CLI with human-readable and CI output.
 - Publish the minimal-permission extension to Chrome Web Store and Firefox Add-ons.
+- Publish the multimodal MCP server to npm and the official MCP Registry.
+- Publish the visual metadata auditor to Apify Store for API, scheduled, and Apify MCP workflows.
 - Establish reproducible CI, release artifacts, contribution templates, and private vulnerability reporting.
 - Track completed reports by distribution source without adding telemetry to the CLI or extension itself.
 
 ## Next: better developer workflows
 
-- Extract reusable diagnostic rules into a documented package.
+- Continue expanding the reusable diagnostic and visual-preview engine shared by the website, MCP server, and Apify Actor.
 - Add optional local HTML and localhost inspection to the CLI and extension.
 - Add a GitHub Action for metadata regression checks.
 - Add stable JSON schema documentation and versioning.

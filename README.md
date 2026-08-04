@@ -17,6 +17,8 @@ LinkGlimpse is a free, open-source social-preview debugger. Give it a public URL
 - Image response, content type, dimensions, aspect ratio, and file-size checks.
 - Copy-ready remediation, shareable live reports, URL comparison, bulk processing, and a JSON API.
 - A zero-dependency [npm CLI](packages/cli) for terminals and CI.
+- A multimodal [MCP server](packages/mcp) that returns structured audits, fix plans, comparisons, and PNG preview sheets to AI agents.
+- An [Apify Actor](.actor) for batch audits, generated preview images, APIs, schedules, and Apify MCP workflows.
 - A minimal-permission [Chrome and Firefox extension](apps/browser-extension).
 - Troubleshooting guides and implementation examples.
 
@@ -46,6 +48,9 @@ pnpm lint               # ESLint
 pnpm typecheck          # TypeScript
 pnpm test               # CLI tests
 pnpm cli:pack           # Inspect the npm package tarball
+pnpm mcp:test           # Test the MCP package
+pnpm actor:test         # Test the Apify Actor adapter
+pnpm mcp:preview        # Regenerate the MCP landing-page preview image
 pnpm extension:build    # Build Chrome and Firefox directories
 pnpm extension:package  # Create marketplace ZIP files
 ```
@@ -61,6 +66,16 @@ npx linkglimpse https://example.com --json
 ```
 
 The default CLI calls the public LinkGlimpse API with the URL you explicitly provide. Pass `--api-base http://localhost:3000` or set `LINKGLIMPSE_API_BASE` to use another deployment. See the [CLI README](packages/cli/README.md) for details.
+
+## MCP server
+
+Give a compatible AI agent metadata diagnostics and actual PNG previews:
+
+```bash
+npx -y linkglimpse-mcp
+```
+
+The server exposes `audit_url`, `audit_urls`, `compare_urls`, `get_fix_plan`, and `render_previews`. It contains no analytics or telemetry and blocks private or reserved network targets. See the [MCP guide](packages/mcp/README.md) and the [visual MCP page](https://www.linkglimpse.com/mcp).
 
 ## Browser extension
 
@@ -101,7 +116,10 @@ Plausible is loaded through the public site configuration and does not require a
 src/                         Next.js website, API, diagnostics, and previews
 content/blog/                Markdown troubleshooting guides
 packages/cli/                Zero-dependency npm CLI
+packages/mcp/                Multimodal MCP server for AI agents
+apps/apify-actor/            Apify runtime adapter and tests
 apps/browser-extension/      Chrome and Firefox extension source
+.actor/                      Apify Store schemas and Docker build
 scripts/                     Extension build and packaging scripts
 .github/                     CI, release workflows, and contribution templates
 ```

@@ -1,0 +1,114 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "url": { "type": "string", "title": "Final URL", "description": "The final URL after redirects." },
+      "requestedUrl": { "type": "string", "title": "Requested URL" },
+      "success": { "type": "boolean", "title": "Succeeded" },
+      "status": { "type": "number", "title": "HTTP status" },
+      "redirected": { "type": "boolean", "title": "Redirected" },
+      "score": { "type": "number", "title": "Metadata score", "description": "Weighted metadata health score from 0 to 100." },
+      "passed": { "type": "number", "title": "Passed checks" },
+      "warnings": { "type": "number", "title": "Checks to review" },
+      "failed": { "type": "number", "title": "Failed checks" },
+      "title": { "type": "string", "title": "Resolved title" },
+      "description": { "type": "string", "title": "Resolved description" },
+      "canonical": { "type": "string", "title": "Canonical URL" },
+      "robots": { "type": "string", "title": "Robots directives" },
+      "shareImage": { "type": "string", "title": "Share image" },
+      "imageInfo": {
+        "type": "object",
+        "title": "Share image diagnostics",
+        "properties": {
+          "url": { "type": "string" },
+          "status": { "type": "number" },
+          "contentType": { "type": "string" },
+          "contentLength": { "type": "number" },
+          "width": { "type": "number" },
+          "height": { "type": "number" },
+          "error": { "type": "string" }
+        }
+      },
+      "preview": {
+        "type": "object",
+        "title": "Generated visual preview",
+        "description": "PNG record information, dimensions and included platforms.",
+        "properties": {
+          "key": { "type": "string" },
+          "imageUrl": { "type": ["string", "null"] },
+          "platforms": { "type": "array", "items": { "type": "string" } },
+          "width": { "type": "number" },
+          "height": { "type": "number" }
+        }
+      },
+      "platformReadiness": {
+        "type": "array",
+        "title": "Platform readiness",
+        "items": {
+          "type": "object",
+          "properties": {
+            "platform": { "type": "string" },
+            "status": { "type": "string" },
+            "missing": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "checks": {
+        "type": "array",
+        "title": "All checks",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "label": { "type": "string" },
+            "category": { "type": "string" },
+            "status": { "type": "string" },
+            "value": { "type": "string" },
+            "recommendation": { "type": "string" },
+            "weight": { "type": "number" }
+          },
+          "required": ["id", "label", "category", "status", "recommendation", "weight"]
+        }
+      },
+      "fixes": {
+        "type": "array",
+        "title": "Actionable fixes",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "label": { "type": "string" },
+            "severity": { "type": "string" },
+            "currentValue": { "type": ["string", "null"] },
+            "recommendation": { "type": "string" },
+            "suggestedImplementation": { "type": "string" }
+          },
+          "required": ["id", "label", "severity", "recommendation", "suggestedImplementation"]
+        }
+      },
+      "error": { "type": "string", "title": "Error" }
+    },
+    "required": ["url", "success"]
+  },
+  "views": {
+    "overview": {
+      "title": "Metadata audits",
+      "transformation": {
+        "fields": ["url", "success", "score", "status", "passed", "warnings", "failed", "title", "canonical", "shareImage", "preview.imageUrl", "error"],
+        "flatten": ["preview"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": { "label": "URL", "format": "link" },
+          "success": { "label": "OK", "format": "boolean" },
+          "score": { "label": "Score", "format": "number" },
+          "shareImage": { "label": "Share image", "format": "image" },
+          "preview.imageUrl": { "label": "Generated preview", "format": "image" }
+        }
+      }
+    }
+  }
+}
