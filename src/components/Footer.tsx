@@ -90,7 +90,7 @@ export default function Footer() {
                 Browser Extension
               </Link>
               <a
-                href="https://github.com/stnikolaus/social-preview"
+                href="https://github.com/stnikolaus/linkglimpse"
                 target="_blank"
                 rel="noreferrer"
                 className="block text-sm text-gray-400 hover:text-gray-200"

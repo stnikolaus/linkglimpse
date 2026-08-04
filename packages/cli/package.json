@@ -28,11 +28,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stnikolaus/social-preview.git",
+    "url": "git+https://github.com/stnikolaus/linkglimpse.git",
     "directory": "packages/cli"
   },
   "homepage": "https://www.linkglimpse.com/cli",
-  "bugs": "https://github.com/stnikolaus/social-preview/issues",
+  "bugs": "https://github.com/stnikolaus/linkglimpse/issues",
   "license": "AGPL-3.0-or-later",
   "publishConfig": {
     "access": "public",

@@ -48,7 +48,7 @@ export default function CliPage() {
           <DistributionLink
             channel="github"
             destination="cli-source"
-            href="https://github.com/stnikolaus/social-preview/tree/main/packages/cli"
+            href="https://github.com/stnikolaus/linkglimpse/tree/main/packages/cli"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-gray-900 hover:border-gray-400"

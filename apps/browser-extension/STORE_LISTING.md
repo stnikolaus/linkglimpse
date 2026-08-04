@@ -26,7 +26,7 @@ Developer Tools
 - 440×280 small promotional tile for Chrome
 - At least three 1280×800 screenshots: popup, preview tabs, diagnostics/fixes
 - Firefox icon and screenshots
-- Support URL: `https://github.com/stnikolaus/social-preview/issues`
+- Support URL: `https://github.com/stnikolaus/linkglimpse/issues`
 - Privacy policy: `https://www.linkglimpse.com/privacy`
 
 ## Submission checklist

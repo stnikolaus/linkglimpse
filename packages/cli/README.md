@@ -24,6 +24,6 @@ By default the CLI sends the URL you explicitly provide to the public LinkGlimps
 npx linkglimpse https://example.com --api-base http://localhost:3000
 ```
 
-See the [CLI documentation](https://www.linkglimpse.com/cli), [web checker](https://www.linkglimpse.com/open-graph-checker), or [source repository](https://github.com/stnikolaus/social-preview).
+See the [CLI documentation](https://www.linkglimpse.com/cli), [web checker](https://www.linkglimpse.com/open-graph-checker), or [source repository](https://github.com/stnikolaus/linkglimpse).
 
 Licensed under AGPL-3.0-or-later.

@@ -27,7 +27,7 @@ export default function BrowserExtensionPage() {
           <DistributionLink
             channel="github"
             destination="extension-source"
-            href="https://github.com/stnikolaus/social-preview/tree/main/apps/browser-extension"
+            href="https://github.com/stnikolaus/linkglimpse/tree/main/apps/browser-extension"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center rounded-lg bg-gray-900 px-5 py-3 font-semibold text-white hover:bg-gray-800"

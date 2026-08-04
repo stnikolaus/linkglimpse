@@ -1,6 +1,6 @@
 # LinkGlimpse
 
-[![CI](https://github.com/stnikolaus/social-preview/actions/workflows/ci.yml/badge.svg)](https://github.com/stnikolaus/social-preview/actions/workflows/ci.yml)
+[![CI](https://github.com/stnikolaus/linkglimpse/actions/workflows/ci.yml/badge.svg)](https://github.com/stnikolaus/linkglimpse/actions/workflows/ci.yml)
 [![AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
 [![npm](https://img.shields.io/npm/v/linkglimpse.svg)](https://www.npmjs.com/package/linkglimpse)
 
@@ -27,7 +27,7 @@ LinkGlimpse simulates likely previews from public metadata. Social platforms con
 Requirements: Node.js 20+ and pnpm 10.
 
 ```bash
-git clone https://github.com/stnikolaus/social-preview.git
+git clone https://github.com/stnikolaus/linkglimpse.git
 cd social-preview
 corepack enable
 pnpm install
