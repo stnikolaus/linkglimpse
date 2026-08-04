@@ -64,7 +64,7 @@ The default CLI calls the public LinkGlimpse API with the URL you explicitly pro
 
 ## Browser extension
 
-The extension reads the active page URL only after the user opens it or chooses its context-menu command. It requests `activeTab` and `contextMenus`; it does not request browser history, cookies, credentials, or access to every website.
+The extension automatically audits the active page after the user opens its toolbar popup and keeps the score, previews, diagnostics, extracted tags, and fixes inside the extension. It requests `activeTab` plus access to the LinkGlimpse API; it does not request browser history, cookies, credentials, or access to every website.
 
 ```bash
 pnpm extension:build

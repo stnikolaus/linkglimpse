@@ -35,7 +35,7 @@ export default function PrivacyPolicy() {
                 <li>Basic request and error information that may appear in short-lived infrastructure logs</li>
                 <li>Aggregate pageview and product-event analytics, such as whether a preview succeeded or a report was exported</li>
                 <li>The submitted URL&apos;s hostname in product events; LinkGlimpse does not intentionally send the full submitted URL as an analytics event property</li>
-                <li>URLs opened from the CLI or browser extension, but only after you explicitly request an inspection</li>
+                <li>URLs inspected from the CLI or browser extension, but only after you explicitly request an inspection</li>
               </ul>
             </section>
 
@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">CLI and Browser Extension</h2>
               <p className="text-gray-700">
-                The open-source CLI contains no analytics code. By default it sends the URL you explicitly provide to the public LinkGlimpse API; you can configure another deployment. The browser extension runs only after you open it or choose its context-menu command. It requests access to the active tab and context menus, and does not request browser history, cookies, credentials, or access to every website.
+                The open-source CLI contains no analytics code. By default it sends the URL you explicitly provide to the public LinkGlimpse API; you can configure another deployment. The browser extension runs only after you open its toolbar popup, then sends the active public URL to the LinkGlimpse API and renders the returned diagnostics inside the extension. It requests access to the active tab and LinkGlimpse API, and does not request browser history, cookies, credentials, or access to every website.
               </p>
             </section>
 

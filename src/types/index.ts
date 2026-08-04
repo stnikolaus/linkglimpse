@@ -9,6 +9,8 @@ export interface UrlMetadata {
 
 export interface ApiResponse {
   error?: string;
+  pageTitle?: string;
+  pageDescription?: string;
   title?: string;
   description?: string;
   image?: string;

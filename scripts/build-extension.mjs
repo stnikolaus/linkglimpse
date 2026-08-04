@@ -6,12 +6,12 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const source = path.join(root, 'apps/browser-extension/src');
 const outputRoot = path.join(root, 'dist/extension');
 const targets = ['chrome', 'firefox'];
-const sourceFiles = ['background.js', 'popup.css', 'popup.html', 'popup.js'];
+const sourceFiles = ['popup.css', 'popup.html', 'popup.js'];
 const iconSources = {
   'icon-16.png': 'public/images/icon/favicon-16x16.png',
   'icon-32.png': 'public/images/icon/favicon-32x32.png',
-  'icon-48.png': 'public/images/icon/android-chrome-192x192.png',
-  'icon-128.png': 'public/images/icon/android-chrome-192x192.png',
+  'icon-48.png': 'apps/browser-extension/src/icons/icon-48.png',
+  'icon-128.png': 'apps/browser-extension/src/icons/icon-128-store.png',
 };
 
 await rm(outputRoot, { recursive: true, force: true });
@@ -31,13 +31,17 @@ for (const target of targets) {
   const manifest = structuredClone(baseManifest);
   if (target === 'chrome') {
     manifest.minimum_chrome_version = '120';
-    manifest.background = { service_worker: 'background.js' };
   } else {
-    manifest.background = { scripts: ['background.js'] };
     manifest.browser_specific_settings = {
       gecko: {
-        id: 'extension@linkglimpse.com',
-        strict_min_version: '128.0',
+        id: 'linkglimpse@linkglimpse.com',
+        data_collection_permissions: {
+          required: ['browsingActivity'],
+        },
+        strict_min_version: '140.0',
+      },
+      gecko_android: {
+        strict_min_version: '142.0',
       },
     };
   }

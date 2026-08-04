@@ -208,6 +208,8 @@ function extractMetadata(html: string, requestedUrl: string, finalUrl: string): 
   }
 
   const titleTag = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1];
+  const pageTitle = decodeHtmlEntities(titleTag?.trim() ?? '');
+  const pageDescription = tags.description;
   const canonicalTag = (html.match(/<link\b[^>]*>/gi) ?? [])
     .map(parseAttributes)
     .find((attributes) => attributes.rel?.toLowerCase().split(/\s+/).includes('canonical'));
@@ -217,7 +219,9 @@ function extractMetadata(html: string, requestedUrl: string, finalUrl: string): 
   const twitter = Object.fromEntries(Object.entries(tags).filter(([key]) => key.startsWith('twitter:')));
 
   return {
-    title: tags['og:title'] || tags['twitter:title'] || decodeHtmlEntities(titleTag?.trim() ?? ''),
+    pageTitle,
+    pageDescription,
+    title: tags['og:title'] || tags['twitter:title'] || pageTitle,
     description: tags['og:description'] || tags['twitter:description'] || tags.description,
     image,
     url: finalUrl,

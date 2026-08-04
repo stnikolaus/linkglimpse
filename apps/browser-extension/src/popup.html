@@ -8,22 +8,96 @@
   </head>
   <body>
     <main>
-      <header>
+      <header class="app-header">
         <img src="icons/icon-48.png" width="32" height="32" alt="">
-        <div>
+        <div class="brand-copy">
           <h1>LinkGlimpse</h1>
-          <p>Social preview diagnostics</p>
+          <p>Social &amp; search diagnostics</p>
         </div>
+        <span id="audit-state" class="audit-state" aria-live="polite">Checking</span>
       </header>
 
-      <section aria-labelledby="current-page-heading">
-        <h2 id="current-page-heading">Current page</h2>
-        <p id="page-url">Reading active tab…</p>
+      <section id="loading" class="loading-state" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        <div>
+          <strong>Checking metadata</strong>
+          <p>Fetching the page, image, redirects, and social tags…</p>
+        </div>
       </section>
 
-      <p id="error" role="alert" hidden></p>
-      <button id="inspect" type="button" disabled>Inspect this page</button>
-      <a id="open-checker" href="https://www.linkglimpse.com/open-graph-checker?utm_source=browser_extension&utm_medium=browser_extension&utm_campaign=open_source_distribution" target="_blank" rel="noreferrer">Open LinkGlimpse</a>
+      <section id="error-state" class="error-state" hidden>
+        <strong>We could not check this page</strong>
+        <p id="error-message"></p>
+        <button id="retry" type="button">Try again</button>
+      </section>
+
+      <div id="results" hidden>
+        <section class="score-panel" aria-labelledby="score-heading">
+          <div id="score-ring" class="score-ring" role="meter" aria-label="Metadata health score" aria-valuemin="0" aria-valuemax="100">
+            <strong id="score-value">—</strong>
+          </div>
+          <div class="score-copy">
+            <h2 id="score-heading">Metadata health</h2>
+            <p id="score-summary"></p>
+          </div>
+          <button id="copy-all-fixes" class="secondary-button compact-button" type="button" hidden>Copy fixes for AI</button>
+        </section>
+
+        <section class="section-block" aria-labelledby="preview-heading">
+          <div class="section-heading-row">
+            <h2 id="preview-heading">Previews</h2>
+            <div class="preview-tabs" role="tablist" aria-label="Preview type">
+              <button class="preview-tab is-active" type="button" role="tab" aria-selected="true" data-platform="facebook">Facebook</button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-platform="linkedin">LinkedIn</button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-platform="twitter">X</button>
+              <button class="preview-tab" type="button" role="tab" aria-selected="false" data-platform="google">Google</button>
+            </div>
+          </div>
+
+          <article id="preview-card" class="preview-card platform-facebook">
+            <div id="preview-media" class="preview-media">
+              <img id="preview-image" alt="">
+              <span id="preview-image-fallback">No share image</span>
+            </div>
+            <div class="preview-copy">
+              <div id="serp-site-row" class="serp-site-row" hidden>
+                <span id="serp-favicon" class="serp-favicon" aria-hidden="true"></span>
+                <span class="serp-site-copy">
+                  <strong id="serp-site-name"></strong>
+                  <span id="serp-url"></span>
+                </span>
+                <span class="serp-menu" aria-hidden="true">⋮</span>
+              </div>
+              <p id="preview-domain" class="preview-domain"></p>
+              <h3 id="preview-title"></h3>
+              <p id="preview-description" class="preview-description"></p>
+            </div>
+          </article>
+        </section>
+
+        <section class="section-block" aria-labelledby="facts-heading">
+          <h2 id="facts-heading">Page signals</h2>
+          <dl id="facts-grid" class="facts-grid"></dl>
+        </section>
+
+        <section class="section-block" aria-labelledby="platforms-heading">
+          <h2 id="platforms-heading">Platform readiness</h2>
+          <div id="platform-list" class="platform-list"></div>
+        </section>
+
+        <section class="section-block" aria-labelledby="checks-heading">
+          <div class="section-heading-row">
+            <h2 id="checks-heading">Actionable checks</h2>
+            <button id="toggle-passed" class="text-button" type="button">Show passed</button>
+          </div>
+          <div id="checks-list" class="checks-list"></div>
+        </section>
+
+        <details class="raw-tags">
+          <summary>Extracted metadata tags <span id="tag-count"></span></summary>
+          <dl id="tags-list"></dl>
+        </details>
+      </div>
     </main>
     <script src="popup.js"></script>
   </body>

@@ -2,13 +2,16 @@
   "manifest_version": 3,
   "name": "LinkGlimpse – Social Preview Checker",
   "version": "0.1.0",
-  "description": "Inspect the current page's Open Graph tags, social previews, share image, redirects, and indexing signals.",
+  "description": "Check the current page's social cards, Google search preview, metadata, share image, redirects, and indexing signals.",
+  "homepage_url": "https://www.linkglimpse.com/",
   "permissions": [
-    "activeTab",
-    "contextMenus"
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://www.linkglimpse.com/*"
   ],
   "action": {
-    "default_title": "Inspect with LinkGlimpse",
+    "default_title": "Check this page with LinkGlimpse",
     "default_popup": "popup.html"
   },
   "icons": {

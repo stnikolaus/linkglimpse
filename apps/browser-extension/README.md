@@ -1,8 +1,11 @@
 # LinkGlimpse browser extension
 
-The LinkGlimpse extension adds one explicit action to Chrome, Firefox, and compatible browsers: inspect the current public page with LinkGlimpse.
+The LinkGlimpse extension automatically audits the current public page when its toolbar popup opens. The score, social and Google search previews, platform readiness, metadata checks, extracted tags, and copy-ready fixes all stay inside the extension.
 
-It requests only `activeTab` and `contextMenus`. The current page URL is sent to `linkglimpse.com` only after the user clicks the toolbar action or context-menu command. The extension does not contain analytics code.
+It requests `activeTab` to read the selected page URL after the user opens the popup and host access only to the LinkGlimpse metadata API. The current page URL is sent to `linkglimpse.com` only after that explicit toolbar action. The extension does not contain analytics code, request browser history, or run continuously in the background.
+
+The Firefox package declares the selected URL as required `browsingActivity` data because Mozilla classifies transmitting a specific URL under that category. It does not read the user's browser history.
+The package targets Firefox 140 or later on desktop and Firefox 142 or later on Android, where Mozilla's built-in data-consent prompt is available.
 
 ## Build
 

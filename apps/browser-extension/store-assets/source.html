@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LinkGlimpse store assets</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; }
+      body { overflow: hidden; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      [hidden] { display: none !important; }
+
+      #promo {
+        position: relative;
+        width: 440px;
+        height: 280px;
+        overflow: hidden;
+        color: #fff;
+        background: #101827;
+      }
+      .promo-orb { position: absolute; border-radius: 999px; opacity: .72; filter: blur(2px); }
+      .promo-orb.one { width: 230px; height: 230px; top: -110px; right: -30px; background: #67e8f9; }
+      .promo-orb.two { width: 210px; height: 210px; right: 90px; bottom: -145px; background: #f0abfc; }
+      .promo-orb.three { width: 145px; height: 145px; left: -70px; bottom: -38px; background: #fde047; }
+      .promo-brand { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 18px; }
+      .promo-brand img { width: 92px; height: 92px; border-radius: 22px; }
+      .promo-brand strong { display: block; font-size: 34px; letter-spacing: -.04em; }
+      .promo-brand span { display: block; margin-top: 6px; color: #cbd5e1; font-size: 15px; }
+
+      #screenshot {
+        width: 1280px;
+        height: 800px;
+        padding: 52px;
+        color: #111827;
+        background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 50%, #faf5ff 100%);
+      }
+      .screenshot-layout {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        grid-template-columns: minmax(0, 1fr) 520px;
+        overflow: hidden;
+        border: 1px solid #dbe3ee;
+        border-radius: 24px;
+        background: #fff;
+      }
+      .asset-copy { display: flex; flex-direction: column; justify-content: center; padding: 64px; background: #f8fafc; }
+      .asset-eyebrow { color: #2563eb; font-size: 14px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+      .asset-copy h1 { max-width: 520px; margin: 18px 0 0; font-size: 48px; line-height: 1.04; letter-spacing: -.045em; }
+      .asset-copy p { max-width: 470px; margin: 22px 0 0; color: #5b6472; font-size: 20px; line-height: 1.5; }
+      .asset-points { display: grid; gap: 12px; margin-top: 30px; }
+      .asset-point { display: flex; align-items: center; gap: 10px; color: #374151; font-size: 16px; font-weight: 700; }
+      .asset-point::before { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 999px; color: #047857; background: #d1fae5; content: "✓"; font-size: 13px; }
+      .popup-stage { display: flex; align-items: center; justify-content: center; overflow: hidden; border-left: 1px solid #e5e7eb; background: #eef2f7; }
+      .popup-frame { width: 430px; height: 620px; overflow: hidden; border: 1px solid #d1d5db; border-radius: 14px; background: #fff; }
+      .popup-frame iframe { display: block; width: 430px; height: 620px; border: 0; background: #fff; }
+    </style>
+  </head>
+  <body>
+    <main id="promo" hidden>
+      <span class="promo-orb one"></span>
+      <span class="promo-orb two"></span>
+      <span class="promo-orb three"></span>
+      <div class="promo-brand">
+        <img src="/apps/browser-extension/src/icons/icon-128.png" alt="">
+        <div>
+          <strong>LinkGlimpse</strong>
+          <span>Social &amp; search previews</span>
+        </div>
+      </div>
+    </main>
+
+    <main id="screenshot" hidden>
+      <div class="screenshot-layout">
+        <section class="asset-copy">
+          <span class="asset-eyebrow">Chrome &amp; Firefox extension</span>
+          <h1 id="asset-title"></h1>
+          <p id="asset-description"></p>
+          <div id="asset-points" class="asset-points"></div>
+        </section>
+        <section class="popup-stage">
+          <div class="popup-frame">
+            <iframe id="popup" title="LinkGlimpse extension popup"></iframe>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const reports = {
+        social: {
+          title: 'Link Preview Checker for Social Media',
+          description: 'Check how any URL appears on Facebook, LinkedIn, X and more.',
+          pageTitle: 'Link Preview Checker for Social Media',
+          pageDescription: 'Preview social cards, inspect metadata, and find missing images or text.',
+          image: 'https://www.linkglimpse.com/images/icon/social-preview-1200x630.jpeg',
+          siteName: 'LinkGlimpse',
+          url: 'https://www.linkglimpse.com/',
+          finalUrl: 'https://www.linkglimpse.com/',
+          canonical: 'https://www.linkglimpse.com/',
+          status: 200,
+          statusText: 'OK',
+          redirected: false,
+          imageInfo: { width: 1200, height: 630 },
+          tags: { description: 'Preview social cards, inspect metadata, and find missing images or text.' },
+          diagnostics: {
+            score: 92,
+            counts: { pass: 16, warning: 2, fail: 0 },
+            platforms: [
+              { platform: 'Facebook', status: 'ready', missing: [] },
+              { platform: 'LinkedIn', status: 'ready', missing: [] },
+              { platform: 'X / Twitter', status: 'needs-work', missing: ['twitter:site'] }
+            ],
+            checks: [
+              { label: 'Twitter site', status: 'warning', value: '', recommendation: 'Add twitter:site when the website has an associated X account.' },
+              { label: 'Image file size', status: 'warning', value: '1.6 MB', recommendation: 'Compress the share image below 1 MB.' }
+            ]
+          }
+        },
+        fixes: {
+          title: 'Turn your side project into business',
+          description: 'Build and grow your side project with Lunadio.',
+          pageTitle: 'Turn your side project into business | Lunadio',
+          pageDescription: 'Join a focused community for founders building profitable side projects.',
+          image: 'https://www.linkglimpse.com/images/icon/social-preview-1200x630.jpeg',
+          siteName: 'Lunadio',
+          url: 'https://www.lunadio.com/',
+          finalUrl: 'https://www.lunadio.com/',
+          canonical: '',
+          status: 200,
+          statusText: 'OK',
+          redirected: false,
+          imageInfo: { width: 1200, height: 630 },
+          tags: { 'og:title': 'Turn your side project into business' },
+          diagnostics: {
+            score: 74,
+            counts: { pass: 12, warning: 4, fail: 2 },
+            platforms: [
+              { platform: 'Facebook', status: 'needs-work', missing: ['og:description'] },
+              { platform: 'LinkedIn', status: 'needs-work', missing: ['og:description'] },
+              { platform: 'X / Twitter', status: 'needs-work', missing: ['twitter:description'] }
+            ],
+            checks: [
+              { label: 'Canonical URL', status: 'fail', value: '', recommendation: 'Add a self-referencing canonical URL.' },
+              { label: 'Open Graph description', status: 'fail', value: '', recommendation: 'Add an og:description that explains the page value.' },
+              { label: 'Twitter description', status: 'warning', value: '', recommendation: 'Add twitter:description or confirm the Open Graph fallback.' }
+            ]
+          }
+        }
+      };
+
+      const modes = {
+        social: {
+          title: 'Audit the page you are viewing',
+          description: 'Open LinkGlimpse and get an immediate metadata score with social previews and image checks.',
+          points: ['Automatic on every click', 'Facebook, LinkedIn and X previews', 'No account required']
+        },
+        serp: {
+          title: 'Preview social cards and Google results',
+          description: 'Switch between platforms to see how titles, descriptions, URLs and images will appear.',
+          points: ['Google SERP preview', 'HTML title and meta description', 'Formatted search breadcrumb']
+        },
+        fixes: {
+          title: 'Turn warnings into AI-ready fixes',
+          description: 'See every failed check and copy a focused repair prompt for your coding agent.',
+          points: ['Specific recommendations', 'Copy fixes for AI', 'Raw metadata included']
+        }
+      };
+
+      const mode = new URLSearchParams(location.search).get('mode') || 'social';
+      if (mode === 'promo') {
+        document.querySelector('#promo').hidden = false;
+      } else {
+        const content = modes[mode] || modes.social;
+        const report = mode === 'fixes' ? reports.fixes : reports.social;
+        document.querySelector('#screenshot').hidden = false;
+        document.querySelector('#asset-title').textContent = content.title;
+        document.querySelector('#asset-description').textContent = content.description;
+        content.points.forEach((point) => {
+          const item = document.createElement('div');
+          item.className = 'asset-point';
+          item.textContent = point;
+          document.querySelector('#asset-points').append(item);
+        });
+
+        const mock = `
+          window.chrome = {
+            tabs: { query(_options, callback) { callback([{ url: '${report.finalUrl}', title: '${report.siteName}' }]); } },
+            runtime: { lastError: null }
+          };
+          window.fetch = async () => ({ ok: true, status: 200, json: async () => (${JSON.stringify(report)}) });
+        `;
+
+        fetch('/dist/extension/chrome/popup.html')
+          .then((response) => response.text())
+          .then((html) => {
+            const base = '<base href="/dist/extension/chrome/">';
+            const injected = `<script>${mock}<\/script><script src="popup.js"><\/script>`;
+            const frame = document.querySelector('#popup');
+            frame.addEventListener('load', () => {
+              window.setTimeout(() => {
+                if (mode === 'serp') frame.contentDocument.querySelector('[data-platform="google"]')?.click();
+                if (mode === 'fixes') frame.contentDocument.querySelector('#checks-heading')?.scrollIntoView({ block: 'start' });
+              }, 100);
+            }, { once: true });
+            frame.srcdoc = html
+              .replace('<head>', `<head>${base}`)
+              .replace('<script src="popup.js"><\/script>', injected);
+          });
+      }
+    </script>
+  </body>
+</html>

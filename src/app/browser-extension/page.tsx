@@ -20,7 +20,7 @@ export default function BrowserExtensionPage() {
         <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-blue-700">Chrome and Firefox</p>
         <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">Social Preview Checker Browser Extension</h1>
         <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600">
-          Open a page, click LinkGlimpse, and get a live report with social previews, metadata diagnostics, image checks, redirects, and copy-ready fixes.
+          Open LinkGlimpse from the toolbar and it automatically checks the current page. See social cards, a Google search preview, metadata diagnostics, image checks, redirects, and copy-ready fixes without leaving the extension.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -44,9 +44,9 @@ export default function BrowserExtensionPage() {
       <section className="border-y border-gray-200 bg-white">
         <div className="mx-auto grid max-w-6xl gap-6 px-4 py-16 md:grid-cols-3">
           {[
-            { icon: MousePointerClick, title: 'Explicitly activated', text: 'It runs only when you open the popup or choose the LinkGlimpse context-menu command.' },
-            { icon: ShieldCheck, title: 'Minimal permissions', text: 'Only activeTab and contextMenus—no browser history, cookies, credentials, or access to every site.' },
-            { icon: CheckCircle2, title: 'Actionable report', text: 'See platform previews, diagnostic severity, metadata values, and specific remediation guidance.' },
+            { icon: MousePointerClick, title: 'Automatic on open', text: 'Click the toolbar icon and the current page is checked immediately—there is no URL form or inspect button.' },
+            { icon: ShieldCheck, title: 'Minimal permissions', text: 'Only the active tab and LinkGlimpse API—no browser history, cookies, credentials, or continuous background access.' },
+            { icon: CheckCircle2, title: 'Everything in the popup', text: 'See the score, platform previews, metadata values, extracted tags, and copy-ready fixes without opening another page.' },
           ].map((item) => (
             <article key={item.title} className="rounded-xl border border-gray-200 p-6">
               <item.icon className="h-7 w-7 text-blue-700" />
