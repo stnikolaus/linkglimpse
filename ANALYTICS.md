@@ -21,8 +21,11 @@ Create these custom event goals in the Plausible site settings for `linkglimpse.
 - `Bulk Report Exported`
 - `API Test Completed`
 - `Platform Navigation`
+- `Distribution Link Clicked` — outbound npm, GitHub, and marketplace intent
 
-Useful event properties include `surface`, `url_domain`, `diagnostic_score`, `duration_ms`, `success_rate`, `format`, and `url_count`.
+Useful event properties include `surface`, `url_domain`, `diagnostic_score`, `duration_ms`, `success_rate`, `format`, `url_count`, `channel`, and `destination`.
+
+The CLI and browser extension do not contain analytics code. Distribution links on the LinkGlimpse website carry channel-specific UTM parameters or emit `Distribution Link Clicked`; the resulting hosted report records its normal website analytics after navigation.
 
 The first product funnel to monitor is:
 

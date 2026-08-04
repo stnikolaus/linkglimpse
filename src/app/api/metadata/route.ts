@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { lookup } from 'node:dns/promises';
+import { isIP } from 'node:net';
 import { analyzeMetadata } from '@/lib/metadata-analysis';
 import type { ApiResponse, ImageInspection, RedirectHop } from '@/types';
 
@@ -17,7 +19,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const requestedUrl = validatePublicUrl(url);
+    const requestedUrl = await validatePublicUrl(url);
     const { response, finalUrl, redirectChain } = await fetchPageWithRedirects(requestedUrl);
     const contentType = response.headers.get('content-type') ?? '';
 
@@ -79,7 +81,7 @@ async function fetchPageWithRedirects(startUrl: URL): Promise<{
     const location = response.headers.get('location');
     const isRedirect = location && [300, 301, 302, 303, 307, 308].includes(response.status);
     const resolvedLocation = isRedirect
-      ? validatePublicUrl(new URL(location, currentUrl).toString()).toString()
+      ? (await validatePublicUrl(new URL(location, currentUrl).toString())).toString()
       : undefined;
 
     redirectChain.push({
@@ -99,7 +101,7 @@ async function fetchPageWithRedirects(startUrl: URL): Promise<{
   throw new Error(`Too many redirects (more than ${MAX_REDIRECTS})`);
 }
 
-function validatePublicUrl(input: string): URL {
+async function validatePublicUrl(input: string): Promise<URL> {
   const parsed = new URL(input);
 
   if (!['http:', 'https:'].includes(parsed.protocol)) {
@@ -114,18 +116,41 @@ function validatePublicUrl(input: string): URL {
     || hostname.endsWith('.localhost')
     || hostname.endsWith('.local')
     || hostname.endsWith('.internal')
-    || hostname === '0.0.0.0'
-    || hostname === '::'
-    || hostname === '::1';
+    || hostname.endsWith('.test')
+    || hostname.endsWith('.invalid');
 
-  if (blockedHostname || isPrivateIpv4(hostname)) {
+  if (blockedHostname) {
     throw new Error('Private or local network URLs are not supported');
+  }
+
+  const addresses = isIP(hostname)
+    ? [{ address: hostname }]
+    : await lookup(hostname, { all: true, verbatim: true });
+
+  if (addresses.length === 0 || addresses.some(({ address }) => isPrivateOrReservedAddress(address))) {
+    throw new Error('Private or reserved network URLs are not supported');
   }
 
   return parsed;
 }
 
-function isPrivateIpv4(hostname: string): boolean {
+function isPrivateOrReservedAddress(address: string): boolean {
+  const normalized = address.toLowerCase().split('%')[0];
+  const mappedIpv4 = normalized.match(/::ffff:(\d+\.\d+\.\d+\.\d+)$/)?.[1];
+  if (mappedIpv4) return isPrivateOrReservedIpv4(mappedIpv4);
+  if (isIP(normalized) === 4) return isPrivateOrReservedIpv4(normalized);
+  if (isIP(normalized) !== 6) return true;
+
+  return normalized === '::'
+    || normalized === '::1'
+    || normalized.startsWith('fc')
+    || normalized.startsWith('fd')
+    || /^fe[89ab]/.test(normalized)
+    || normalized.startsWith('ff')
+    || normalized.startsWith('2001:db8:');
+}
+
+function isPrivateOrReservedIpv4(hostname: string): boolean {
   const match = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
   if (!match) return false;
 
@@ -139,7 +164,12 @@ function isPrivateIpv4(hostname: string): boolean {
     || (a === 169 && b === 254)
     || (a === 172 && b >= 16 && b <= 31)
     || (a === 192 && b === 168)
+    || (a === 192 && b === 0)
+    || (a === 192 && b === 0 && octets[2] === 2)
     || (a === 100 && b >= 64 && b <= 127)
+    || (a === 198 && (b === 18 || b === 19))
+    || (a === 198 && b === 51 && octets[2] === 100)
+    || (a === 203 && b === 0 && octets[2] === 113)
     || a >= 224;
 }
 
@@ -249,18 +279,27 @@ async function inspectImage(input: string): Promise<ImageInspection> {
   const inspection: ImageInspection = { url: input };
 
   try {
-    const imageUrl = validatePublicUrl(input);
-    const response = await fetch(imageUrl, {
-      headers: {
-        Accept: 'image/*',
-        Range: `bytes=0-${MAX_IMAGE_HEADER_BYTES - 1}`,
-        'User-Agent': 'LinkGlimpse/2.0 (+https://www.linkglimpse.com)',
-      },
-      redirect: 'follow',
-      cache: 'no-store',
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-    });
-    validatePublicUrl(response.url || imageUrl.toString());
+    let imageUrl = await validatePublicUrl(input);
+    let response: Response | undefined;
+
+    for (let attempt = 0; attempt <= MAX_REDIRECTS; attempt += 1) {
+      response = await fetch(imageUrl, {
+        headers: {
+          Accept: 'image/*',
+          Range: `bytes=0-${MAX_IMAGE_HEADER_BYTES - 1}`,
+          'User-Agent': 'LinkGlimpse/2.0 (+https://www.linkglimpse.com)',
+        },
+        redirect: 'manual',
+        cache: 'no-store',
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+      const location = response.headers.get('location');
+      if (!location || ![300, 301, 302, 303, 307, 308].includes(response.status)) break;
+      imageUrl = await validatePublicUrl(new URL(location, imageUrl).toString());
+      response = undefined;
+    }
+
+    if (!response) throw new Error(`Too many image redirects (more than ${MAX_REDIRECTS})`);
     const bytes = await readBinaryPrefix(response, MAX_IMAGE_HEADER_BYTES);
     const dimensions = getImageDimensions(bytes);
 

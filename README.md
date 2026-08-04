@@ -1,205 +1,119 @@
-# LinkGlimpse - Social Media Preview Generator
+# LinkGlimpse
 
-A modern Next.js web application that generates social media previews for any URL. See how your links will appear when shared on Facebook, Twitter, LinkedIn, Instagram, and more platforms. Perfect for marketers, content creators, and developers who want to optimize their social media sharing.
+[![CI](https://github.com/stnikolaus/linkglimpse/actions/workflows/ci.yml/badge.svg)](https://github.com/stnikolaus/linkglimpse/actions/workflows/ci.yml)
+[![AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
+[![npm](https://img.shields.io/npm/v/linkglimpse.svg)](https://www.npmjs.com/package/linkglimpse)
 
-## 🚀 Features
+LinkGlimpse is a free, open-source social-preview debugger. Give it a public URL to see representative platform cards, inspect the page's Open Graph and Twitter Card metadata, validate its share image, trace redirects, and copy actionable fixes.
 
-- **URL Input & Validation**: Enter any URL and get instant validation
-- **Multi-Platform Previews**: Generate previews for 9 different social platforms
-- **Bulk URL Processing**: Process up to 100 URLs at once with batch export
-- **Real-time Metadata Extraction**: Fetches Open Graph, Twitter Cards, and meta tags
-- **API Access**: RESTful API for programmatic access to social preview data
-- **Export Options**: Download results in JSON or CSV format
-- **Copy to Clipboard**: Copy preview text with one click
-- **Responsive Design**: Works perfectly on desktop and mobile
-- **Modern UI**: Clean, intuitive interface with smooth animations
-- **SEO Optimized**: Built with best practices for search engine optimization
+**Live tool:** [linkglimpse.com](https://www.linkglimpse.com) · **Open Graph checker:** [linkglimpse.com/open-graph-checker](https://www.linkglimpse.com/open-graph-checker)
 
+![LinkGlimpse social preview diagnostics](public/images/icon/social-preview-1200x630.jpeg)
 
+## What it includes
 
-## Tech Stack
+- Representative previews for Facebook, X, LinkedIn, Instagram, Threads, Tumblr, Mastodon, Nextdoor, Bluesky, and Google Search.
+- Weighted diagnostics for Open Graph tags, Twitter Cards, canonicals, robots directives, redirects, HTTP responses, and share images.
+- Image response, content type, dimensions, aspect ratio, and file-size checks.
+- Copy-ready remediation, shareable live reports, URL comparison, bulk processing, and a JSON API.
+- A zero-dependency [npm CLI](packages/cli) for terminals and CI.
+- A minimal-permission [Chrome and Firefox extension](apps/browser-extension).
+- Troubleshooting guides and implementation examples.
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Package Manager**: pnpm
+LinkGlimpse simulates likely previews from public metadata. Social platforms control their own crawlers, caches, crops, and final rendering, so no third-party checker can guarantee a byte-for-byte platform result.
 
-## 🎯 SEO Features
+## Quick start
 
-This application is built with comprehensive SEO optimization:
+Requirements: Node.js 20+ and pnpm 10.
 
-- **Dynamic Sitemap**: Automatically generated sitemap.xml with all pages
-- **Structured Data**: JSON-LD markup for rich snippets and voice search
-- **Meta Tags**: Complete Open Graph and Twitter Card support
-- **Robots.txt**: Proper crawling instructions for search engines
-- **Canonical URLs**: Prevents duplicate content issues
-- **Performance Optimized**: Fast loading times for better rankings
-- **Mobile Friendly**: Responsive design for mobile-first indexing
-- **PWA Support**: Web app manifest for better mobile experience
-- **Security Headers**: Enhanced security for trust signals
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- pnpm (recommended) or npm
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/stnikolaus/linkglimpse.git
 cd social-preview
-```
-
-2. Install dependencies:
-```bash
+corepack enable
 pnpm install
-```
-
-3. Run the development server:
-```bash
+cp .env.example .env.local
 pnpm dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000). Analytics variables are optional; the checker works without them.
 
-## Usage
+## Commands
 
-1. Enter any URL in the input field
-2. Click "Preview" or press Enter
-3. View how the URL will appear on different social platforms
-4. Click the copy icon to copy the preview text
-
-## API Endpoints
-
-### GET /api/metadata?url={url}
-
-Fetches metadata from a given URL.
-
-**Parameters:**
-- `url` (required): The URL to extract metadata from
-
-**Response:**
-```json
-{
-  "title": "Page Title",
-  "description": "Page description",
-  "image": "https://example.com/image.jpg",
-  "url": "https://example.com",
-  "siteName": "Site Name"
-}
+```bash
+pnpm dev                # Next.js development server
+pnpm build              # Production build
+pnpm lint               # ESLint
+pnpm typecheck          # TypeScript
+pnpm test               # CLI tests
+pnpm cli:pack           # Inspect the npm package tarball
+pnpm extension:build    # Build Chrome and Firefox directories
+pnpm extension:package  # Create marketplace ZIP files
 ```
 
-### POST /api/bulk
+## CLI
 
-Process multiple URLs in bulk.
+Run an audit without installing anything globally:
 
-**Parameters:**
-- `urls` (required): Array of URLs to process (max 100)
-- `format` (optional): Export format - 'json' or 'csv' (default: 'json')
-
-**Request Body:**
-```json
-{
-  "urls": ["https://example.com", "https://google.com"],
-  "format": "json"
-}
+```bash
+npx linkglimpse https://example.com
+npx linkglimpse https://example.com --fail-on warning
+npx linkglimpse https://example.com --json
 ```
 
-**Response:**
-```json
-{
-  "summary": {
-    "totalUrls": 2,
-    "successful": 2,
-    "failed": 0,
-    "totalProcessingTime": 1500,
-    "averageProcessingTime": 750
-  },
-  "results": [
-    {
-      "url": "https://example.com",
-      "success": true,
-      "metadata": { ... },
-      "processingTime": 800
-    }
-  ],
-  "timestamp": "2025-01-01T12:00:00.000Z"
-}
+The default CLI calls the public LinkGlimpse API with the URL you explicitly provide. Pass `--api-base http://localhost:3000` or set `LINKGLIMPSE_API_BASE` to use another deployment. See the [CLI README](packages/cli/README.md) for details.
+
+## Browser extension
+
+The extension reads the active page URL only after the user opens it or chooses its context-menu command. It requests `activeTab` and `contextMenus`; it does not request browser history, cookies, credentials, or access to every website.
+
+```bash
+pnpm extension:build
 ```
 
-## Project Structure
+Load `dist/extension/chrome` as an unpacked Chrome extension or `dist/extension/firefox` as a temporary Firefox add-on. See the [extension README](apps/browser-extension/README.md) and [store listing](apps/browser-extension/STORE_LISTING.md).
 
-```
-src/
-├── app/
-│   ├── api/
-│   │   └── metadata/
-│   │       └── route.ts          # API endpoint for metadata
-│   ├── globals.css               # Global styles
-│   ├── layout.tsx                # Root layout
-│   └── page.tsx                  # Main page
-├── components/
-│   ├── PreviewCard.tsx           # Individual preview card
-│   ├── SocialPreview.tsx         # Main preview component
-│   └── UrlInput.tsx              # URL input component
-├── lib/
-│   └── url-utils.ts              # URL validation utilities
-└── types/
-    └── index.ts                  # TypeScript type definitions
+## API
+
+Inspect one URL:
+
+```bash
+curl --get 'https://www.linkglimpse.com/api/metadata' \
+  --data-urlencode 'url=https://example.com'
 ```
 
-## Supported Platforms
+The response contains extracted metadata, redirect and image information, diagnostic checks, platform readiness, and a score. The public endpoint is currently unauthenticated and may be rate limited; production consumers should self-host or implement retry and backoff behavior.
 
-- **Facebook**: Open Graph preview
-- **Twitter**: Twitter Card preview
-- **LinkedIn**: Professional network preview
-- **Google Search**: Search result preview
-- **Instagram**: Social media preview
-- **Tumblr**: Blog platform preview
-- **Mastodon**: Fediverse preview
-- **Nextdoor**: Local community preview
-- **Bluesky**: Social platform preview
+## Environment variables
 
-## Development
+Copy `.env.example` to `.env.local`. Do not commit `.env.local` or live credentials.
 
-### Available Scripts
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` | No | Sends explicit product events to PostHog |
+| `NEXT_PUBLIC_POSTHOG_HOST` | No | PostHog ingestion host |
+| `GOOGLE_SITE_VERIFICATION` | No | Google Search Console verification value |
 
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
-- `pnpm start` - Start production server
-- `pnpm lint` - Run ESLint
+Plausible is loaded through the public site configuration and does not require a local secret. See [ANALYTICS.md](ANALYTICS.md).
 
-### Environment Variables
+## Project structure
 
-Optional analytics and Search Console settings are documented in `.env.example`.
+```text
+src/                         Next.js website, API, diagnostics, and previews
+content/blog/                Markdown troubleshooting guides
+packages/cli/                Zero-dependency npm CLI
+apps/browser-extension/      Chrome and Firefox extension source
+scripts/                     Extension build and packaging scripts
+.github/                     CI, release workflows, and contribution templates
+```
 
-## Deployment
+## Security and privacy
 
-The app can be deployed to any platform that supports Next.js:
-
-- **Vercel** (recommended)
-- **Netlify**
-- **Railway**
-- **AWS Amplify**
+Only submit URLs that are safe to send to the selected LinkGlimpse deployment. The hosted service fetches public URLs on demand; see the [privacy policy](https://www.linkglimpse.com/privacy). Security issues should be reported according to [SECURITY.md](SECURITY.md), not through a public issue.
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+Bug reports, platform-rendering corrections, validation improvements, accessibility fixes, and documentation contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the public [roadmap](ROADMAP.md) before starting substantial work.
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- Built with [Next.js](https://nextjs.org/)
-- Styled with [Tailwind CSS](https://tailwindcss.com/)
-- Icons from [Lucide React](https://lucide.dev/)
+LinkGlimpse is licensed under the [GNU Affero General Public License v3.0 or later](LICENSE). If you run a modified version as a network service, the AGPL requires you to offer the corresponding source to its users.

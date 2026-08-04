@@ -77,6 +77,26 @@ export default function Footer() {
               >
                 Blog
               </Link>
+              <Link
+                href="/cli"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Open Graph CLI
+              </Link>
+              <Link
+                href="/browser-extension"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Browser Extension
+              </Link>
+              <a
+                href="https://github.com/stnikolaus/linkglimpse"
+                target="_blank"
+                rel="noreferrer"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                GitHub Source
+              </a>
             </div>
           </div>
 

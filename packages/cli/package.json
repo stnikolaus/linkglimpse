@@ -1,0 +1,41 @@
+{
+  "name": "linkglimpse",
+  "version": "0.1.0",
+  "description": "Audit Open Graph, social preview, image, redirect, and indexing metadata from the command line.",
+  "type": "module",
+  "bin": {
+    "linkglimpse": "bin/linkglimpse.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "open-graph",
+    "social-preview",
+    "twitter-card",
+    "metadata",
+    "seo",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stnikolaus/linkglimpse.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://www.linkglimpse.com/cli",
+  "bugs": "https://github.com/stnikolaus/linkglimpse/issues",
+  "license": "AGPL-3.0-or-later",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LinkGlimpse</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="icons/icon-48.png" width="32" height="32" alt="">
+        <div>
+          <h1>LinkGlimpse</h1>
+          <p>Social preview diagnostics</p>
+        </div>
+      </header>
+
+      <section aria-labelledby="current-page-heading">
+        <h2 id="current-page-heading">Current page</h2>
+        <p id="page-url">Reading active tab…</p>
+      </section>
+
+      <p id="error" role="alert" hidden></p>
+      <button id="inspect" type="button" disabled>Inspect this page</button>
+      <a id="open-checker" href="https://www.linkglimpse.com/open-graph-checker?utm_source=browser_extension&utm_medium=browser_extension&utm_campaign=open_source_distribution" target="_blank" rel="noreferrer">Open LinkGlimpse</a>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

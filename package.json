@@ -1,12 +1,23 @@
 {
-  "name": "social-preview",
+  "name": "linkglimpse-web",
   "version": "0.1.0",
   "private": true,
+  "license": "AGPL-3.0-or-later",
+  "packageManager": "pnpm@10.16.1",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run cli:test",
+    "cli:test": "node --test packages/cli/test/*.test.mjs",
+    "cli:pack": "npm pack --workspace linkglimpse",
+    "extension:build": "node scripts/build-extension.mjs",
+    "extension:package": "node scripts/package-extension.mjs"
   },
   "dependencies": {
     "@automattic/social-previews": "2.1.0-beta.12",
