@@ -5,7 +5,8 @@
   "license": "AGPL-3.0-or-later",
   "packageManager": "pnpm@10.16.1",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "dev": "next dev --turbopack",
@@ -13,13 +14,18 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "npm run cli:test",
+    "test": "pnpm cli:test && pnpm mcp:test && pnpm actor:test",
     "cli:test": "node --test packages/cli/test/*.test.mjs",
     "cli:pack": "npm pack --workspace linkglimpse",
+    "mcp:pack": "npm pack --workspace linkglimpse-mcp",
     "extension:build": "node scripts/build-extension.mjs",
-    "extension:package": "node scripts/package-extension.mjs"
+    "extension:package": "node scripts/package-extension.mjs",
+    "mcp:preview": "node scripts/generate-mcp-preview.mjs",
+    "mcp:test": "pnpm --filter linkglimpse-mcp test",
+    "actor:test": "pnpm --filter linkglimpse-apify-actor test"
   },
   "dependencies": {
+    "linkglimpse": "workspace:*",
     "@automattic/social-previews": "2.1.0-beta.12",
     "@opennextjs/cloudflare": "^1.6.3",
     "@types/react-syntax-highlighter": "^15.5.13",
@@ -37,7 +43,8 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
-    "sass": "^1.89.2"
+    "sass": "^1.89.2",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

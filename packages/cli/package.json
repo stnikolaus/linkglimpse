@@ -1,10 +1,32 @@
 {
   "name": "linkglimpse",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Audit Open Graph, social preview, image, redirect, and indexing metadata from the command line.",
   "type": "module",
   "bin": {
     "linkglimpse": "bin/linkglimpse.mjs"
+  },
+  "exports": {
+    "./core": {
+      "types": "./src/core/index.d.ts",
+      "import": "./src/core/index.mjs"
+    },
+    "./core/analysis": {
+      "types": "./src/core/index.d.ts",
+      "import": "./src/core/analysis.mjs"
+    },
+    "./core/inspection": {
+      "types": "./src/core/index.d.ts",
+      "import": "./src/core/inspection.mjs"
+    },
+    "./core/preview": {
+      "types": "./src/core/index.d.ts",
+      "import": "./src/core/preview.mjs"
+    },
+    "./core/remediation": {
+      "types": "./src/core/index.d.ts",
+      "import": "./src/core/remediation.mjs"
+    }
   },
   "files": [
     "bin",

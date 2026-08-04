@@ -2,7 +2,7 @@
 
 import { buildApiUrl, formatReport, getExitCode, normalizeUrl } from '../src/lib.mjs';
 
-const VERSION = '0.1.0';
+const VERSION = '0.2.0';
 const DEFAULT_API_BASE = 'https://www.linkglimpse.com';
 
 function printHelp() {

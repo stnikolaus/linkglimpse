@@ -1,2 +1,6 @@
 packages:
   - 'packages/*'
+  - 'apps/*'
+linkWorkspacePackages: true
+onlyBuiltDependencies:
+  - sharp
