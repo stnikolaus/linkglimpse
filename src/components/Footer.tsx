@@ -84,6 +84,12 @@ export default function Footer() {
                 Open Graph CLI
               </Link>
               <Link
+                href="/mcp"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Open Graph MCP Server
+              </Link>
+              <Link
                 href="/browser-extension"
                 className="block text-sm text-gray-400 hover:text-gray-200"
               >

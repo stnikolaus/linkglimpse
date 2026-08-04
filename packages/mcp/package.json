@@ -1,0 +1,53 @@
+{
+  "name": "linkglimpse-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for visual social preview, Open Graph, SERP, image, redirect, and indexing audits.",
+  "type": "module",
+  "bin": {
+    "linkglimpse-mcp": "src/server.mjs"
+  },
+  "exports": {
+    ".": "./src/server.mjs"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE.md",
+    "server.json"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "open-graph",
+    "social-preview",
+    "serp-preview",
+    "metadata",
+    "seo",
+    "ai-agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stnikolaus/linkglimpse.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://www.linkglimpse.com/",
+  "bugs": "https://github.com/stnikolaus/linkglimpse/issues",
+  "license": "AGPL-3.0-or-later",
+  "mcpName": "io.github.stnikolaus/linkglimpse",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "linkglimpse": "^0.2.0",
+    "sharp": "^0.35.3",
+    "zod": "^4.4.3"
+  }
+}

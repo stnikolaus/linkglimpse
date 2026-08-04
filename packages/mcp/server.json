@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.stnikolaus/linkglimpse",
+  "description": "Audit and visually preview how public URLs appear on social platforms and Google, with agent-ready metadata fixes.",
+  "repository": {
+    "url": "https://github.com/stnikolaus/linkglimpse",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "linkglimpse-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

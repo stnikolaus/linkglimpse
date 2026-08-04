@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
               Read how LinkGlimpse handles submitted public URLs and analytics data, including what information is collected and why.
             </p>
             <p className="text-gray-600 mb-8">
-              Last updated: August 2, 2026
+              Last updated: August 4, 2026
             </p>
 
             <section className="mb-8">
@@ -59,9 +59,9 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">CLI and Browser Extension</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">CLI, MCP Server, and Browser Extension</h2>
               <p className="text-gray-700">
-                The open-source CLI contains no analytics code. By default it sends the URL you explicitly provide to the public LinkGlimpse API; you can configure another deployment. The browser extension runs only after you open its toolbar popup, then sends the active public URL to the LinkGlimpse API and renders the returned diagnostics inside the extension. It requests access to the active tab and LinkGlimpse API, and does not request browser history, cookies, credentials, or access to every website.
+                The open-source CLI contains no analytics code. By default it sends the URL you explicitly provide to the public LinkGlimpse API; you can configure another deployment. The local MCP server also contains no analytics or telemetry and fetches only URLs explicitly passed to its tools. The browser extension runs only after you open its toolbar popup, then sends the active public URL to the LinkGlimpse API and renders the returned diagnostics inside the extension. It requests access to the active tab and LinkGlimpse API, and does not request browser history, cookies, credentials, or access to every website.
               </p>
             </section>
 

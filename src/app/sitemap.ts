@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/bulk`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/api`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/cli`, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${SITE_URL}/mcp`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/browser-extension`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/instagram-social-preview`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/google-search-preview`, changeFrequency: 'monthly', priority: 0.5 },
