@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import { AlertCircle } from 'lucide-react';
 import type { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
@@ -12,9 +13,10 @@ import SocialPreviewTabs from './SocialPreviewTabs';
 interface SocialPreviewProps {
   surface?: string;
   initialUrl?: string;
+  afterInput?: ReactNode;
 }
 
-export default function SocialPreview({ surface = 'all-platforms', initialUrl }: SocialPreviewProps) {
+export default function SocialPreview({ surface = 'all-platforms', initialUrl, afterInput }: SocialPreviewProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [urlMetadata, setUrlMetadata] = useState<ApiResponse | null>(null);
@@ -72,8 +74,9 @@ export default function SocialPreview({ surface = 'all-platforms', initialUrl }:
     <div className="w-full">
       {/* URL Input */}
       <div className="max-w-6xl mx-auto px-4">
-        <div className="mb-8 text-left items-start">
+        <div className="mb-8 text-left">
           <UrlInput onSubmit={handleUrlSubmit} isLoading={isLoading} initialValue={initialUrl} />
+          {afterInput}
         </div>
       </div>
 

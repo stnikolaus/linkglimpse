@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Globe, Share2, Eye, Zap, CheckCircle, ArrowRight, Facebook, Twitter, Linkedin, Search, Instagram, MessageCircle, Users, Hash, BarChart3, Code, ShieldCheck, FileDown } from 'lucide-react';
 import SocialPreview from '@/components/SocialPreview';
 import FAQStructuredData from '@/components/FAQStructuredData';
@@ -120,13 +119,8 @@ export default function Home() {
       <FAQStructuredData items={faqItems} />
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 pt-10 pb-8 sm:pt-14 sm:pb-10">
           <div className="text-center">
-            <div className="flex items-center justify-center mb-6">
-              <div className="rounded-full border border-gray-200 bg-white p-2">
-                <Image src="/images/link-icon.svg" alt="LinkGlimpse" width={42} height={42} />
-              </div>
-            </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Link Preview Checker
               {' '}<span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">for Social Media</span>
@@ -134,25 +128,29 @@ export default function Home() {
             <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-4">
               Check how any URL may appear on Facebook, X, LinkedIn and more. Preview social cards, inspect Open Graph tags, and find missing images or text.
             </p>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Paste a public URL to get platform previews, an actionable diagnostic score, and a report you can hand directly to a developer.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-2 text-gray-500">
-              <Facebook className="h-6 w-6 text-blue-600" />
-              <Twitter className="h-6 w-6 text-blue-400" />
-              <Linkedin className="h-6 w-6 text-blue-700" />
-              <Instagram className="h-6 w-6 text-pink-600" />
-              <MessageCircle className="h-6 w-6 text-blue-500" />
-              <Users className="h-6 w-6 text-purple-600" />
-              <Hash className="h-6 w-6 text-green-700" />
-              <Search className="h-6 w-6 text-green-600" />
-            </div>
           </div>
         </div>
 
         {/* Preview Generator Section */}
         <div id="preview-generator" className="pb-16">
-          <SocialPreview surface="homepage" />
+          <SocialPreview
+            surface="homepage"
+            afterInput={(
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-4 text-gray-500" aria-label="Supported platforms">
+                <Facebook className="h-6 w-6 text-blue-600" aria-label="Facebook" />
+                <Twitter className="h-6 w-6 text-blue-400" aria-label="X" />
+                <Linkedin className="h-6 w-6 text-blue-700" aria-label="LinkedIn" />
+                <Instagram className="h-6 w-6 text-pink-600" aria-label="Instagram" />
+                <MessageCircle className="h-6 w-6 text-blue-500" aria-label="Tumblr" />
+                <Users className="h-6 w-6 text-purple-600" aria-label="Mastodon" />
+                <Hash className="h-6 w-6 text-green-700" aria-label="Nextdoor" />
+                <Search className="h-6 w-6 text-green-600" aria-label="Google Search" />
+              </div>
+            )}
+          />
         </div>
       </div>
 
