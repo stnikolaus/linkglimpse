@@ -1,6 +1,6 @@
 {
   "name": "linkglimpse",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Audit Open Graph, social preview, image, redirect, and indexing metadata from the command line.",
   "type": "module",
   "bin": {
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/stnikolaus/linkglimpse.git",
     "directory": "packages/cli"
   },
-  "homepage": "https://www.linkglimpse.com/cli",
+  "homepage": "https://www.linkglimpse.com/",
   "bugs": "https://github.com/stnikolaus/linkglimpse/issues",
   "license": "AGPL-3.0-or-later",
   "publishConfig": {
