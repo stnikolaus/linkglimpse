@@ -93,7 +93,13 @@ export default function Footer() {
                 href="/browser-extension"
                 className="block text-sm text-gray-400 hover:text-gray-200"
               >
-                Browser Extension
+                Chrome & Firefox Extensions
+              </Link>
+              <Link
+                href="/apify"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Apify Open Graph Scraper
               </Link>
               <a
                 href="https://github.com/stnikolaus/linkglimpse"

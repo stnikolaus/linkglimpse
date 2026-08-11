@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { CheckCircle2, Chrome, ExternalLink, Github, MousePointerClick, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, Chrome, ExternalLink, Github, Globe2, MousePointerClick, ShieldCheck } from 'lucide-react';
 import DistributionLink from '@/components/DistributionLink';
+
+const CHROME_URL = 'https://chromewebstore.google.com/detail/alhheglnjpjfiaehoekkndaogkfdhdga';
+const FIREFOX_URL = 'https://addons.mozilla.org/en-GB/firefox/addon/linkglimpse/';
 
 export const metadata: Metadata = {
   title: 'Social Preview Checker Browser Extension',
-  description: 'Inspect the current page with the open-source LinkGlimpse extension for Chrome and Firefox. Check Open Graph tags, social cards, images, and redirects.',
+  description: 'Install the LinkGlimpse extension for Chrome or Firefox. Check the current page\'s Open Graph tags, social previews, SERP result, images, and redirects.',
   alternates: { canonical: '/browser-extension' },
   keywords: ['social preview chrome extension', 'open graph checker extension', 'twitter card browser extension', 'open graph firefox addon'],
 };
@@ -14,10 +17,10 @@ export default function BrowserExtensionPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
       <section className="mx-auto max-w-5xl px-4 py-20 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-900">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-gray-200 bg-white text-blue-700">
           <Chrome className="h-7 w-7" />
         </div>
-        <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-blue-700">Chrome and Firefox</p>
+        <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-blue-700">Live in both official stores</p>
         <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">Social Preview Checker Browser Extension</h1>
         <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600">
           Open LinkGlimpse from the toolbar and it automatically checks the current page. See social cards, a Google search preview, metadata diagnostics, image checks, redirects, and copy-ready fixes without leaving the extension.
@@ -25,20 +28,27 @@ export default function BrowserExtensionPage() {
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <DistributionLink
-            channel="github"
-            destination="extension-source"
-            href="https://github.com/stnikolaus/linkglimpse/tree/main/apps/browser-extension"
+            channel="chrome-web-store"
+            destination="browser-extension"
+            href={CHROME_URL}
             target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center rounded-lg bg-gray-900 px-5 py-3 font-semibold text-white hover:bg-gray-800"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800"
           >
-            <Github className="mr-2 h-5 w-5" /> View source and install locally
+            <Chrome className="mr-2 h-5 w-5" /> Add to Chrome
           </DistributionLink>
-          <Link href="/open-graph-checker" className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-gray-900 hover:border-gray-400">
-            Try the web checker <ExternalLink className="ml-2 h-4 w-4" />
-          </Link>
+          <DistributionLink
+            channel="firefox-add-ons"
+            destination="browser-extension"
+            href={FIREFOX_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-gray-900 hover:border-gray-500"
+          >
+            <Globe2 className="mr-2 h-5 w-5 text-orange-700" /> Add to Firefox
+          </DistributionLink>
         </div>
-        <p className="mt-4 text-sm text-gray-500">Chrome Web Store and Firefox Add-ons submissions are being prepared.</p>
+        <p className="mt-4 text-sm text-gray-500">Free to install. No LinkGlimpse account required.</p>
       </section>
 
       <section className="border-y border-gray-200 bg-white">
@@ -58,9 +68,26 @@ export default function BrowserExtensionPage() {
       </section>
 
       <section className="mx-auto max-w-4xl px-4 py-16">
-        <h2 className="text-3xl font-bold text-gray-900">Build the extension locally</h2>
-        <p className="mt-4 text-gray-600">Clone the public repository, install dependencies, and create both browser builds:</p>
-        <pre className="mt-6 overflow-x-auto rounded-xl bg-gray-950 p-5 text-sm leading-relaxed text-green-300"><code>{`corepack enable
+        <h2 className="text-3xl font-bold text-gray-900">Open source and inspectable</h2>
+        <p className="mt-4 text-gray-600">
+          The extension source is public. Review its permissions, inspect the implementation, or build both browser versions locally.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <DistributionLink
+            channel="github"
+            destination="extension-source"
+            href="https://github.com/stnikolaus/linkglimpse/tree/main/apps/browser-extension"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-lg bg-gray-900 px-5 py-3 font-semibold text-white hover:bg-gray-800"
+          >
+            <Github className="mr-2 h-5 w-5" /> View extension source
+          </DistributionLink>
+          <Link href="/open-graph-checker" className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-gray-900 hover:border-gray-500">
+            Try the web checker <ExternalLink className="ml-2 h-4 w-4" />
+          </Link>
+        </div>
+        <pre className="mt-8 overflow-x-auto rounded-xl bg-gray-950 p-5 text-sm leading-relaxed text-green-300"><code>{`corepack enable
 pnpm install
 pnpm extension:build`}</code></pre>
         <p className="mt-5 text-gray-600">

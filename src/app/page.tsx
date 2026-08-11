@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Globe, Share2, Eye, Zap, CheckCircle, ArrowRight, Facebook, Twitter, Linkedin, Search, Instagram, MessageCircle, Users, Hash, BarChart3, Code, ShieldCheck, FileDown } from 'lucide-react';
 import SocialPreview from '@/components/SocialPreview';
 import FAQStructuredData from '@/components/FAQStructuredData';
+import DistributionChannels from '@/components/DistributionChannels';
 
 export const metadata: Metadata = {
   title: 'Link Preview Checker for Social Media',
@@ -153,6 +154,8 @@ export default function Home() {
           />
         </div>
       </div>
+
+      <DistributionChannels />
 
       {/* Features Section */}
       <div className="py-16 bg-white">
