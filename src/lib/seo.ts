@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { markdownPathForPage } from './markdown-paths';
 
 export const SITE_URL = 'https://www.linkglimpse.com';
 export const DEFAULT_OG_IMAGE = '/images/icon/social-preview-1200x630.jpeg';
@@ -15,7 +16,7 @@ export function createPageMetadata({ title, description, path, keywords }: PageM
     title,
     description,
     keywords,
-    alternates: { canonical: path },
+    alternates: createPageAlternates(path),
     openGraph: {
       title,
       description,
@@ -38,6 +39,15 @@ export function createPageMetadata({ title, description, path, keywords }: PageM
     robots: {
       index: true,
       follow: true,
+    },
+  };
+}
+
+export function createPageAlternates(path: string): NonNullable<Metadata['alternates']> {
+  return {
+    canonical: path,
+    types: {
+      'text/markdown': markdownPathForPage(path),
     },
   };
 }

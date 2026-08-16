@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Bot, CheckCircle2, ExternalLink, FileImage, ListChecks, Wrench } from 'lucide-react';
 import DistributionLink from '@/components/DistributionLink';
+import { createPageAlternates } from '@/lib/seo';
 
 const APIFY_ACTOR_URL = 'https://apify.com/changetheway/linkglimpse-apify-actor';
 
 export const metadata: Metadata = {
   title: 'Open Graph Scraper for Apify',
   description: 'Run the LinkGlimpse Apify Actor to audit Open Graph and Twitter Card metadata for up to 100 URLs, generate social preview images, and export structured fixes.',
-  alternates: { canonical: '/apify' },
+  alternates: createPageAlternates('/apify'),
   keywords: ['open graph scraper', 'apify seo scraper', 'social media preview api', 'twitter card scraper', 'metadata scraper'],
   openGraph: {
     title: 'Open Graph Scraper for Apify',

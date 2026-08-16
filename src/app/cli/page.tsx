@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CheckCircle2, Code2, GitBranch, Terminal } from 'lucide-react';
 import DistributionLink from '@/components/DistributionLink';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Open Graph CLI for Metadata Checks',
   description: 'Run Open Graph, Twitter Card, image, redirect, and indexing diagnostics from your terminal or CI pipeline with the open-source LinkGlimpse CLI.',
-  alternates: { canonical: '/cli' },
+  alternates: createPageAlternates('/cli'),
   keywords: ['open graph cli', 'metadata checker cli', 'open graph validator npm', 'twitter card cli', 'social preview ci'],
 };
 

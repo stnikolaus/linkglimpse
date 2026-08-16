@@ -6,6 +6,7 @@ import { Calendar, Clock, User, Tag, ArrowLeft, Share2, BookOpen } from 'lucide-
 import Link from 'next/link';
 import Image from 'next/image';
 import BlogStructuredData from '@/components/BlogStructuredData';
+import { createPageAlternates } from '@/lib/seo';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     title: post.title,
     description: post.description,
     keywords: post.tags.join(', '),
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: createPageAlternates(`/blog/${post.slug}`),
     openGraph: {
       title: post.title,
       description: post.description,

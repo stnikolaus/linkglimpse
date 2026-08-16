@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CheckCircle2, Chrome, ExternalLink, Github, Globe2, MousePointerClick, ShieldCheck } from 'lucide-react';
 import DistributionLink from '@/components/DistributionLink';
+import { createPageAlternates } from '@/lib/seo';
 
 const CHROME_URL = 'https://chromewebstore.google.com/detail/alhheglnjpjfiaehoekkndaogkfdhdga';
 const FIREFOX_URL = 'https://addons.mozilla.org/en-GB/firefox/addon/linkglimpse/';
@@ -9,7 +10,7 @@ const FIREFOX_URL = 'https://addons.mozilla.org/en-GB/firefox/addon/linkglimpse/
 export const metadata: Metadata = {
   title: 'Social Preview Checker Browser Extension',
   description: 'Install the LinkGlimpse extension for Chrome or Firefox. Check the current page\'s Open Graph tags, social previews, SERP result, images, and redirects.',
-  alternates: { canonical: '/browser-extension' },
+  alternates: createPageAlternates('/browser-extension'),
   keywords: ['social preview chrome extension', 'open graph checker extension', 'twitter card browser extension', 'open graph firefox addon'],
 };
 

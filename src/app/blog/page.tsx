@@ -4,12 +4,13 @@ import Image from 'next/image';
 import { Calendar, Clock, User, Tag } from 'lucide-react';
 import { getAllBlogPosts, getFeaturedBlogPosts } from '@/lib/blog';
 import BlogListStructuredData from '@/components/BlogListStructuredData';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Open Graph & Social Preview Guides',
   description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',
   keywords: 'social media marketing, SEO tips, content optimization, social media strategy, digital marketing blog',
-  alternates: { canonical: '/blog' },
+  alternates: createPageAlternates('/blog'),
   openGraph: {
     title: 'Open Graph & Social Preview Guides',
     description: 'Practical guides to Open Graph tags, social preview images, Twitter Cards and link debugging. Learn what to implement, test and fix.',

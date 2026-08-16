@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import Client from './Client';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Free Facebook URL Debugger & Preview Tool',
   description: 'Use our facebook open graph debugger to test and validate og tags. Instant facebook linter for link previews: og:title, og:description, og:image, and more.',
+  alternates: createPageAlternates('/facebook-social-preview'),
   keywords: [
     'facebook debugger',
     'meta debugger',
@@ -24,4 +26,4 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return <Client />;
-} 
+}

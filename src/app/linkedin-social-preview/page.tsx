@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import Client from './Client';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'LinkedIn Post Inspector & Link Preview Tool',
   description: 'Preview and validate how your link appears on LinkedIn. Use our linkedin sharing debugger to check Open Graph tags and optimize for professional engagement.',
+  alternates: createPageAlternates('/linkedin-social-preview'),
   keywords: [
     'linkedin debugger',
     'debugger linkedin',
@@ -20,4 +22,4 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return <Client />;
-} 
+}

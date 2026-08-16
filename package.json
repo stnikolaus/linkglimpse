@@ -25,7 +25,6 @@
     "actor:test": "pnpm --filter linkglimpse-apify-actor test"
   },
   "dependencies": {
-    "linkglimpse": "workspace:*",
     "@automattic/social-previews": "2.1.0-beta.12",
     "@opennextjs/cloudflare": "^1.6.3",
     "@types/react-syntax-highlighter": "^15.5.13",
@@ -33,6 +32,7 @@
     "critters": "^0.0.25",
     "date-fns": "^4.1.0",
     "gray-matter": "^4.0.3",
+    "linkglimpse": "workspace:*",
     "lucide-react": "^0.536.0",
     "next": "15.4.10",
     "next-plausible": "^3.12.4",
@@ -44,7 +44,8 @@
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
     "sass": "^1.89.2",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.3",
+    "turndown": "^7.2.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -52,6 +53,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/turndown": "^5.0.6",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",

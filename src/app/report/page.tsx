@@ -2,12 +2,16 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Link2 } from 'lucide-react';
 import SocialPreview from '@/components/SocialPreview';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Shared Open Graph Diagnostic Report',
   description: 'Re-run a shared URL inspection to see its current social previews, Open Graph tags, redirects, and actionable metadata checks.',
   robots: { index: false, follow: true },
-  alternates: { canonical: '/open-graph-checker' },
+  alternates: {
+    ...createPageAlternates('/report'),
+    canonical: '/open-graph-checker',
+  },
 };
 
 interface ReportPageProps {

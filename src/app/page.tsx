@@ -4,12 +4,13 @@ import { Globe, Share2, Eye, Zap, CheckCircle, ArrowRight, Facebook, Twitter, Li
 import SocialPreview from '@/components/SocialPreview';
 import FAQStructuredData from '@/components/FAQStructuredData';
 import DistributionChannels from '@/components/DistributionChannels';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Link Preview Checker for Social Media',
   description: 'Check how any URL may appear on Facebook, X, LinkedIn and more. Preview social cards, inspect Open Graph tags, and find missing images or text.',
   keywords: ['link preview', 'social share preview', 'social media preview', 'link preview tool', 'social sharing checker'],
-  alternates: { canonical: '/' },
+  alternates: createPageAlternates('/'),
   openGraph: {
     title: 'Link Preview Checker for Social Media',
     description: 'Check how any URL may appear on Facebook, X, LinkedIn and more. Preview social cards, inspect Open Graph tags, and find missing images or text.',

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Read how LinkGlimpse handles submitted public URLs and analytics data, including what information is collected and why.',
-  alternates: { canonical: '/privacy' },
+  alternates: createPageAlternates('/privacy'),
   robots: {
     index: true,
     follow: true,

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import BulkProcessor from '@/components/BulkProcessor';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Bulk URL Metadata Checker',
   description: 'Check Open Graph, Twitter Card and page metadata for up to 100 URLs at once. Compare issues and export the results as CSV or JSON.',
   keywords: 'bulk url processing, social media preview batch, url preview generator, csv export, json export, batch processing',
-  alternates: { canonical: '/bulk' },
+  alternates: createPageAlternates('/bulk'),
   openGraph: {
     title: 'Bulk URL Metadata Checker',
     description: 'Check Open Graph, Twitter Card and page metadata for up to 100 URLs at once. Compare issues and export the results as CSV or JSON.',

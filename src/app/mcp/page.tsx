@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Bot, CheckCircle2, Eye, GitBranch, ImageIcon, Wrench } from 'lucide-react';
 import DistributionLink from '@/components/DistributionLink';
+import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Open Graph MCP Server with Visual Previews',
   description: 'Give AI agents live Open Graph and social metadata audits, visual preview images, SERP previews, URL comparisons, and actionable fixes with LinkGlimpse MCP.',
-  alternates: { canonical: '/mcp' },
+  alternates: createPageAlternates('/mcp'),
   keywords: ['open graph mcp server', 'social preview mcp', 'metadata audit ai agent', 'seo mcp server', 'serp preview mcp'],
 };
 
