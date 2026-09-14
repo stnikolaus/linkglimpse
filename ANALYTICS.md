@@ -4,7 +4,7 @@ LinkGlimpse sends the same intentional product events to Plausible and, when con
 
 ## PostHog
 
-The configured PostHog project is `539121`. Copy `.env.example` to `.env.local`, rotate the exposed project token, and add the new value as `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`. Set `NEXT_PUBLIC_POSTHOG_HOST` to the ingestion host for the project region (`https://us.i.posthog.com` or `https://eu.i.posthog.com`).
+The canonical PostHog project is `562233` (`LinkGlimpse`). Copy `.env.example` to `.env.local`, add that project's token as `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`, and set `NEXT_PUBLIC_POSTHOG_HOST` to its regional ingestion host (`https://us.i.posthog.com` or `https://eu.i.posthog.com`).
 
 The client is configured for explicit product events and SPA pageviews. Automatic element capture and session recording are disabled.
 
@@ -16,6 +16,10 @@ Create these custom event goals in the Plausible site settings for `linkglimpse.
 - `Preview Succeeded` — primary activation goal
 - `Preview Failed`
 - `Report Exported` — strong value signal
+- `Report Shared`
+- `Remediation Copied`
+- `AI Prompt Copied`
+- `Comparison Completed`
 - `Bulk Processing Started`
 - `Bulk Processing Succeeded`
 - `Bulk Report Exported`
