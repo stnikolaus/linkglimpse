@@ -24,9 +24,14 @@ const platformPages = [
 const developerPages = [
   ['/api', 'REST API'],
   ['/cli', 'CLI'],
-  ['/mcp', 'MCP Server'],
+  ['/mcp', 'MCP Server Source'],
   ['/apify', 'Apify Actor'],
   ['/browser-extension', 'Browser Extensions'],
+] as const;
+
+const trustPages = [
+  ['/about', 'About LinkGlimpse', 'Entity, maintainer, open-source, pricing, privacy, and distribution details.'],
+  ['/privacy', 'Privacy Policy', 'How submitted public URLs and aggregate analytics data are handled.'],
 ] as const;
 
 export async function GET() {
@@ -50,6 +55,10 @@ export async function GET() {
     '## Developer access',
     '',
     ...developerPages.map(([path, title]) => pageEntry(path, title)),
+    '',
+    '## About and trust',
+    '',
+    ...trustPages.map(([path, title, description]) => pageEntry(path, title, description)),
     '',
     '## Guides',
     '',

@@ -1,4 +1,8 @@
-import Script from 'next/script'
+import {
+  LINKGLIMPSE_ORGANIZATION_ID,
+  LINKGLIMPSE_PUBLIC_LINKS,
+  LINKGLIMPSE_SAME_AS,
+} from '@/lib/entity'
 
 interface StructuredDataProps {
   type: 'website' | 'tool' | 'software'
@@ -26,13 +30,17 @@ export default function StructuredData({
     image: image,
     author: {
       '@type': 'Organization',
+      '@id': LINKGLIMPSE_ORGANIZATION_ID,
       name: author,
-      url: 'https://www.linkglimpse.com',
+      url: LINKGLIMPSE_PUBLIC_LINKS.website,
+      sameAs: LINKGLIMPSE_SAME_AS,
     },
     publisher: {
       '@type': 'Organization',
+      '@id': LINKGLIMPSE_ORGANIZATION_ID,
       name: 'LinkGlimpse',
-      url: 'https://www.linkglimpse.com',
+      url: LINKGLIMPSE_PUBLIC_LINKS.website,
+      sameAs: LINKGLIMPSE_SAME_AS,
       logo: {
         '@type': 'ImageObject',
         url: 'https://www.linkglimpse.com/images/link-icon.svg',
@@ -68,11 +76,11 @@ export default function StructuredData({
   } : toolStructuredData
 
   return (
-    <Script
+    <script
       id="structured-data"
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(websiteStructuredData),
+        __html: JSON.stringify(websiteStructuredData).replace(/</g, '\\u003c'),
       }}
     />
   )

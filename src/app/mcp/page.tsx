@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Bot, CheckCircle2, Eye, GitBranch, ImageIcon, Wrench } from 'lucide-react';
+import { CheckCircle2, Clock3, Eye, GitBranch, ImageIcon, Wrench } from 'lucide-react';
 import DistributionLink from '@/components/DistributionLink';
 import { createPageAlternates } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Open Graph MCP Server with Visual Previews',
-  description: 'Give AI agents live Open Graph and social metadata audits, visual preview images, SERP previews, URL comparisons, and actionable fixes with LinkGlimpse MCP.',
+  description: 'Review the open-source LinkGlimpse MCP server for live metadata audits, visual previews, URL comparisons, and actionable fixes. Public package release is pending.',
   alternates: createPageAlternates('/mcp'),
   keywords: ['open graph mcp server', 'social preview mcp', 'metadata audit ai agent', 'seo mcp server', 'serp preview mcp'],
 };
@@ -28,27 +28,20 @@ export default function McpPage() {
         <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600">
           Let Claude, Cursor and other MCP clients inspect live metadata, see how a link is likely to look, and receive implementation-ready fixes.
         </p>
-        <div className="mx-auto mt-10 max-w-3xl rounded-xl border border-gray-800 bg-gray-950 p-5 text-left font-mono text-sm text-green-300">
-          <code>npx -y linkglimpse-mcp</code>
+        <div className="mx-auto mt-10 max-w-3xl rounded-xl border border-amber-200 bg-amber-50 p-5 text-left text-sm text-amber-950">
+          <div className="flex gap-3">
+            <Clock3 className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
+            <p><strong>Public release pending.</strong> The source is available and tested, but the npm package and official MCP Registry listing are not published yet.</p>
+          </div>
         </div>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <DistributionLink
-            channel="mcp"
-            destination="npm-package"
-            href="https://www.npmjs.com/package/linkglimpse-mcp"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
-          >
-            <Bot className="mr-2 h-5 w-5" /> View MCP package
-          </DistributionLink>
           <DistributionLink
             channel="github"
             destination="mcp-source"
             href="https://github.com/stnikolaus/linkglimpse/tree/main/packages/mcp"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-gray-900 hover:border-gray-400"
+            className="inline-flex items-center rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
           >
             <GitBranch className="mr-2 h-5 w-5" /> View source
           </DistributionLink>
@@ -99,12 +92,12 @@ export default function McpPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-7">
           <ImageIcon className="h-7 w-7 text-blue-700" />
           <h2 className="mt-4 text-2xl font-bold text-gray-900">Client configuration</h2>
-          <p className="mt-3 text-gray-600">Use the same stdio server in Claude Desktop, Cursor, VS Code and compatible MCP clients.</p>
+          <p className="mt-3 text-gray-600">After cloning the repository and running <code>pnpm install</code>, point a compatible MCP client at the local source file.</p>
           <pre className="mt-6 overflow-x-auto rounded-lg bg-gray-950 p-5 text-sm text-gray-200"><code>{`{
   "mcpServers": {
     "linkglimpse": {
-      "command": "npx",
-      "args": ["-y", "linkglimpse-mcp"]
+      "command": "node",
+      "args": ["/absolute/path/to/linkglimpse/packages/mcp/src/server.mjs"]
     }
   }
 }`}</code></pre>

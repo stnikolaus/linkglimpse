@@ -1,5 +1,3 @@
-import Script from 'next/script'
-
 interface BreadcrumbItem {
   name: string
   url: string
@@ -22,12 +20,12 @@ export default function BreadcrumbStructuredData({ items }: BreadcrumbStructured
   }
 
   return (
-    <Script
+    <script
       id="breadcrumb-structured-data"
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(breadcrumbList),
+        __html: JSON.stringify(breadcrumbList).replace(/</g, '\\u003c'),
       }}
     />
   )
-} 
+}

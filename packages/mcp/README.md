@@ -4,26 +4,23 @@
 
 Unlike metadata-only tools, `render_previews` returns a PNG that shows how the live title, description, domain and share image are likely to appear across major platforms and Google search.
 
-## Install
+## Run from source
+
+The public npm package and official MCP Registry entry are not published yet. Clone the LinkGlimpse repository, install its workspace dependencies, and run the server locally:
 
 ```bash
-npx -y linkglimpse-mcp
+pnpm install
+node packages/mcp/src/server.mjs
 ```
 
-Claude Code:
-
-```bash
-claude mcp add linkglimpse -- npx -y linkglimpse-mcp
-```
-
-Claude Desktop, Cursor and other stdio clients:
+Claude Desktop, Cursor and other stdio clients can point to the checked-out source file:
 
 ```json
 {
   "mcpServers": {
     "linkglimpse": {
-      "command": "npx",
-      "args": ["-y", "linkglimpse-mcp"]
+      "command": "node",
+      "args": ["/absolute/path/to/linkglimpse/packages/mcp/src/server.mjs"]
     }
   }
 }

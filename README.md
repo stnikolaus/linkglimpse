@@ -4,7 +4,7 @@
 [![AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
 [![npm](https://img.shields.io/npm/v/linkglimpse.svg)](https://www.npmjs.com/package/linkglimpse)
 
-LinkGlimpse is a free, open-source social-preview debugger. Give it a public URL to see representative platform cards, inspect the page's Open Graph and Twitter Card metadata, validate its share image, trace redirects, and copy actionable fixes.
+LinkGlimpse is a free, open-source link preview and metadata diagnostic tool that shows how a URL may appear across social platforms and explains how to fix missing or incorrect metadata.
 
 **Live tool:** [linkglimpse.com](https://www.linkglimpse.com) · **Open Graph checker:** [linkglimpse.com/open-graph-checker](https://www.linkglimpse.com/open-graph-checker)
 
@@ -17,7 +17,7 @@ LinkGlimpse is a free, open-source social-preview debugger. Give it a public URL
 - Image response, content type, dimensions, aspect ratio, and file-size checks.
 - Copy-ready remediation, shareable live reports, URL comparison, bulk processing, and a JSON API.
 - A zero-dependency [npm CLI](packages/cli) for terminals and CI.
-- A multimodal [MCP server](packages/mcp) that returns structured audits, fix plans, comparisons, and PNG preview sheets to AI agents.
+- A multimodal [MCP server source package](packages/mcp) that returns structured audits, fix plans, comparisons, and PNG preview sheets to AI agents. Its public npm and MCP Registry release is pending.
 - An [Apify Actor](.actor) for batch audits, generated preview images, APIs, schedules, and Apify MCP workflows.
 - A minimal-permission [Chrome and Firefox extension](apps/browser-extension).
 - Troubleshooting guides and implementation examples.
@@ -69,10 +69,10 @@ The default CLI calls the public LinkGlimpse API with the URL you explicitly pro
 
 ## MCP server
 
-Give a compatible AI agent metadata diagnostics and actual PNG previews:
+The MCP server source is implemented and tested, but the public npm package and official MCP Registry entry are not published yet. To run it from a local checkout after installing workspace dependencies:
 
 ```bash
-npx -y linkglimpse-mcp
+node packages/mcp/src/server.mjs
 ```
 
 The server exposes `audit_url`, `audit_urls`, `compare_urls`, `get_fix_plan`, and `render_previews`. It contains no analytics or telemetry and blocks private or reserved network targets. See the [MCP guide](packages/mcp/README.md) and the [visual MCP page](https://www.linkglimpse.com/mcp).

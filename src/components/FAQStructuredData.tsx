@@ -1,5 +1,3 @@
-import Script from 'next/script'
-
 interface FAQItem {
   question: string
   answer: string
@@ -24,12 +22,12 @@ export default function FAQStructuredData({ items }: FAQStructuredDataProps) {
   }
 
   return (
-    <Script
+    <script
       id="faq-structured-data"
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(faqPage),
+        __html: JSON.stringify(faqPage).replace(/</g, '\\u003c'),
       }}
     />
   )
-} 
+}

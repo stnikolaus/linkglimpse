@@ -5,6 +5,7 @@ import SocialPreview from '@/components/SocialPreview';
 import FAQStructuredData from '@/components/FAQStructuredData';
 import DistributionChannels from '@/components/DistributionChannels';
 import { createPageAlternates } from '@/lib/seo';
+import { LINKGLIMPSE_ENTITY_DESCRIPTION } from '@/lib/entity';
 
 export const metadata: Metadata = {
   title: 'Link Preview Checker for Social Media',
@@ -96,7 +97,7 @@ export default function Home() {
   const faqItems = [
     {
       question: "What is LinkGlimpse?",
-      answer: "LinkGlimpse is a free social media preview debugger that shows how your links will appear when shared on Facebook, Twitter, LinkedIn, Instagram, and other social platforms. It helps marketers and developers optimize their social media sharing."
+      answer: LINKGLIMPSE_ENTITY_DESCRIPTION,
     },
     {
       question: "Which social media platforms are supported?",

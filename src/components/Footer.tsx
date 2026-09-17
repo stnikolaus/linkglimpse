@@ -78,6 +78,12 @@ export default function Footer() {
                 Blog
               </Link>
               <Link
+                href="/about"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                About LinkGlimpse
+              </Link>
+              <Link
                 href="/cli"
                 className="block text-sm text-gray-400 hover:text-gray-200"
               >
@@ -87,7 +93,7 @@ export default function Footer() {
                 href="/mcp"
                 className="block text-sm text-gray-400 hover:text-gray-200"
               >
-                Open Graph MCP Server
+                Open Graph MCP Server Source
               </Link>
               <Link
                 href="/browser-extension"
