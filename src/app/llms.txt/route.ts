@@ -31,6 +31,7 @@ const developerPages = [
 
 const trustPages = [
   ['/about', 'About LinkGlimpse', 'Entity, maintainer, open-source, pricing, privacy, and distribution details.'],
+  ['/methodology', 'LinkGlimpse Methodology', 'How public pages are fetched, metadata is scored, previews are modeled, and limitations are reported.'],
   ['/privacy', 'Privacy Policy', 'How submitted public URLs and aggregate analytics data are handled.'],
 ] as const;
 

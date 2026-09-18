@@ -173,6 +173,7 @@ export default function AboutPage() {
             LinkGlimpse processes the public URL a user explicitly submits. Product analytics reduce submitted URLs to their hostname, while the CLI, browser extension, and local MCP source do not add their own telemetry.
           </p>
           <div className="mt-6 flex flex-wrap gap-5 text-sm font-semibold">
+            <Link className="text-blue-300 hover:underline" href="/methodology">Review the methodology</Link>
             <Link className="text-blue-300 hover:underline" href="/privacy">Read the privacy policy</Link>
             <a className="text-blue-300 hover:underline" href="mailto:privacy@linkglimpse.com">Contact privacy@linkglimpse.com</a>
           </div>

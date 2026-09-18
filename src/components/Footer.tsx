@@ -84,6 +84,12 @@ export default function Footer() {
                 About LinkGlimpse
               </Link>
               <Link
+                href="/methodology"
+                className="block text-sm text-gray-400 hover:text-gray-200"
+              >
+                Methodology
+              </Link>
+              <Link
                 href="/cli"
                 className="block text-sm text-gray-400 hover:text-gray-200"
               >
