@@ -389,9 +389,11 @@ export default function DiagnosticsPanel({
                   <article key={item.platform} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                     <h4 className="font-semibold text-gray-900">{item.platform}</h4>
                     <p className="text-sm text-gray-600 mt-2">{item.steps}</p>
-                    <a className="inline-flex mt-3 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 hover:decoration-gray-900" href={item.href} target="_blank" rel="noreferrer">
-                      Open official resource ↗
-                    </a>
+                    {'href' in item && (
+                      <a className="inline-flex mt-3 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 hover:decoration-gray-900" href={item.href} target="_blank" rel="noreferrer">
+                        Open official resource ↗
+                      </a>
+                    )}
                   </article>
                 ))}
               </div>

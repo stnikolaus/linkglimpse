@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { AlertCircle, Twitter } from 'lucide-react';
 import { TwitterPreview } from '@/components/social-previews';
 import { ApiResponse } from '@/types';
@@ -19,7 +20,7 @@ export default function TwitterSocialPreviewClient() {
   const faqItems = [
     {
       question: 'What is a Twitter Card Debugger?',
-      answer: 'A Twitter Card Debugger (debugger twitter) is a tool that lets you preview and validate how a URL renders as a Twitter Card. It helps you test meta tags, detect issues, and see a live preview before sharing. With our twitter sharing debugger you can run a twitter cards test instantly and fix problems that could reduce visibility.'
+      answer: 'A Twitter Card debugger fetches a public page, checks its Twitter Card and Open Graph metadata, and renders a representative preview. It helps you find missing or unreachable metadata before you share the URL on X.'
     },
     {
       question: 'How do I refresh my Twitter Card cache?',
@@ -27,11 +28,11 @@ export default function TwitterSocialPreviewClient() {
     },
     {
       question: 'Which Twitter Card types are supported?',
-      answer: 'We support Summary and Summary with Large Image. The tool validates twitter:title, twitter:description, twitter:image, and twitter:card values, and shows an instant preview of the tweet and card.'
+      answer: 'LinkGlimpse checks Summary and Summary with Large Image cards. It validates twitter:card, twitter:title, twitter:description, and twitter:image values, then shows a representative card preview.'
     },
     {
       question: 'Can I debug a Twitter Card in other languages?',
-      answer: 'Yes. Our interface supports all URLs globally. If you search “depurar url twitter,” this is the same workflow—paste the URL, run the twitter cards test, and verify the live preview.'
+      answer: 'Yes. The validator can inspect public URLs with metadata in any language. Paste the URL, run the test, and review the extracted tags and preview.'
     }
   ];
 
@@ -78,6 +79,16 @@ export default function TwitterSocialPreviewClient() {
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Twitter Card Validator &amp; X Preview</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Validate Twitter Card and Open Graph tags for any URL. Preview the card on X and find missing title, description, image or card-type metadata.
+          </p>
+          <p className="mt-3 text-sm text-gray-500">
+            Reviewed September 21, 2026 · Maintained by LinkGlimpse · <Link href="/methodology" className="font-medium text-blue-700 hover:underline">How the diagnostics work</Link>
+          </p>
+        </div>
+
+        <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-5 text-sm text-blue-950">
+          <p className="font-semibold">Looking for the former Twitter Card Validator workflow?</p>
+          <p className="mt-2 leading-6">
+            Paste the public URL below. LinkGlimpse follows redirects, reads the deployed HTML, checks card tags and image reachability, and shows the metadata a crawler can retrieve now. The preview is representative: LinkGlimpse is independent of X, cannot reproduce X&apos;s private renderer, and cannot force X to refresh its cache.
           </p>
         </div>
 
@@ -126,36 +137,47 @@ export default function TwitterSocialPreviewClient() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">How to Test a Twitter Card</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
-              Use this twitter sharing debugger to run a comprehensive twitter cards test for any page. Our validator checks essential tags including <code className="bg-gray-200 px-1 rounded">twitter:card</code>, <code className="bg-gray-200 px-1 rounded">twitter:title</code>, <code className="bg-gray-200 px-1 rounded">twitter:description</code>, and <code className="bg-gray-200 px-1 rounded">twitter:image</code>, then renders a realistic preview of your tweet.
+              Use this Twitter Card debugger to test any public page. The validator checks essential tags including <code className="bg-gray-200 px-1 rounded">twitter:card</code>, <code className="bg-gray-200 px-1 rounded">twitter:title</code>, <code className="bg-gray-200 px-1 rounded">twitter:description</code>, and <code className="bg-gray-200 px-1 rounded">twitter:image</code>, then renders a representative preview.
             </p>
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">What the Result Checks</h3>
+            <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+              <li>HTTP response, final URL, and every detected redirect hop</li>
+              <li>Twitter Card and Open Graph tag coverage, including fallback values</li>
+              <li>Canonical, robots, and share-image reachability signals</li>
+              <li>Platform-readiness checks with copy-ready fixes for failed or incomplete metadata</li>
+              <li>A representative X preview, raw extracted tags, a shareable result link, and an AI remediation prompt</li>
+            </ul>
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Verify Live Twitter Card Tags</h3>
             <p className="text-gray-600 mb-4">
               After updating your site, re-run the test to confirm the public page now exposes the new image, title, and description. LinkGlimpse does not clear or control X&apos;s platform cache.
             </p>
             <h3 className="text-xl font-semibold text-gray-900 mt-2 mb-2">How to Debug a Twitter Card</h3>
             <ol className="text-sm text-gray-600 list-decimal pl-5 space-y-2">
-              <li>Paste your URL and click “Preview Your Tweet Now.”</li>
-              <li>Inspect the tweet and card preview, along with extracted tag values.</li>
-              <li>Fix meta tags in your HTML template or CMS settings.</li>
-              <li>Deploy your changes, then re-run the debugger twitter flow to verify.</li>
-              <li>Share your link with confidence once the twitter card update is reflected.</li>
+              <li>Paste your public URL and click “Validate Twitter Card.”</li>
+              <li>Inspect the HTTP response, redirect trace, extracted tags, diagnostics, and card preview.</li>
+              <li>Copy a suggested fix or AI prompt for any failed or incomplete check.</li>
+              <li>Update the tags in your HTML template or CMS, deploy the change, and run the validator again.</li>
+              <li>Confirm the deployed HTML is correct before sharing. X may still use a cached rendering.</li>
             </ol>
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Twitter Card Best Practices</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
               <li>Use <em>summary_large_image</em> for posts where the image should dominate the preview</li>
-              <li>Ensure images are at least 1200×630 and under a few MB for faster loads</li>
-              <li>Keep titles punchy and clear; make descriptions action-oriented</li>
-              <li>Use absolute HTTPS URLs for all assets, including images</li>
+              <li>Use a high-resolution image with an aspect ratio suited to the selected card type</li>
+              <li>Keep titles specific and descriptions useful when read outside the page</li>
+              <li>Use absolute HTTPS URLs for assets and make sure crawlers can retrieve them</li>
             </ul>
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Fix Common Twitter Card Problems</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
-              <li>Outdated preview? Trigger a twitter card update by changing the image filename</li>
+              <li>Outdated preview? Confirm the deployed HTML changed first. A new image URL can distinguish a deployment problem from a stale platform cache, but it cannot force X to refetch the page</li>
               <li>Broken image? Verify the URL is reachable and returns 200 status</li>
               <li>No card? Confirm <code className="bg-gray-200 px-1 rounded">twitter:card</code> is set and meta tags are in the <code className="bg-gray-200 px-1 rounded">&lt;head&gt;</code></li>
             </ul>
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Why Validate a Twitter Card?</h3>
             <p className="text-gray-600 mb-4">
-              A validator prevents broken previews, increases click-through rates, and helps you control brand presentation. Whether you search “debug twitter,” “debugger twitter,” or “twitter card update,” this tool provides the rapid feedback loop you need.
+              A validator finds metadata defects before sharing and helps keep titles, descriptions, and images consistent. It cannot guarantee X&apos;s final rendering, cache-refresh timing, or engagement.
+            </p>
+            <p className="text-gray-600 mb-4">
+              For a deeper repair workflow, read <Link href="/blog/twitter-card-preview-not-showing" className="font-medium text-blue-700 hover:underline">why a Twitter Card preview may not appear</Link>. For tags shared across more platforms, use the <Link href="/blog/open-graph-tags-guide" className="font-medium text-blue-700 hover:underline">Open Graph tags guide</Link>.
             </p>
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Supported Twitter Card Types</h2>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
@@ -177,24 +199,24 @@ export default function TwitterSocialPreviewClient() {
               <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
                 <li>Title: “All About Our New Release With Many Features And Improvements”</li>
                 <li>Description: “Read our latest post about updates.”</li>
-                <li>Image: Not sized for large summary, text-heavy thumbnail</li>
+                <li>Image: Mismatched aspect ratio and a text-heavy thumbnail</li>
               </ul>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600 mb-2"><strong>After:</strong> Properly sized image, concise headline, clear value.</p>
+              <p className="text-sm text-gray-600 mb-2"><strong>After:</strong> Suitable image ratio, concise headline, clear value.</p>
               <ul className="text-sm text-gray-600 list-disc pl-5 space-y-1">
-                <li>Title: “New Release: 3 Features That Make Reporting 2x Faster”</li>
+                <li>Title: “New Release: 3 Features for Faster Reporting”</li>
                 <li>Description: “Upgrade today and get simpler dashboards, faster exports, and better insights.”</li>
-                <li>Image: 1200×630, minimal text, strong contrast</li>
+                <li>Image: Large-card ratio, minimal text, strong contrast</li>
               </ul>
             </div>
 
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">Twitter Card QA Checklist</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
-              <li>Validate card type and all required tags using this twitter sharing debugger</li>
-              <li>Confirm image is reachable, uses HTTPS, and isn’t blocked by robots</li>
-              <li>Re-run after updates to ensure the twitter card refresh is reflected</li>
-              <li>Verify mobile appearance to avoid unexpected cropping</li>
+              <li>Validate the card type and all required tags</li>
+              <li>Confirm the image is reachable, uses HTTPS, and is not blocked from crawlers</li>
+              <li>Re-run after deployment to confirm the public HTML changed</li>
+              <li>Review the image at narrow and wide widths to catch unexpected cropping</li>
             </ul>
           </div>
         </div>

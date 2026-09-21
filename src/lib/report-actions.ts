@@ -31,7 +31,6 @@ export const platformCacheGuidance = [
   {
     platform: 'X / Twitter',
     steps: 'Fix and deploy the tags, confirm the image is public, then share the final URL again. X controls its own cache and refresh timing.',
-    href: 'https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards',
   },
 ] as const;
 
