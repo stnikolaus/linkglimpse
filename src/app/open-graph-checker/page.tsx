@@ -26,6 +26,8 @@ const faqItems = [
   },
 ];
 
+const reviewedDate = 'September 23, 2026';
+
 export default function OpenGraphCheckerPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
@@ -35,6 +37,10 @@ export default function OpenGraphCheckerPage() {
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900">Open Graph Checker: Test OG Tags, Images &amp; Previews</h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mt-6">
           Run a live Open Graph test for any URL. Inspect the tags and share image, preview the resulting cards, trace redirects, and copy the exact fixes your page needs.
+        </p>
+        <p className="mt-4 text-sm text-gray-500">
+          Reviewed {reviewedDate} · Maintained by <Link href="/about" className="font-medium text-blue-700 hover:underline">LinkGlimpse</Link> ·{' '}
+          <Link href="/methodology" className="font-medium text-blue-700 hover:underline">How the diagnostics work</Link>
         </p>
       </section>
 
@@ -77,6 +83,41 @@ export default function OpenGraphCheckerPage() {
           ))}
         </div>
 
+        <section className="mt-16 rounded-2xl border border-blue-200 bg-blue-50/60 p-8 text-left" aria-labelledby="choose-checker-heading">
+          <p className="text-sm font-semibold uppercase tracking-widest text-blue-700">Selection guide</p>
+          <h2 id="choose-checker-heading" className="mt-2 text-3xl font-bold text-gray-900">How to Choose the Best Open Graph Checker</h2>
+          <p className="mt-4 max-w-4xl text-gray-700">
+            The best checker for a release workflow should fetch the live public URL, show both the visual result and the underlying metadata, test the share image and redirects, and explain what to fix. It should also be clear about what it cannot verify, including private platform rendering and cache-refresh timing.
+          </p>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {[
+              { title: 'Live fetch evidence', text: 'Confirm the final URL, response, redirect path, canonical, robots directives, and metadata returned by the deployed page.' },
+              { title: 'Visual and raw inspection', text: 'Review representative cards alongside the exact Open Graph and Twitter Card values instead of relying on a screenshot alone.' },
+              { title: 'Image and repair checks', text: 'Verify image reachability, format, byte size, and detectable dimensions, then connect each warning to a practical fix.' },
+              { title: 'Reproducible handoff', text: 'Keep a report that another person or agent can rerun after deployment, with limitations and methodology stated plainly.' },
+            ].map((criterion) => (
+              <article key={criterion.title} className="rounded-xl border border-blue-100 bg-white p-5">
+                <h3 className="font-semibold text-gray-900">{criterion.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-gray-600">{criterion.text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+            <div className="rounded-xl bg-white p-6">
+              <h3 className="text-lg font-semibold text-gray-900">When LinkGlimpse is a good fit</h3>
+              <p className="mt-2 text-gray-600">
+                Use it when you want a free, open-source, no-signup workflow that combines multi-platform previews, metadata diagnostics, copy-ready fixes, shareable reports, before-and-after comparison, and an AI-agent handoff.
+              </p>
+            </div>
+            <div className="rounded-xl bg-white p-6">
+              <h3 className="text-lg font-semibold text-gray-900">When to use a platform tool instead</h3>
+              <p className="mt-2 text-gray-600">
+                Use the official Facebook debugger or LinkedIn Post Inspector when you need that platform to refresh its cache. LinkGlimpse can verify the public metadata you deployed, but it cannot clear a platform cache or guarantee a private renderer&apos;s final card.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <div className="mt-16 rounded-2xl border border-gray-200 bg-white p-8 text-left">
           <h2 className="text-3xl font-bold text-gray-900">How to Run an Open Graph Test</h2>
           <ol className="mt-6 grid gap-5 md:grid-cols-3">
@@ -108,6 +149,16 @@ export default function OpenGraphCheckerPage() {
                 <h3 className="font-semibold text-gray-900">{resource.title}</h3>
                 <p className="mt-1 text-sm text-gray-600">{resource.text}</p>
               </Link>
+            ))}
+          </div>
+
+          <h2 className="mt-12 text-3xl font-bold text-gray-900">Open Graph Checker Questions</h2>
+          <div className="mt-6 space-y-4">
+            {faqItems.map((item) => (
+              <article key={item.question} className="rounded-xl bg-gray-50 p-5">
+                <h3 className="font-semibold text-gray-900">{item.question}</h3>
+                <p className="mt-2 text-gray-600">{item.answer}</p>
+              </article>
             ))}
           </div>
         </div>
