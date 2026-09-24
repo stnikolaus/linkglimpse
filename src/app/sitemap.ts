@@ -5,17 +5,32 @@ import { exampleReports } from '@/lib/example-reports';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = [
-    { url: SITE_URL, changeFrequency: 'weekly', priority: 1 },
-    { url: `${SITE_URL}/open-graph-checker`, changeFrequency: 'weekly', priority: 1 },
+    { url: SITE_URL, lastModified: new Date('2026-09-17'), changeFrequency: 'weekly', priority: 1 },
+    {
+      url: `${SITE_URL}/open-graph-checker`,
+      lastModified: new Date('2026-09-23'),
+      changeFrequency: 'weekly',
+      priority: 1,
+    },
     { url: `${SITE_URL}/compare`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/examples`, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/twitter-card-validator`, changeFrequency: 'weekly', priority: 0.9 },
+    {
+      url: `${SITE_URL}/twitter-card-validator`,
+      lastModified: new Date('2026-09-21'),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     { url: `${SITE_URL}/linkedin-post-preview`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/facebook-open-graph-debugger`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE_URL}/bulk`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/api`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/cli`, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/mcp`, changeFrequency: 'monthly', priority: 0.7 },
+    {
+      url: `${SITE_URL}/mcp`,
+      lastModified: new Date('2026-09-17'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
     { url: `${SITE_URL}/browser-extension`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/apify`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/instagram-social-preview`, changeFrequency: 'monthly', priority: 0.5 },
@@ -25,8 +40,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/nextdoor-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/bluesky-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/blog`, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${SITE_URL}/about`, changeFrequency: 'yearly', priority: 0.5 },
-    { url: `${SITE_URL}/methodology`, changeFrequency: 'yearly', priority: 0.5 },
+    {
+      url: `${SITE_URL}/about`,
+      lastModified: new Date('2026-09-18'),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${SITE_URL}/methodology`,
+      lastModified: new Date('2026-09-18'),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
     { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.2 },
   ];
   const posts: MetadataRoute.Sitemap = getAllBlogPosts().map((post) => ({
