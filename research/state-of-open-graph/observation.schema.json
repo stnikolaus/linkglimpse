@@ -1,0 +1,592 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.linkglimpse.com/research/state-of-open-graph/observation.schema.json",
+  "title": "State of Open Graph observation record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "methodology_version",
+    "sample_id",
+    "observed_at",
+    "disposition",
+    "requested_url",
+    "robots",
+    "collection"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "methodology_version": {
+      "const": "1.0.0"
+    },
+    "sample_id": {
+      "type": "string",
+      "pattern": "^sog-2026-[0-9]{4}$"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "disposition": {
+      "enum": ["collected", "excluded", "failed"]
+    },
+    "requested_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "final_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "exclusion_reason": {
+      "enum": [
+        "robots_disallowed",
+        "authentication_required",
+        "access_challenge",
+        "non_html",
+        "unsafe_redirect",
+        "duplicate_final_destination",
+        "operator_safety_stop"
+      ]
+    },
+    "failure_reason": {
+      "enum": [
+        "dns_error",
+        "timeout",
+        "tls_error",
+        "connection_error",
+        "http_error",
+        "response_too_large",
+        "redirect_limit",
+        "parser_error"
+      ]
+    },
+    "robots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["robots_url", "status", "allowed", "checked_at"],
+      "properties": {
+        "robots_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 599
+        },
+        "allowed": {
+          "type": "boolean"
+        },
+        "matched_user_agent": {
+          "type": "string"
+        },
+        "crawl_delay_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collector_commit",
+        "node_version",
+        "user_agent",
+        "request_timeout_ms",
+        "max_html_bytes",
+        "max_image_header_bytes",
+        "global_concurrency",
+        "minimum_origin_delay_ms"
+      ],
+      "properties": {
+        "collector_commit": {
+          "$ref": "#/$defs/sha1"
+        },
+        "node_version": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+"
+        },
+        "linkglimpse_core_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "user_agent": {
+          "const": "LinkGlimpse-Research/1.0 (+https://www.linkglimpse.com/methodology)"
+        },
+        "request_timeout_ms": {
+          "const": 12000
+        },
+        "max_html_bytes": {
+          "const": 2000000
+        },
+        "max_image_header_bytes": {
+          "const": 65536
+        },
+        "global_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "minimum_origin_delay_ms": {
+          "type": "integer",
+          "minimum": 2000
+        }
+      }
+    },
+    "fetch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["http_status", "content_type", "html_bytes_read", "redirects", "html_prefix_sha256"],
+      "properties": {
+        "http_status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "content_type": {
+          "type": "string"
+        },
+        "html_bytes_read": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000
+        },
+        "redirects": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "status"],
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "status": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 599
+              },
+              "location": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        },
+        "html_prefix_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "description", "canonical", "robots", "open_graph", "twitter", "image"],
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/textSignal"
+        },
+        "description": {
+          "$ref": "#/$defs/textSignal"
+        },
+        "canonical": {
+          "$ref": "#/$defs/canonicalSignal"
+        },
+        "robots": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["present", "noindex", "duplicate_count"],
+          "properties": {
+            "present": {
+              "type": "boolean"
+            },
+            "noindex": {
+              "type": "boolean"
+            },
+            "duplicate_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "value_sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        },
+        "open_graph": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["title", "description", "url", "type", "image_count"],
+          "properties": {
+            "title": {
+              "$ref": "#/$defs/textSignal"
+            },
+            "description": {
+              "$ref": "#/$defs/textSignal"
+            },
+            "url": {
+              "$ref": "#/$defs/urlSignal"
+            },
+            "type": {
+              "$ref": "#/$defs/textSignal"
+            },
+            "image_count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "twitter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["card", "title", "description", "image", "uses_open_graph_fallback"],
+          "properties": {
+            "card": {
+              "$ref": "#/$defs/textSignal"
+            },
+            "title": {
+              "$ref": "#/$defs/textSignal"
+            },
+            "description": {
+              "$ref": "#/$defs/textSignal"
+            },
+            "image": {
+              "$ref": "#/$defs/urlSignal"
+            },
+            "uses_open_graph_fallback": {
+              "type": "boolean"
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["present", "url", "fetched"],
+          "properties": {
+            "present": {
+              "type": "boolean"
+            },
+            "url": {
+              "$ref": "#/$defs/urlSignal"
+            },
+            "fetched": {
+              "type": "boolean"
+            },
+            "http_status": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 599
+            },
+            "content_type": {
+              "type": "string"
+            },
+            "content_length": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "aspect_ratio": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "near_1_91_to_1": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "pass_count", "warning_count", "fail_count", "checks"],
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pass_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warning_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fail_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "status"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": ["pass", "warning", "fail"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "disposition": {
+            "const": "collected"
+          }
+        }
+      },
+      "then": {
+        "required": ["final_url", "fetch", "metadata", "diagnostics"],
+        "properties": {
+          "final_url": {},
+          "fetch": {},
+          "metadata": {},
+          "diagnostics": {},
+          "exclusion_reason": false,
+          "failure_reason": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition": {
+            "const": "excluded"
+          }
+        }
+      },
+      "then": {
+        "required": ["exclusion_reason"],
+        "properties": {
+          "exclusion_reason": {},
+          "failure_reason": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "required": ["failure_reason"],
+        "properties": {
+          "exclusion_reason": false,
+          "failure_reason": {}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha1": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "textSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present", "character_length", "duplicate_count"],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "character_length": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "value_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "present": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": ["value_sha256"],
+            "properties": {
+              "character_length": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "duplicate_count": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "value_sha256": {}
+            }
+          },
+          "else": {
+            "properties": {
+              "character_length": {
+                "const": 0
+              },
+              "duplicate_count": {
+                "const": 0
+              },
+              "value_sha256": false
+            }
+          }
+        }
+      ]
+    },
+    "urlSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present", "valid", "duplicate_count"],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "duplicate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scheme": {
+          "enum": ["http", "https"]
+        },
+        "host_relation": {
+          "enum": ["same_host", "same_registrable_domain", "cross_domain"]
+        },
+        "host_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "present": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "valid": {
+                "const": false
+              },
+              "duplicate_count": {
+                "const": 0
+              },
+              "scheme": false,
+              "host_relation": false,
+              "host_sha256": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "present": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "duplicate_count": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valid": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": ["scheme", "host_relation", "host_sha256"],
+            "properties": {
+              "scheme": {},
+              "host_relation": {},
+              "host_sha256": {}
+            }
+          }
+        }
+      ]
+    },
+    "canonicalSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["present", "valid", "duplicate_count", "classification"],
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "duplicate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scheme": {
+          "enum": ["http", "https"]
+        },
+        "host_relation": {
+          "enum": ["same_host", "same_registrable_domain", "cross_domain"]
+        },
+        "host_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "classification": {
+          "enum": ["self", "same_origin_other_path", "cross_origin", "missing", "invalid"]
+        }
+      }
+    }
+  }
+}

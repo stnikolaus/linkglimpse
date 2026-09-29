@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.linkglimpse.com/research/state-of-open-graph/sample.schema.json",
+  "title": "State of Open Graph sample manifest record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sample_id",
+    "source",
+    "source_rank",
+    "stratum",
+    "source_domain",
+    "requested_url"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "sample_id": {
+      "type": "string",
+      "pattern": "^sog-2026-[0-9]{4}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "list_id", "download_url", "retrieved_at", "sha256"],
+      "properties": {
+        "provider": {
+          "const": "Tranco"
+        },
+        "list_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "download_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "source_rank": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "stratum": {
+      "enum": ["rank_1_100", "rank_101_1000", "rank_1001_10000"]
+    },
+    "source_domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 253,
+      "pattern": "^[A-Za-z0-9.-]+$"
+    },
+    "requested_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/?#]+/$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stratum": {
+            "const": "rank_1_100"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_rank": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stratum": {
+            "const": "rank_101_1000"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_rank": {
+            "type": "integer",
+            "minimum": 101,
+            "maximum": 1000
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stratum": {
+            "const": "rank_1001_10000"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source_rank": {
+            "type": "integer",
+            "minimum": 1001,
+            "maximum": 10000
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

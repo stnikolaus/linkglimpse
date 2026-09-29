@@ -14,7 +14,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm cli:test && pnpm mcp:test && pnpm actor:test",
+    "test": "pnpm cli:test && pnpm mcp:test && pnpm actor:test && pnpm research:test",
     "cli:test": "node --test packages/cli/test/*.test.mjs",
     "cli:pack": "npm pack --workspace linkglimpse",
     "mcp:pack": "npm pack --workspace linkglimpse-mcp",
@@ -22,7 +22,8 @@
     "extension:package": "node scripts/package-extension.mjs",
     "mcp:preview": "node scripts/generate-mcp-preview.mjs",
     "mcp:test": "pnpm --filter linkglimpse-mcp test",
-    "actor:test": "pnpm --filter linkglimpse-apify-actor test"
+    "actor:test": "pnpm --filter linkglimpse-apify-actor test",
+    "research:test": "node --test research/state-of-open-graph/test/*.test.mjs"
   },
   "dependencies": {
     "@automattic/social-previews": "2.1.0-beta.12",
@@ -54,6 +55,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/turndown": "^5.0.6",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
