@@ -21,8 +21,7 @@ export default function BrowserExtensionPage() {
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-gray-200 bg-white text-blue-700">
           <Chrome className="h-7 w-7" />
         </div>
-        <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-blue-700">Live in both official stores</p>
-        <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">Social Preview Checker Browser Extension</h1>
+        <h1 className="mt-6 text-4xl font-bold text-gray-900 md:text-6xl">Social Preview Checker Browser Extension</h1>
         <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600">
           Open LinkGlimpse from the toolbar and it automatically checks the current page. See social cards, a Google search preview, metadata diagnostics, image checks, redirects, and copy-ready fixes without leaving the extension.
         </p>
@@ -55,8 +54,8 @@ export default function BrowserExtensionPage() {
       <section className="border-y border-gray-200 bg-white">
         <div className="mx-auto grid max-w-6xl gap-6 px-4 py-16 md:grid-cols-3">
           {[
-            { icon: MousePointerClick, title: 'Automatic on open', text: 'Click the toolbar icon and the current page is checked immediately—there is no URL form or inspect button.' },
-            { icon: ShieldCheck, title: 'Minimal permissions', text: 'Only the active tab and LinkGlimpse API—no browser history, cookies, credentials, or continuous background access.' },
+            { icon: MousePointerClick, title: 'Automatic on open', text: 'Click the toolbar icon and the current page is checked immediately. There is no URL form or inspect button.' },
+            { icon: ShieldCheck, title: 'Minimal permissions', text: 'Only the active tab and LinkGlimpse API are available. The extension has no browser history, cookie, credential, or continuous background access.' },
             { icon: CheckCircle2, title: 'Everything in the popup', text: 'See the score, platform previews, metadata values, extracted tags, and copy-ready fixes without opening another page.' },
           ].map((item) => (
             <article key={item.title} className="rounded-xl border border-gray-200 p-6">

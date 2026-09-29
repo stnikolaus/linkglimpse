@@ -92,8 +92,7 @@ export default function AboutPage() {
       />
 
       <section className="mx-auto max-w-5xl px-4 py-20">
-        <p className="text-sm font-semibold uppercase tracking-widest text-blue-700">Free, open source, no signup</p>
-        <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">About LinkGlimpse</h1>
+        <h1 className="text-4xl font-bold text-gray-900 md:text-6xl">About LinkGlimpse</h1>
         <p className="mt-6 max-w-4xl text-xl leading-8 text-gray-700">{LINKGLIMPSE_ENTITY_DESCRIPTION}</p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">

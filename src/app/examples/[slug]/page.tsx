@@ -38,8 +38,8 @@ export default async function ExamplePage({ params }: ExamplePageProps) {
         <Link href="/examples" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800">
           <ArrowLeft className="h-4 w-4" /> All example reports
         </Link>
-        <p className="mt-8 text-sm font-bold uppercase tracking-widest text-blue-700">{example.intent}</p>
-        <h1 className="mt-3 text-4xl md:text-5xl font-bold text-gray-900">{example.title}</h1>
+        <h1 className="mt-8 text-4xl md:text-5xl font-bold text-gray-900">{example.title}</h1>
+        <p className="mt-3 text-sm font-semibold text-blue-700">{example.intent}</p>
         <p className="mt-5 text-xl text-gray-600 max-w-4xl">{example.description}</p>
         <p className="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-4 text-gray-700">{example.explanation}</p>
       </section>

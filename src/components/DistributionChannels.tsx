@@ -5,7 +5,7 @@ import DistributionLink from '@/components/DistributionLink';
 const channels = [
   {
     name: 'Chrome extension',
-    eyebrow: 'Chrome Web Store',
+    store: 'Chrome Web Store',
     description: 'Audit the page in your active tab and see its score, social cards, SERP preview, and copy-ready fixes.',
     href: 'https://chromewebstore.google.com/detail/alhheglnjpjfiaehoekkndaogkfdhdga',
     channel: 'chrome-web-store',
@@ -16,7 +16,7 @@ const channels = [
   },
   {
     name: 'Firefox add-on',
-    eyebrow: 'Firefox Browser Add-ons',
+    store: 'Firefox Browser Add-ons',
     description: 'Run the same current-page metadata audit in Firefox without copying the URL into another tool.',
     href: 'https://addons.mozilla.org/en-GB/firefox/addon/linkglimpse/',
     channel: 'firefox-add-ons',
@@ -27,7 +27,7 @@ const channels = [
   },
   {
     name: 'Apify scraper',
-    eyebrow: 'Apify Store',
+    store: 'Apify Store',
     description: 'Audit up to 100 URLs per run and export structured diagnostics plus rendered social preview images.',
     href: 'https://apify.com/changetheway/linkglimpse-apify-actor',
     channel: 'apify-store',
@@ -43,8 +43,7 @@ export default function DistributionChannels() {
     <section className="border-y border-gray-200 bg-white py-16" aria-labelledby="distribution-heading">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-blue-700">Now available where you work</p>
-          <h2 id="distribution-heading" className="mt-3 text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 id="distribution-heading" className="text-3xl font-bold text-gray-900 md:text-4xl">
             Check links without returning to the website
           </h2>
           <p className="mt-4 text-lg text-gray-600">
@@ -59,9 +58,9 @@ export default function DistributionChannels() {
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100">
                   <channel.icon className={`h-6 w-6 ${channel.accent}`} aria-hidden="true" />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">{channel.eyebrow}</span>
               </div>
               <h3 className="mt-5 text-xl font-semibold text-gray-900">{channel.name}</h3>
+              <p className="mt-1 text-sm font-medium text-gray-500">{channel.store}</p>
               <p className="mt-2 flex-1 text-gray-600">{channel.description}</p>
               <DistributionLink
                 channel={channel.channel}

@@ -23,8 +23,7 @@ export default function McpPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
       <section className="mx-auto max-w-5xl px-4 py-20 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-blue-700">Multimodal tools for AI agents</p>
-        <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">Open Graph MCP Server with Visual Previews</h1>
+        <h1 className="text-4xl font-bold text-gray-900 md:text-6xl">Open Graph MCP Server with Visual Previews</h1>
         <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600">
           Let Claude, Cursor and other MCP clients inspect live metadata, see how a link is likely to look, and receive implementation-ready fixes.
         </p>

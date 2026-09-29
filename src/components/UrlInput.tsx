@@ -32,22 +32,24 @@ export default function UrlInput({ onSubmit, isLoading, ctaLabel, placeholder, i
     <div className="w-full max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-4">
         <label htmlFor="url-input" className="block text-sm font-medium text-gray-700 mb-2">Enter website URL:</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-0">
+          <div className="relative sm:flex-1">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder={placeholder || "Enter a URL to preview (e.g., https://example.com)"}
+              className="block w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 sm:rounded-r-none"
+              disabled={isLoading}
+            />
           </div>
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder={placeholder || "Enter a URL to preview (e.g., https://example.com)"}
-            className="block w-full pl-10 pr-12 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
-            disabled={isLoading}
-          />
           <button
             type="submit"
             disabled={isLoading || !url.trim()}
-            className="absolute inset-y-0 right-0 px-4 flex items-center bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400 sm:w-auto sm:rounded-l-none sm:rounded-r-lg"
           >
             {isLoading ? (
               <Loader2 className="h-5 w-5 animate-spin" />

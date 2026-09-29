@@ -31,7 +31,7 @@ const workflow = [
   },
   {
     title: '4. Inspect the share image',
-    description: 'When an image is declared, LinkGlimpse checks whether the public URL responds, whether its content type is an image, and—when detectable from the file header—its dimensions. The diagnostic also records HTTPS use, aspect ratio, and reported file size.',
+    description: 'When an image is declared, LinkGlimpse checks whether the public URL responds, whether its content type is an image, and, when detectable from the file header, its dimensions. The diagnostic also records HTTPS use, aspect ratio, and reported file size.',
     icon: Eye,
   },
 ] as const;
@@ -61,10 +61,9 @@ export default function MethodologyPage() {
       />
 
       <section className="mx-auto max-w-5xl px-4 py-20">
-        <p className="text-sm font-semibold uppercase tracking-widest text-blue-700">Public and reproducible</p>
-        <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">How LinkGlimpse checks link previews</h1>
+        <h1 className="text-4xl font-bold text-gray-900 md:text-6xl">How LinkGlimpse checks link previews</h1>
         <p className="mt-6 max-w-4xl text-xl leading-8 text-gray-700">
-          LinkGlimpse turns the initial HTML and public share image for a URL into deterministic metadata checks, modeled previews, and copy-ready repairs. This page explains what the result measures—and what it cannot prove.
+          LinkGlimpse turns the initial HTML and public share image for a URL into deterministic metadata checks, modeled previews, and copy-ready repairs. This page explains what the result measures and what it cannot prove.
         </p>
         <p className="mt-4 text-sm text-gray-500">Methodology reviewed {reviewedDate}.</p>
       </section>

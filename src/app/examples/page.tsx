@@ -24,8 +24,8 @@ export default function ExamplesPage() {
       <section className="max-w-6xl mx-auto px-4 pb-20 grid gap-5 md:grid-cols-3">
         {exampleReports.map((example) => (
           <article key={example.slug} className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6">
-            <p className="text-xs font-bold uppercase tracking-wider text-blue-700">{example.intent}</p>
-            <h2 className="mt-3 text-xl font-bold text-gray-900">{example.title}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{example.title}</h2>
+            <p className="mt-2 text-sm font-semibold text-blue-700">{example.intent}</p>
             <p className="mt-3 flex-1 text-gray-600">{example.description}</p>
             <Link href={`/examples/${example.slug}`} className="mt-6 inline-flex items-center gap-2 font-semibold text-blue-700 hover:text-blue-800">
               Open example report <ArrowRight className="h-4 w-4" />

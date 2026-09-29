@@ -25,8 +25,7 @@ export default function CliPage() {
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-900">
           <Terminal className="h-7 w-7" />
         </div>
-        <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-blue-700">Open-source developer tool</p>
-        <h1 className="mt-3 text-4xl font-bold text-gray-900 md:text-6xl">Open Graph CLI for Metadata Checks</h1>
+        <h1 className="mt-6 text-4xl font-bold text-gray-900 md:text-6xl">Open Graph CLI for Metadata Checks</h1>
         <p className="mx-auto mt-6 max-w-3xl text-xl text-gray-600">
           Audit a public URL from your terminal, fail a CI job when social metadata regresses, or pipe the complete diagnostic report into another tool.
         </p>

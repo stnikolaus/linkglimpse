@@ -33,7 +33,6 @@ export default function OpenGraphCheckerPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
       <FAQStructuredData items={faqItems} />
       <section className="max-w-5xl mx-auto px-4 pt-16 pb-10 text-center">
-        <p className="text-sm font-semibold text-blue-700 uppercase tracking-widest mb-3">Technical link QA</p>
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900">Open Graph Checker: Test OG Tags, Images &amp; Previews</h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mt-6">
           Run a live Open Graph test for any URL. Inspect the tags and share image, preview the resulting cards, trace redirects, and copy the exact fixes your page needs.
@@ -84,8 +83,7 @@ export default function OpenGraphCheckerPage() {
         </div>
 
         <section className="mt-16 rounded-2xl border border-blue-200 bg-blue-50/60 p-8 text-left" aria-labelledby="choose-checker-heading">
-          <p className="text-sm font-semibold uppercase tracking-widest text-blue-700">Selection guide</p>
-          <h2 id="choose-checker-heading" className="mt-2 text-3xl font-bold text-gray-900">How to Choose the Best Open Graph Checker</h2>
+          <h2 id="choose-checker-heading" className="text-3xl font-bold text-gray-900">How to Choose the Best Open Graph Checker</h2>
           <p className="mt-4 max-w-4xl text-gray-700">
             The best checker for a release workflow should fetch the live public URL, show both the visual result and the underlying metadata, test the share image and redirects, and explain what to fix. It should also be clear about what it cannot verify, including private platform rendering and cache-refresh timing.
           </p>
