@@ -13,6 +13,15 @@ It also asks which detectable metadata defects are most common inside that sampl
 The study does not estimate the state of the entire web.
 It does not measure social-platform cache state, private rendering behavior, search rankings, traffic, or whether a page earns engagement.
 
+## Related work and distinct contribution
+
+Prior web-corpus research measured Open Graph adoption at very large scale, but differences in corpora and extractors make results difficult to compare directly.
+The 2012 paper [Metadata Statistics for a Large Web Corpus](https://ceur-ws.org/Vol-937/ldow2012-inv-paper-1.pdf) is useful historical context for that limitation.
+
+A September 2026 [SerpPrism study of 62 usable home pages](https://www.serpprism.com/guides/open-graph-in-the-wild) provides a current hand-selected comparison and reports field presence, empty image tags, declared image dimensions, and title differences.
+The LinkGlimpse study is designed as a complementary reproducible measurement rather than a larger-looking version of the same claim.
+It uses a permanent deterministic Tranco frame, keeps blocked and failed domains in the coverage denominator, records redirect and image-fetch outcomes, publishes schema-valid privacy-minimized observations, and requires manual double-checking before publication.
+
 ## Unit of observation
 
 One observation represents one requested HTTPS home page from one source-list domain at one recorded time.
@@ -38,7 +47,24 @@ For a stratum with inclusive lower rank `L`, inclusive upper rank `U`, and targe
 No hand-picked replacement is allowed when a selected domain is blocked, unavailable, duplicated by redirect, or otherwise unusable.
 
 The generated manifest must validate against [`sample.schema.json`](sample.schema.json).
+The complete 200-record manifest must also validate against [`manifest.schema.json`](manifest.schema.json).
 The manifest must be sorted by `sample_id` and committed with its source snapshot metadata before collection.
+Cross-record validation must confirm the exact 20/40/140 stratum counts, the systematic ranks defined above, unique sample IDs, unique source ranks, unique source domains, and an exact `https://<source_domain>/` requested URL for every row.
+The generator must reject a source snapshot that does not contain exactly ranks 1 through 10,000 in order.
+It must refuse to replace an existing output file.
+
+Create a manifest only from a previously downloaded permanent Tranco snapshot:
+
+```bash
+pnpm research:manifest -- \
+  --input /absolute/path/to/tranco_<list-id>-top-10000.csv \
+  --list-id <list-id> \
+  --download-url https://tranco-list.eu/download/<list-id>/10000 \
+  --retrieved-at 2026-09-30T00:00:00Z \
+  --output /absolute/path/to/sample-manifest.json
+```
+
+The generator reads local bytes, hashes the complete CSV, validates every record and the complete manifest, and performs no network request.
 
 ## Requested URL policy
 
@@ -56,6 +82,15 @@ The collector identifies itself as `LinkGlimpse-Research/1.0 (+https://www.linkg
 Before requesting a sampled page, it fetches that origin's `/robots.txt` with the same user agent.
 An explicit disallow for the requested path or any redirect target records `robots_disallowed` and stops collection for that sample.
 A missing robots file does not imply permission beyond ordinary public HTTP access, and all other safeguards still apply.
+
+Robots handling follows [RFC 9309](https://www.rfc-editor.org/rfc/rfc9309.html) with a deliberately conservative unreachable policy.
+The parser matches the `LinkGlimpse-Research` product token, falls back to `*`, applies the longest matching allow or disallow rule, and prefers allow when equally specific rules conflict.
+The robots fetch follows no more than five redirects and parses at most 512 KiB.
+An HTTP 4xx response other than 429 is recorded as unavailable and permits the public-page request under RFC 9309.
+An HTTP 429, HTTP 5xx response, DNS error, timeout, TLS error, connection error, unsafe redirect, or robots redirect overflow is recorded as unreachable and prevents the page request.
+The collector does not reuse a robots result for more than 24 hours.
+Before following a page redirect to a new target, it evaluates the target path against the target origin's robots policy.
+Before requesting a share image, it applies the same network-safety and robots checks to the image URL and every image redirect target.
 
 The collector sends no more than one in-flight request per origin.
 It waits at least two seconds between requests to the same origin and honors a longer valid `Crawl-delay` when one is present.
@@ -152,7 +187,8 @@ The publication must repeat the sample-frame limitation near the headline findin
 
 ## Publication gate
 
-Collection may begin only after the methodology and both schemas are reviewed and the schema tests pass.
+Collection may begin only after the methodology and all three schemas are reviewed and the schema tests pass.
+Collection also requires the manifest schema, manifest semantic tests, RFC 9309 robots fixtures, redirect-origin fixtures, response-limit fixtures, and public-network safety fixtures to pass.
 Publication additionally requires a complete manifest, a complete disposition record for every sample, successful schema validation, duplicate checks, manual QA, reproducible aggregation, and a written limitations section.
 If any gate fails, the dataset remains unpublished and the issue is recorded for the next run.
 

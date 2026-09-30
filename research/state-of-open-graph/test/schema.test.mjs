@@ -6,6 +6,7 @@ import addFormats from 'ajv-formats';
 
 const directory = new URL('../', import.meta.url);
 const sampleSchema = JSON.parse(await readFile(new URL('sample.schema.json', directory), 'utf8'));
+const manifestSchema = JSON.parse(await readFile(new URL('manifest.schema.json', directory), 'utf8'));
 const observationSchema = JSON.parse(await readFile(new URL('observation.schema.json', directory), 'utf8'));
 
 const hash = 'a'.repeat(64);
@@ -19,7 +20,9 @@ function createAjv() {
 
 test('compiles the research schemas and accepts representative records', () => {
   const ajv = createAjv();
+  ajv.addSchema(sampleSchema);
   const validateSample = ajv.compile(sampleSchema);
+  const validateManifest = ajv.compile(manifestSchema);
   const validateObservation = ajv.compile(observationSchema);
 
   const sample = {
@@ -114,6 +117,18 @@ test('compiles the research schemas and accepts representative records', () => {
   };
 
   assert.equal(validateSample(sample), true, JSON.stringify(validateSample.errors));
+  assert.equal(validateManifest(Array.from({ length: 200 }, (_, index) => {
+    const rank = index < 20 ? 3 + index * 5 : index < 60 ? 112 + (index - 20) * 22 : 1033 + (index - 60) * 64;
+    const stratum = index < 20 ? 'rank_1_100' : index < 60 ? 'rank_101_1000' : 'rank_1001_10000';
+    return {
+      ...sample,
+      sample_id: `sog-2026-${String(index + 1).padStart(4, '0')}`,
+      source_rank: rank,
+      stratum,
+      source_domain: `site-${index + 1}.example`,
+      requested_url: `https://site-${index + 1}.example/`,
+    };
+  })), true, JSON.stringify(validateManifest.errors));
   assert.equal(validateObservation(observation), true, JSON.stringify(validateObservation.errors));
 
   const excludedObservation = {
