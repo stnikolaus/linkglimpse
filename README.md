@@ -30,7 +30,7 @@ Requirements: Node.js 20+ and pnpm 10.
 
 ```bash
 git clone https://github.com/stnikolaus/linkglimpse.git
-cd social-preview
+cd linkglimpse
 corepack enable
 pnpm install
 cp .env.example .env.local
