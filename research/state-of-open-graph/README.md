@@ -92,6 +92,10 @@ The collector does not reuse a robots result for more than 24 hours.
 Before following a page redirect to a new target, it evaluates the target path against the target origin's robots policy.
 Before requesting a share image, it applies the same network-safety and robots checks to the image URL and every image redirect target.
 
+The shared pre-collection safety layer lives in [`collector-safety.mjs`](collector-safety.mjs).
+Its offline fixture suite covers product-token and wildcard robots selection, longest-rule and allow-on-tie behavior, conservative unavailable and unreachable robots outcomes, cross-origin redirect rechecks, private and reserved network rejection, response byte limits, and per-origin request spacing.
+Run the complete gate with `pnpm research:test`; the fixture suite performs no public network request.
+
 The collector sends no more than one in-flight request per origin.
 It waits at least two seconds between requests to the same origin and honors a longer valid `Crawl-delay` when one is present.
 Global page concurrency is capped at two.
