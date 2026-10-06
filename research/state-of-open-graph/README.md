@@ -1,6 +1,6 @@
 # State of Open Graph study design
 
-Status: pre-collection methodology, version 1.0.0.
+Status: pre-collection methodology, version 2.0.0.
 
 No study observations have been collected or published from this design.
 The methodology, sample manifest schema, and observation schema must pass review before collection begins.
@@ -88,6 +88,7 @@ The parser matches the `LinkGlimpse-Research` product token, falls back to `*`, 
 The robots fetch follows no more than five redirects and parses at most 512 KiB.
 An HTTP 4xx response other than 429 is recorded as unavailable and permits the public-page request under RFC 9309.
 An HTTP 429, HTTP 5xx response, DNS error, timeout, TLS error, connection error, unsafe redirect, or robots redirect overflow is recorded as unreachable and prevents the page request.
+An unreachable robots policy produces the distinct `robots_unreachable` exclusion reason instead of being reported as an explicit robots disallow.
 The collector does not reuse a robots result for more than 24 hours.
 Before following a page redirect to a new target, it evaluates the target path against the target origin's robots policy.
 Before requesting a share image, it applies the same network-safety and robots checks to the image URL and every image redirect target.
@@ -120,7 +121,7 @@ Metadata injected only after JavaScript execution is intentionally out of scope 
 ## Recorded fields
 
 Every sample produces one record that validates against [`observation.schema.json`](observation.schema.json).
-The record includes sample provenance, UTC observation time, requested and final URLs, redirects, response status, content type, byte limits, robots outcome, and collection disposition.
+The record includes sample provenance, UTC observation time, requested and final URLs, redirects, response status, content type, byte limits, robots state and error outcome, and collection disposition.
 
 For page text fields, the dataset stores presence, normalized character length, and a SHA-256 hash rather than the full title or description.
 For canonical and image URLs, the dataset stores validity, scheme, host relationship, and fetch characteristics without publishing query strings.
@@ -159,7 +160,7 @@ Each manifest row must end with exactly one disposition.
 - `excluded` means policy or scope prevented inspection.
 - `failed` means an eligible request could not be completed within the bounded retry policy.
 
-Exclusion reasons are limited to the schema enum and include robots denial, authentication, access challenge, non-HTML content, unsafe redirects, duplicate final destinations, and operator safety stops.
+Exclusion reasons are limited to the schema enum and include explicit robots denial, unreachable robots policy, authentication, access challenge, non-HTML content, unsafe redirects, duplicate final destinations, and operator safety stops.
 Failure reasons include DNS, timeout, TLS, connection, HTTP, response-size, redirect-limit, and parser failures.
 The report must publish disposition counts and reason counts so readers can see coverage loss.
 

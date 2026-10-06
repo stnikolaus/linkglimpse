@@ -219,6 +219,7 @@ export function createRobotsGuard({
         status: cached.status,
         state: cached.state,
         allowed,
+        errorCode: cached.errorCode,
         matchedUserAgent: cached.policy?.matchedUserAgent,
         crawlDelaySeconds: cached.policy?.crawlDelaySeconds,
         checkedAt: cached.checkedAt,
@@ -247,7 +248,11 @@ export async function fetchWithSafety(input, {
   for (let redirectCount = 0; redirectCount <= maxRedirects; redirectCount += 1) {
     const robots = robotsGuard ? await robotsGuard.check(currentUrl) : undefined;
     if (robots && !robots.allowed) {
-      throw new CollectorSafetyError('robots_disallowed', `Robots policy disallows ${currentUrl.pathname}`, { robots });
+      const code = robots.state === 'unreachable' ? 'robots_unreachable' : 'robots_disallowed';
+      const message = robots.state === 'unreachable'
+        ? `Robots policy could not be reached for ${currentUrl.origin}`
+        : `Robots policy disallows ${currentUrl.pathname}`;
+      throw new CollectorSafetyError(code, message, { robots });
     }
     const delayMs = Math.max(MIN_ORIGIN_DELAY_MS, (robots?.crawlDelaySeconds ?? 0) * 1_000);
     const response = await requestWithSingleRetry(currentUrl, {

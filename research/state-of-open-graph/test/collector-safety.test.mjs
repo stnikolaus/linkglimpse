@@ -134,6 +134,31 @@ test('uses conservative robots outcomes for unavailable and unreachable files', 
   const unreachable = await unreachableGuard.check('https://public.site/page');
   assert.equal(unreachable.state, 'unreachable');
   assert.equal(unreachable.allowed, false);
+
+  await assert.rejects(fetchWithSafety('https://public.site/page', {
+    fetchImpl: async () => new Response('', { status: 503 }),
+    lookup: publicLookup,
+    scheduler,
+    robotsGuard: unreachableGuard,
+    sleep: async () => undefined,
+  }), (error) => error.code === 'robots_unreachable' && error.details.robots.state === 'unreachable');
+
+  let lookupCount = 0;
+  const dnsGuard = createRobotsGuard({
+    lookup: async () => {
+      lookupCount += 1;
+      if (lookupCount === 1) return [{ address: '93.184.216.34', family: 4 }];
+      const error = new Error('lookup failed');
+      error.code = 'ENOTFOUND';
+      throw error;
+    },
+    scheduler,
+    sleep: async () => undefined,
+  });
+  const dnsFailure = await dnsGuard.check('https://public.site/page');
+  assert.equal(dnsFailure.state, 'unreachable');
+  assert.equal(dnsFailure.allowed, false);
+  assert.equal(dnsFailure.errorCode, 'dns_error');
 });
 
 test('rejects declared and streamed responses above the byte boundary', async () => {

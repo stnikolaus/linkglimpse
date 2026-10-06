@@ -16,10 +16,10 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "methodology_version": {
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "sample_id": {
       "type": "string",
@@ -44,6 +44,7 @@
     "exclusion_reason": {
       "enum": [
         "robots_disallowed",
+        "robots_unreachable",
         "authentication_required",
         "access_challenge",
         "non_html",
@@ -67,7 +68,7 @@
     "robots": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["robots_url", "status", "allowed", "checked_at"],
+      "required": ["robots_url", "status", "state", "allowed", "checked_at"],
       "properties": {
         "robots_url": {
           "type": "string",
@@ -78,8 +79,26 @@
           "minimum": 0,
           "maximum": 599
         },
+        "state": {
+          "enum": ["available", "unavailable", "unreachable"]
+        },
         "allowed": {
           "type": "boolean"
+        },
+        "error_code": {
+          "enum": [
+            "invalid_url",
+            "unsupported_protocol",
+            "credentialed_url",
+            "unsafe_network",
+            "dns_error",
+            "timeout",
+            "tls_error",
+            "connection_error",
+            "response_too_large",
+            "redirect_limit",
+            "http_error"
+          ]
         },
         "matched_user_agent": {
           "type": "string"
@@ -92,7 +111,60 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "unavailable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "allowed": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "unreachable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "allowed": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "unreachable"
+              },
+              "status": {
+                "const": 0
+              }
+            },
+            "required": ["state", "status"]
+          },
+          "then": {
+            "required": ["error_code"],
+            "properties": {
+              "error_code": {}
+            }
+          }
+        }
+      ]
     },
     "collection": {
       "type": "object",
@@ -405,6 +477,84 @@
         "properties": {
           "exclusion_reason": false,
           "failure_reason": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "robots": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unreachable"
+              }
+            },
+            "required": ["state"]
+          }
+        }
+      },
+      "then": {
+        "required": ["exclusion_reason"],
+        "properties": {
+          "disposition": {
+            "const": "excluded"
+          },
+          "exclusion_reason": {
+            "const": "robots_unreachable"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "exclusion_reason": {
+            "const": "robots_disallowed"
+          }
+        },
+        "required": ["exclusion_reason"]
+      },
+      "then": {
+        "properties": {
+          "robots": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "available"
+              },
+              "allowed": {
+                "const": false
+              }
+            },
+            "required": ["state", "allowed"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "exclusion_reason": {
+            "const": "robots_unreachable"
+          }
+        },
+        "required": ["exclusion_reason"]
+      },
+      "then": {
+        "properties": {
+          "robots": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "const": "unreachable"
+              },
+              "allowed": {
+                "const": false
+              }
+            },
+            "required": ["state", "allowed"]
+          }
         }
       }
     }

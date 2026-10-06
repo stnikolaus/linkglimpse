@@ -44,8 +44,8 @@ test('compiles the research schemas and accepts representative records', () => {
   const textSignal = { present: true, character_length: 7, duplicate_count: 1, value_sha256: hash };
   const urlSignal = { present: true, valid: true, duplicate_count: 1, scheme: 'https', host_relation: 'same_host', host_sha256: hash };
   const observation = {
-    schema_version: '1.0.0',
-    methodology_version: '1.0.0',
+    schema_version: '2.0.0',
+    methodology_version: '2.0.0',
     sample_id: sample.sample_id,
     observed_at: '2026-09-29T12:05:00Z',
     disposition: 'collected',
@@ -54,6 +54,7 @@ test('compiles the research schemas and accepts representative records', () => {
     robots: {
       robots_url: 'https://example.com/robots.txt',
       status: 200,
+      state: 'available',
       allowed: true,
       matched_user_agent: 'LinkGlimpse-Research',
       checked_at: '2026-09-29T12:04:59Z',
@@ -132,8 +133,8 @@ test('compiles the research schemas and accepts representative records', () => {
   assert.equal(validateObservation(observation), true, JSON.stringify(validateObservation.errors));
 
   const excludedObservation = {
-    schema_version: '1.0.0',
-    methodology_version: '1.0.0',
+    schema_version: '2.0.0',
+    methodology_version: '2.0.0',
     sample_id: 'sog-2026-0002',
     observed_at: '2026-09-29T12:05:00Z',
     disposition: 'excluded',
@@ -142,6 +143,7 @@ test('compiles the research schemas and accepts representative records', () => {
     robots: {
       robots_url: 'https://example.net/robots.txt',
       status: 200,
+      state: 'available',
       allowed: false,
       matched_user_agent: 'LinkGlimpse-Research',
       checked_at: '2026-09-29T12:04:59Z',
@@ -150,6 +152,28 @@ test('compiles the research schemas and accepts representative records', () => {
   };
 
   assert.equal(validateObservation(excludedObservation), true, JSON.stringify(validateObservation.errors));
+
+  const unreachableObservation = {
+    ...excludedObservation,
+    sample_id: 'sog-2026-0003',
+    exclusion_reason: 'robots_unreachable',
+    requested_url: 'https://unreachable.example/',
+    robots: {
+      robots_url: 'https://unreachable.example/robots.txt',
+      status: 0,
+      state: 'unreachable',
+      allowed: false,
+      error_code: 'dns_error',
+      checked_at: '2026-09-29T12:04:59Z',
+    },
+  };
+
+  assert.equal(validateObservation(unreachableObservation), true, JSON.stringify(validateObservation.errors));
+
+  assert.equal(validateObservation({
+    ...unreachableObservation,
+    exclusion_reason: 'robots_disallowed',
+  }), false);
 });
 
 test('rejects replacement-prone or incomplete records', () => {
@@ -181,8 +205,8 @@ test('rejects replacement-prone or incomplete records', () => {
   }), false);
 
   assert.equal(validateObservation({
-    schema_version: '1.0.0',
-    methodology_version: '1.0.0',
+    schema_version: '2.0.0',
+    methodology_version: '2.0.0',
     sample_id: 'sog-2026-0002',
     observed_at: '2026-09-29T12:05:00Z',
     disposition: 'collected',
@@ -190,6 +214,7 @@ test('rejects replacement-prone or incomplete records', () => {
     robots: {
       robots_url: 'https://example.com/robots.txt',
       status: 200,
+      state: 'available',
       allowed: true,
       checked_at: '2026-09-29T12:04:59Z',
     },
