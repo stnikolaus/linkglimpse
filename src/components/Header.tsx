@@ -28,7 +28,7 @@ export default function Header() {
     <nav className="border-gray-200 absolute top-0 left-0 right-0 z-50">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <Image src="/images/link-glimpse-logo.svg" alt="LinkGlimpse Logo" width={164} height={32} className="h-8 w-auto" priority />
+          <Image src="/images/link-glimpse-logo.svg" alt="LinkGlimpse Logo" width={787} height={165} className="h-8 w-auto" priority />
         </Link>
 
         <button
