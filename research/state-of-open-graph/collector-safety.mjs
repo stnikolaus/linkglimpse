@@ -315,6 +315,35 @@ export async function readBoundedResponse(response, limit) {
   return output;
 }
 
+export async function readResponsePrefix(response, limit) {
+  if (!response.body) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    return bytes.subarray(0, limit);
+  }
+
+  const reader = response.body.getReader();
+  const chunks = [];
+  let received = 0;
+  while (received < limit) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const remaining = limit - received;
+    const chunk = value.byteLength > remaining ? value.subarray(0, remaining) : value;
+    chunks.push(chunk);
+    received += chunk.byteLength;
+    if (value.byteLength > remaining || received === limit) break;
+  }
+  await reader.cancel().catch(() => undefined);
+
+  const output = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) {
+    output.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return output;
+}
+
 async function loadRobotsPolicy(robotsUrl, { fetchImpl, lookup, scheduler, now, sleep }) {
   const checkedAt = new Date(now()).toISOString();
   try {

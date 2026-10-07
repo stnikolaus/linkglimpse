@@ -24,7 +24,8 @@
     "mcp:test": "pnpm --filter linkglimpse-mcp test",
     "actor:test": "pnpm --filter linkglimpse-apify-actor test",
     "research:test": "node --test research/state-of-open-graph/test/*.test.mjs",
-    "research:manifest": "node research/state-of-open-graph/generate-manifest.mjs"
+    "research:manifest": "node research/state-of-open-graph/generate-manifest.mjs",
+    "research:collect": "node research/state-of-open-graph/collect-observations.mjs"
   },
   "dependencies": {
     "@automattic/social-previews": "2.1.0-beta.12",
@@ -63,6 +64,7 @@
     "eslint-config-next": "15.4.5",
     "sass-loader": "^16.0.5",
     "tailwindcss": "^4",
+    "tldts": "7.4.10",
     "typescript": "^5",
     "wrangler": "^4.27.0"
   }

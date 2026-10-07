@@ -67,6 +67,7 @@ test('runs the offline CLI end to end and refuses to overwrite its output', asyn
   const output = join(directory, 'sample-manifest.json');
   const args = [
     generatorPath,
+    '--',
     '--input', input,
     '--list-id', 'ABCDE',
     '--download-url', 'https://tranco-list.eu/download/ABCDE/10000',

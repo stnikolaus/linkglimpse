@@ -97,6 +97,23 @@ The shared pre-collection safety layer lives in [`collector-safety.mjs`](collect
 Its offline fixture suite covers product-token and wildcard robots selection, longest-rule and allow-on-tie behavior, conservative unavailable and unreachable robots outcomes, cross-origin redirect rechecks, private and reserved network rejection, response byte limits, and per-origin request spacing.
 Run the complete gate with `pnpm research:test`; the fixture suite performs no public network request.
 
+The collector assembly lives in [`collector.mjs`](collector.mjs), with the operator entry point in [`collect-observations.mjs`](collect-observations.mjs).
+Its offline fixtures cover metadata extraction, duplicate counting, canonical and host classification, robots tokenization, Twitter fallback reporting, bounded image dimensions, schema-valid output, and the unreachable-robots stop path.
+The command refuses to run unless the operator explicitly acknowledges that the methodology, schemas, manifest, and safety gates have been reviewed:
+
+```bash
+pnpm research:collect -- \
+  --input /absolute/path/to/sample-manifest.json \
+  --output /absolute/path/to/observations.json \
+  --collector-commit <complete-40-character-git-sha> \
+  --core-version 0.2.0 \
+  --concurrency 2 \
+  --acknowledge-reviewed-gates
+```
+
+Do not run this command until the manifest has been reviewed and frozen.
+The output path must not already exist, every manifest row produces one observation, and the complete output must validate before it is written.
+
 The collector sends no more than one in-flight request per origin.
 It waits at least two seconds between requests to the same origin and honors a longer valid `Crawl-delay` when one is present.
 Global page concurrency is capped at two.

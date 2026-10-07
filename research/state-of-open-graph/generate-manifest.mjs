@@ -136,7 +136,9 @@ function isValidDomain(domain) {
 }
 
 async function main() {
+  const commandArguments = process.argv[2] === '--' ? process.argv.slice(3) : process.argv.slice(2);
   const { values } = parseArgs({
+    args: commandArguments,
     options: {
       input: { type: 'string' },
       'list-id': { type: 'string' },
