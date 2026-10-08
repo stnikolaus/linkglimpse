@@ -57,6 +57,27 @@ test('extracts case-insensitive first non-empty values, duplicates, fallbacks, a
   assert.equal(record.image.url.duplicate_count, 2);
 });
 
+test('ignores metadata-looking text that is not an HTML element', () => {
+  const parsed = parseStudyMetadata(`
+    <!doctype html>
+    <html>
+      <head>
+        <!-- <meta property="og:title" content="Comment title"> -->
+        <script>const example = '<meta property="og:title" content="Script title">';</script>
+        <style>.example::after { content: '<meta property="og:title" content="Style title">'; }</style>
+        <template><meta property="og:title" content="Template title"></template>
+        <title>Real &amp; decoded title</title>
+        <meta property="og:title" content="Real title">
+        <meta property="og:description" content="Real &amp; decoded description">
+      </head>
+    </html>
+  `, new URL('https://public.site/'));
+
+  assert.deepEqual(parsed.titles, ['Real & decoded title']);
+  assert.deepEqual(parsed.ogTitle, ['Real title']);
+  assert.deepEqual(parsed.ogDescription, ['Real & decoded description']);
+});
+
 test('reads common image dimensions from the bounded prefix', () => {
   const png = new Uint8Array(24);
   png.set([0x89, 0x50, 0x4e, 0x47]);

@@ -133,6 +133,7 @@ The request timeout is 12 seconds per request.
 The collector accepts only HTTP and HTTPS URLs and rechecks DNS safety before every redirect.
 
 The initial HTML response is the metadata source.
+HTML is parsed with a standards-compliant HTML parser so markup-like text inside comments, scripts, styles, and templates is not treated as metadata.
 Metadata injected only after JavaScript execution is intentionally out of scope because many crawlers do not execute page scripts.
 
 ## Recorded fields

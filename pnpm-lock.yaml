@@ -105,6 +105,9 @@ importers:
       eslint-config-next:
         specifier: 15.4.5
         version: 15.4.5(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
+      parse5:
+        specifier: 7.3.0
+        version: 7.3.0
       sass-loader:
         specifier: ^16.0.5
         version: 16.0.8(sass@1.102.0)

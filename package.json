@@ -62,6 +62,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
+    "parse5": "7.3.0",
     "sass-loader": "^16.0.5",
     "tailwindcss": "^4",
     "tldts": "7.4.10",

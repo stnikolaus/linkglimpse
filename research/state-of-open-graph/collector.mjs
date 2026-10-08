@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { parse } from 'parse5';
 import { getDomain } from 'tldts';
 import { analyzeMetadata } from '../../packages/cli/src/core/analysis.mjs';
 import { assertManifest } from './generate-manifest.mjs';
@@ -171,24 +172,31 @@ export async function collectSample(sample, options) {
 }
 
 export function parseStudyMetadata(html, finalUrl) {
+  const document = parse(String(html));
   const meta = new Map();
-  for (const tag of String(html).match(/<meta\b[^>]*>/gi) ?? []) {
-    const attributes = parseAttributes(tag);
-    const key = (attributes.property || attributes.name)?.trim().toLowerCase();
-    if (!key) continue;
-    const value = decodeHtmlEntities(attributes.content ?? '').trim();
-    if (!value) continue;
-    meta.set(key, [...(meta.get(key) ?? []), value]);
-  }
+  const titles = [];
+  const canonicals = [];
 
-  const titles = (String(html).match(/<title\b[^>]*>[\s\S]*?<\/title>/gi) ?? [])
-    .map((tag) => decodeHtmlEntities(tag.replace(/^<title\b[^>]*>|<\/title>$/gi, '')).trim())
-    .filter(Boolean);
-  const canonicals = (String(html).match(/<link\b[^>]*>/gi) ?? [])
-    .map(parseAttributes)
-    .filter((attributes) => attributes.rel?.toLowerCase().split(/\s+/).includes('canonical'))
-    .map((attributes) => decodeHtmlEntities(attributes.href ?? '').trim())
-    .filter(Boolean);
+  visitHtmlElements(document, (element) => {
+    const attributes = Object.fromEntries(element.attrs.map(({ name, value }) => [name.toLowerCase(), value]));
+    if (element.tagName === 'title') {
+      const value = elementText(element).trim();
+      if (value) titles.push(value);
+      return;
+    }
+    if (element.tagName === 'link') {
+      if (!attributes.rel?.toLowerCase().split(/\s+/).includes('canonical')) return;
+      const value = attributes.href?.trim();
+      if (value) canonicals.push(value);
+      return;
+    }
+    if (element.tagName !== 'meta') return;
+    const key = (attributes.property || attributes.name)?.trim().toLowerCase();
+    if (!key) return;
+    const value = (attributes.content ?? '').trim();
+    if (!value) return;
+    meta.set(key, [...(meta.get(key) ?? []), value]);
+  });
   const values = (key) => meta.get(key) ?? [];
   const imageCandidates = [...values('og:image'), ...values('og:image:url')];
   const imageUrl = firstValidUrl(imageCandidates, finalUrl);
@@ -452,23 +460,17 @@ function mapFailureReason(code) {
     : 'http_error';
 }
 
-function parseAttributes(tag) {
-  const attributes = {};
-  const pattern = /([^\s=/>]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/g;
-  let match;
-  while ((match = pattern.exec(tag))) {
-    attributes[match[1].toLowerCase()] = match[2] ?? match[3] ?? match[4] ?? '';
+function visitHtmlElements(node, visitor) {
+  for (const child of node.childNodes ?? []) {
+    if (child.tagName) visitor(child);
+    if (child.tagName !== 'template') visitHtmlElements(child, visitor);
   }
-  return attributes;
 }
 
-function decodeHtmlEntities(value) {
-  const named = { amp: '&', apos: "'", gt: '>', lt: '<', quot: '"', nbsp: ' ' };
-  return String(value).replace(/&(#x?[\da-f]+|[a-z]+);/gi, (entity, code) => {
-    if (/^#x/i.test(code)) return String.fromCodePoint(Number.parseInt(code.slice(2), 16));
-    if (code.startsWith('#')) return String.fromCodePoint(Number.parseInt(code.slice(1), 10));
-    return named[code.toLowerCase()] ?? entity;
-  });
+function elementText(node) {
+  return (node.childNodes ?? []).map((child) => (
+    child.nodeName === '#text' ? child.value : elementText(child)
+  )).join('');
 }
 
 function firstValidUrl(values, base) {
