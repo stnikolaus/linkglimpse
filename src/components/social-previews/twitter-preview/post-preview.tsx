@@ -18,7 +18,6 @@ export const TwitterPostPreview: React.FC< TwitterPreviewProps > = ( {
 	showThreadConnector,
 	text,
 	title,
-	tweet,
 	cardType,
 	url,
 } ) => {

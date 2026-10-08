@@ -22,7 +22,6 @@ export const MastodonPostPreview: React.FC< MastodonPreviewProps > = ( props ) =
 								className="mastodon-preview__media-item"
 							>
 								{ mediaItem.type.startsWith( 'video/' ) ? (
-									// eslint-disable-next-line jsx-a11y/media-has-caption
 									<video controls>
 										<source src={ mediaItem.url } type={ mediaItem.type } />
 									</video>

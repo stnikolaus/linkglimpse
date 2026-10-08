@@ -1,5 +1,3 @@
-import { __ } from '@/lib/i18n';
-import { SectionHeading } from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { MastodonLinkPreview } from './link-preview';
 import { MastodonPostPreview } from './post-preview';
@@ -8,7 +6,7 @@ import { MastodonPreviewProps } from './types';
 export type MastodonPreviewsProps = MastodonPreviewProps & SocialPreviewsBaseProps;
 
 export const MastodonPreviews: React.FC< MastodonPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hidePostPreview,
 	hideLinkPreview,
 	...props

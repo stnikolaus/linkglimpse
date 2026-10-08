@@ -1,6 +1,6 @@
 import { __ } from '@/lib/i18n';
 import { preparePreviewText } from '../helpers';
-import { FEED_TEXT_MAX_LENGTH, FEED_TEXT_MAX_LINES } from './constants';
+import { FEED_TEXT_MAX_LENGTH } from './constants';
 import { Bookmark as BookmarkIcon } from './icons/bookmark';
 import { Comment as CommentIcon } from './icons/comment';
 import { DefaultAvatar } from './icons/default-avatar';
@@ -40,7 +40,6 @@ export function InstagramPostPreview( {
 					{ mediaItem ? (
 						<div className="instagram-preview__media-item">
 							{ mediaItem.type.startsWith( 'video/' ) ? (
-								// eslint-disable-next-line jsx-a11y/media-has-caption
 								<video controls={ false } className="instagram-preview__media--video">
 									<source src={ mediaItem.url } type={ mediaItem.type } />
 								</video>

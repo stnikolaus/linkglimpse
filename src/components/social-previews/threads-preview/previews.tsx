@@ -1,5 +1,4 @@
 import { __ } from '@/lib/i18n';
-import SectionHeading from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { ThreadsLinkPreview } from './link-preview';
 import { ThreadsPostPreview } from './post-preview';
@@ -10,7 +9,7 @@ export type ThreadsPreviewsProps = SocialPreviewsBaseProps & {
 };
 
 export const ThreadsPreviews: React.FC< ThreadsPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hideLinkPreview,
 	hidePostPreview,
 	posts,

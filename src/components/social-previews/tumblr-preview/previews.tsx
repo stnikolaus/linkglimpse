@@ -1,5 +1,3 @@
-import { __ } from '@/lib/i18n';
-import { SectionHeading } from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { TumblrLinkPreview } from './link-preview';
 import { TumblrPostPreview } from './post-preview';
@@ -8,7 +6,7 @@ import { TumblrPreviewProps } from './types';
 export type TumblrPreviewsProps = TumblrPreviewProps & SocialPreviewsBaseProps;
 
 export const TumblrPreviews: React.FC< TumblrPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hideLinkPreview,
 	hidePostPreview,
 	...props

@@ -47,7 +47,6 @@ export const Media: React.FC< MediaProps > = ( { media } ) => {
 			{ filteredMedia.map( ( mediaItem, index ) => (
 				<Fragment key={ `threads-preview__media-item-${ index }` }>
 					{ isVideo ? (
-						// eslint-disable-next-line jsx-a11y/media-has-caption
 						<video controls>
 							<source src={ mediaItem.url } type={ mediaItem.type } />
 						</video>

@@ -1,5 +1,3 @@
-import { __ } from '@/lib/i18n';
-import SectionHeading from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { TwitterLinkPreview } from './link-preview';
 import { TwitterPostPreview } from './post-preview';
@@ -10,7 +8,7 @@ export type TwitterPreviewsProps = SocialPreviewsBaseProps & {
 };
 
 export const TwitterPreviews: React.FC< TwitterPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hideLinkPreview,
 	hidePostPreview,
 	tweets,

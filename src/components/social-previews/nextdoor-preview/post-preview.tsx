@@ -6,7 +6,7 @@ import {
 	getTitleFromDescription,
 	preparePreviewText,
 } from '../helpers';
-import { FEED_TEXT_MAX_LENGTH, FEED_TEXT_MAX_LINES } from './constants';
+import { FEED_TEXT_MAX_LENGTH } from './constants';
 import { FooterActions } from './footer-actions';
 import { ChevronIcon } from './icons/chevron-icon';
 import { DefaultAvatar } from './icons/default-avatar';
@@ -68,7 +68,6 @@ export function NextdoorPostPreview( {
 											className="nextdoor-preview__media-item"
 										>
 											{ mediaItem?.type?.startsWith( 'video/' ) ? (
-												// eslint-disable-next-line jsx-a11y/media-has-caption
 												<video controls>
 													<source src={ mediaItem.url } type={ mediaItem.type } />
 												</video>

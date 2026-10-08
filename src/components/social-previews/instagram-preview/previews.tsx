@@ -1,5 +1,3 @@
-import { __ } from '@/lib/i18n';
-import SectionHeading from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { InstagramPostPreview } from './post-preview';
 import type { InstagramPreviewProps } from './types';
@@ -7,7 +5,7 @@ import type { InstagramPreviewProps } from './types';
 export type InstagramPreviewsProps = InstagramPreviewProps & SocialPreviewsBaseProps;
 
 export const InstagramPreviews: React.FC< InstagramPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hidePostPreview,
 	...props
 } ) => {

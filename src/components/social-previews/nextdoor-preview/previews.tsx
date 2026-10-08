@@ -1,5 +1,3 @@
-import { __ } from '@/lib/i18n';
-import SectionHeading from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { NextdoorLinkPreview } from './link-preview';
 import { NextdoorPostPreview } from './post-preview';
@@ -8,7 +6,7 @@ import type { NextdoorPreviewProps } from './types';
 export type NextdoorPreviewsProps = NextdoorPreviewProps & SocialPreviewsBaseProps;
 
 export const NextdoorPreviews: React.FC< NextdoorPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hideLinkPreview,
 	hidePostPreview,
 	...props

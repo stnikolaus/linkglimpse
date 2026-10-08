@@ -1,5 +1,3 @@
-import { __ } from '@/lib/i18n';
-import { SectionHeading } from '../shared/section-heading';
 import { SocialPreviewsBaseProps } from '../types';
 import { BlueskyLinkPreview } from './link-preview';
 import { BlueskyPostPreview } from './post-preview';
@@ -8,7 +6,7 @@ import { BlueskyPreviewProps } from './types';
 export type BlueskyPreviewsProps = BlueskyPreviewProps & SocialPreviewsBaseProps;
 
 export const BlueskyPreviews: React.FC< BlueskyPreviewsProps > = ( {
-	headingLevel,
+	headingLevel: _headingLevel,
 	hidePostPreview,
 	hideLinkPreview,
 	...props

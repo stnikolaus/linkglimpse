@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import BlueskyPostActions from './post/actions';
 import BlueskyPostBody from './post/body';
 import BlueskyPostCard from './post/card';

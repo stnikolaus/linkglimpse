@@ -19,6 +19,18 @@ const eslintConfig = [
     ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    },
+  },
+  {
+    files: ["src/components/social-previews/**/*.{ts,tsx}"],
+    rules: {
+      // Preview images use arbitrary user-provided URLs and must preserve the source rendering.
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
