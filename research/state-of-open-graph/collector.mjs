@@ -49,7 +49,6 @@ export async function collectManifest(manifest, options) {
     sleep: options.sleep,
   };
   const observations = new Array(manifest.length);
-  const finalDestinations = new Set();
   let nextIndex = 0;
 
   async function worker() {
@@ -62,25 +61,37 @@ export async function collectManifest(manifest, options) {
         collectorCommit,
         concurrency,
       });
-      if (observation.disposition === 'collected') {
-        const destination = normalizeDestination(observation.final_url);
-        if (finalDestinations.has(destination)) {
-          observations[index] = {
-            ...baseObservation(manifest[index], observation.robots, observation.collection, options.now),
-            final_url: observation.final_url,
-            disposition: 'excluded',
-            exclusion_reason: 'duplicate_final_destination',
-          };
-          continue;
-        }
-        finalDestinations.add(destination);
-      }
       observations[index] = observation;
     }
   }
 
   await Promise.all(Array.from({ length: concurrency }, () => worker()));
+  excludeDuplicateFinalDestinations(observations);
   return observations;
+}
+
+function excludeDuplicateFinalDestinations(observations) {
+  const finalDestinations = new Set();
+  observations.forEach((observation, index) => {
+    if (observation.disposition !== 'collected') return;
+    const destination = normalizeDestination(observation.final_url);
+    if (!finalDestinations.has(destination)) {
+      finalDestinations.add(destination);
+      return;
+    }
+    observations[index] = {
+      schema_version: observation.schema_version,
+      methodology_version: observation.methodology_version,
+      sample_id: observation.sample_id,
+      observed_at: observation.observed_at,
+      requested_url: observation.requested_url,
+      final_url: observation.final_url,
+      robots: observation.robots,
+      collection: observation.collection,
+      disposition: 'excluded',
+      exclusion_reason: 'duplicate_final_destination',
+    };
+  });
 }
 
 export async function collectSample(sample, options) {

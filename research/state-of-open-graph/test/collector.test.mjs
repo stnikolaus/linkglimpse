@@ -4,7 +4,8 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import { assertObservations } from '../collect-observations.mjs';
-import { buildMetadataRecord, collectSample, getImageDimensions, parseStudyMetadata } from '../collector.mjs';
+import { buildMetadataRecord, collectManifest, collectSample, getImageDimensions, parseStudyMetadata } from '../collector.mjs';
+import { buildManifest } from '../generate-manifest.mjs';
 
 const publicLookup = async () => [{ address: '93.184.216.34', family: 4 }];
 const collectorCommit = 'a'.repeat(40);
@@ -172,6 +173,57 @@ test('records unreachable robots separately and never fetches the page', async (
   assert.equal(observation.exclusion_reason, 'robots_unreachable');
   assert.equal(fetchCount, 0);
   assert.equal(assertObservations([sample], [observation]), true);
+});
+
+test('keeps the first manifest row when concurrent samples share a final destination', async () => {
+  const csv = `${Array.from({ length: 10_000 }, (_, index) => `${index + 1},site-${index + 1}.example`).join('\n')}\n`;
+  const manifest = buildManifest({
+    csvBytes: Buffer.from(csv),
+    listId: 'ABCDE',
+    downloadUrl: 'https://tranco-list.eu/download/ABCDE/10000',
+    retrievedAt: '2026-10-09T08:00:00Z',
+  });
+  const duplicateDomains = new Set(manifest.slice(0, 2).map(({ source_domain: domain }) => domain));
+  const robotsGuard = {
+    check: async (url) => ({
+      robotsUrl: `${new URL(url).origin}/robots.txt`,
+      status: 404,
+      state: 'unavailable',
+      allowed: true,
+      checkedAt: '2026-10-09T08:00:00.000Z',
+    }),
+  };
+  const fetchImpl = async (url) => {
+    if (duplicateDomains.has(url.hostname)) {
+      if (url.hostname === manifest[0].source_domain) {
+        await new Promise((resolve) => setImmediate(resolve));
+      }
+      return new Response(null, {
+        status: 302,
+        headers: { location: 'https://shared-final.example/' },
+      });
+    }
+    return new Response('<title>Fixture page</title>', {
+      status: 200,
+      headers: { 'content-type': 'text/html; charset=utf-8' },
+    });
+  };
+  const observations = await collectManifest(manifest, {
+    collectorCommit,
+    coreVersion: '0.2.0',
+    concurrency: 2,
+    fetchImpl,
+    lookup: publicLookup,
+    scheduler: { run: async (_url, task) => task() },
+    robotsGuard,
+    now: () => Date.parse('2026-10-09T08:00:01.000Z'),
+    sleep: async () => undefined,
+  });
+
+  assert.equal(observations[0].disposition, 'collected');
+  assert.equal(observations[1].disposition, 'excluded');
+  assert.equal(observations[1].exclusion_reason, 'duplicate_final_destination');
+  assert.equal(assertObservations(manifest, observations), true);
 });
 
 test('keeps the documented CLI locked until an operator acknowledges reviewed gates', async () => {

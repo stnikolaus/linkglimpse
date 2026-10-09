@@ -45,6 +45,7 @@ The sample is stratified to retain useful coverage across popularity levels:
 Within each stratum, ranks are selected by deterministic systematic spacing.
 For a stratum with inclusive lower rank `L`, inclusive upper rank `U`, and target count `N`, sample index `i` from zero through `N - 1` selects `L + floor((i + 0.5) * (U - L + 1) / N)`.
 No hand-picked replacement is allowed when a selected domain is blocked, unavailable, duplicated by redirect, or otherwise unusable.
+When multiple samples resolve to the same final destination, the collector retains the earliest `sample_id` in manifest order and excludes every later duplicate.
 
 The generated manifest must validate against [`sample.schema.json`](sample.schema.json).
 The complete 200-record manifest must also validate against [`manifest.schema.json`](manifest.schema.json).
