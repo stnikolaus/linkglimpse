@@ -38,7 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/tumblr-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/mastodon-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/nextdoor-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${SITE_URL}/bluesky-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
+    {
+      url: `${SITE_URL}/bluesky-social-preview`,
+      lastModified: new Date('2026-10-07'),
+      changeFrequency: 'monthly',
+      priority: 0.4,
+    },
     { url: `${SITE_URL}/blog`, changeFrequency: 'weekly', priority: 0.7 },
     {
       url: `${SITE_URL}/about`,
