@@ -19,6 +19,10 @@ export default function TwitterSocialPreviewClient() {
 
   const faqItems = [
     {
+      question: 'Does X still provide a public Twitter Card Validator?',
+      answer: 'The former public validator URLs now redirect to X sign-in instead of exposing a standalone public checker. LinkGlimpse independently checks the public metadata and image response that a crawler can retrieve, but only X controls its final rendering and cache.'
+    },
+    {
       question: 'What is a Twitter Card Debugger?',
       answer: 'A Twitter Card debugger fetches a public page, checks its Twitter Card and Open Graph metadata, and renders a representative preview. It helps you find missing or unreachable metadata before you share the URL on X.'
     },
@@ -81,14 +85,14 @@ export default function TwitterSocialPreviewClient() {
             Validate Twitter Card and Open Graph tags for any URL. Preview the card on X and find missing title, description, image or card-type metadata.
           </p>
           <p className="mt-3 text-sm text-gray-500">
-            Reviewed September 21, 2026 · Maintained by LinkGlimpse · <Link href="/methodology" className="font-medium text-blue-700 hover:underline">How the diagnostics work</Link>
+            Reviewed October 14, 2026 · Maintained by LinkGlimpse · <Link href="/methodology" className="font-medium text-blue-700 hover:underline">How the diagnostics work</Link>
           </p>
         </div>
 
         <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-5 text-sm text-blue-950">
-          <p className="font-semibold">Looking for the former Twitter Card Validator workflow?</p>
+          <p className="font-semibold">The former public Twitter Card Validator is no longer available as a standalone checker.</p>
           <p className="mt-2 leading-6">
-            Paste the public URL below. LinkGlimpse follows redirects, reads the deployed HTML, checks card tags and image reachability, and shows the metadata a crawler can retrieve now. The preview is representative: LinkGlimpse is independent of X, cannot reproduce X&apos;s private renderer, and cannot force X to refresh its cache.
+            As reviewed on October 14, 2026, the <a href="https://cards-dev.x.com/validator" target="_blank" rel="noreferrer" className="font-medium text-blue-800 underline hover:text-blue-950">old validator URL</a> redirects to X sign-in instead of serving a public checker. Paste a public URL below to inspect the deployed HTML, card tags, redirects, and image response. The preview is representative: LinkGlimpse is independent of X, cannot reproduce X&apos;s private renderer, and cannot force X to refresh its cache.
           </p>
         </div>
 

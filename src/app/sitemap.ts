@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/examples`, changeFrequency: 'monthly', priority: 0.7 },
     {
       url: `${SITE_URL}/twitter-card-validator`,
-      lastModified: new Date('2026-09-21'),
+      lastModified: new Date('2026-10-14'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
