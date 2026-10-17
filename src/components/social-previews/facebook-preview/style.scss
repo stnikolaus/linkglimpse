@@ -1,10 +1,10 @@
-@import "./variables";
-@import "../shared";
+@use "./variables" as *;
+@use "../shared";
 
 // Import post subdirectory styles
-@import "./post/actions/styles.scss";
-@import "./post/header/styles.scss";
-@import "./post/icons/styles.scss";
+@use "./post/actions/styles" as actions;
+@use "./post/header/styles" as header;
+@use "./post/icons/styles" as icons;
 
 .facebook-preview__post {
 	overflow-y: hidden;

@@ -1,4 +1,4 @@
-@import "../../variables";
+@use "../../variables" as *;
 
 .bluesky-preview__card {
 	display: flex;

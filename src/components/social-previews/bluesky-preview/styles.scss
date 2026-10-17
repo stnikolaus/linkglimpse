@@ -1,12 +1,12 @@
-@import "./variables";
-@import "../shared";
+@use "./variables" as *;
+@use "../shared";
 
 // Import post subdirectory styles
-@import "./post/actions/styles.scss";
-@import "./post/body/styles.scss";
-@import "./post/card/styles.scss";
-@import "./post/header/styles.scss";
-@import "./post/sidebar/styles.scss";
+@use "./post/actions/styles" as actions;
+@use "./post/body/styles" as body;
+@use "./post/card/styles" as card;
+@use "./post/header/styles" as header;
+@use "./post/sidebar/styles" as sidebar;
 
 .bluesky-preview__section {
 	max-width: 100%;

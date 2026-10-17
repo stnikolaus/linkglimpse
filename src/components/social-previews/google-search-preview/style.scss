@@ -5,7 +5,7 @@
  * but please do not "update" this file to conform.
 */
 
-@import "./variables";
+@use "./variables" as *;
 
 .google-search-preview {
   font-family: arial, sans-serif;

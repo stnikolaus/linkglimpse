@@ -7,7 +7,7 @@
  * @blame: pento
  */
 
-@import "./variables";
+@use "./variables" as *;
 
 .twitter-preview {
 	padding: 20px;

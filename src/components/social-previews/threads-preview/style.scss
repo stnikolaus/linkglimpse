@@ -1,5 +1,5 @@
 /* stylelint-disable scales/radii */
-@import "./variables";
+@use "./variables" as *;
 
 .threads-preview {
 	padding: 20px;

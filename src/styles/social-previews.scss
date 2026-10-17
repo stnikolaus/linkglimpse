@@ -1,16 +1,16 @@
 // Social Previews SCSS - Main entry point
 
-// Import all component styles
-@import "../components/social-previews/facebook-preview/style.scss";
-@import "../components/social-previews/twitter-preview/style.scss";
-@import "../components/social-previews/linkedin-preview/style.scss";
-@import "../components/social-previews/google-search-preview/style.scss";
-@import "../components/social-previews/tumblr-preview/styles.scss";
-@import "../components/social-previews/mastodon-preview/styles.scss";
-@import "../components/social-previews/nextdoor-preview/style.scss";
-@import "../components/social-previews/bluesky-preview/styles.scss";
-@import "../components/social-previews/instagram-preview/style.scss";
-@import "../components/social-previews/threads-preview/style.scss";
+// Load all component styles through the Sass module system.
+@use "../components/social-previews/facebook-preview/style" as facebook;
+@use "../components/social-previews/twitter-preview/style" as twitter;
+@use "../components/social-previews/linkedin-preview/style" as linkedin;
+@use "../components/social-previews/google-search-preview/style" as google;
+@use "../components/social-previews/tumblr-preview/styles" as tumblr;
+@use "../components/social-previews/mastodon-preview/styles" as mastodon;
+@use "../components/social-previews/nextdoor-preview/style" as nextdoor;
+@use "../components/social-previews/bluesky-preview/styles" as bluesky;
+@use "../components/social-previews/instagram-preview/style" as instagram;
+@use "../components/social-previews/threads-preview/style" as threads;
 
 // Global styles that apply to all social previews
 .social-preview {
