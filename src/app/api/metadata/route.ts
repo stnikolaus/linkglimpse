@@ -22,7 +22,11 @@ export async function GET(request: NextRequest) {
     const errorStatus = error && typeof error === 'object' && 'status' in error ? Number(error.status) : undefined;
     const status = error instanceof DOMException && error.name === 'TimeoutError' ? 504 : errorStatus === 415 ? 415 : 422;
 
-    console.error('Metadata inspection failed:', message);
+    if (status === 415) {
+      console.warn('Metadata inspection rejected non-HTML input:', message);
+    } else {
+      console.error('Metadata inspection failed:', message);
+    }
     return NextResponse.json({ error: message, url }, { status });
   }
 }
