@@ -181,7 +181,7 @@ export default function TwitterSocialPreviewClient() {
               A validator finds metadata defects before sharing and helps keep titles, descriptions, and images consistent. It cannot guarantee X&apos;s final rendering, cache-refresh timing, or engagement.
             </p>
             <p className="text-gray-600 mb-4">
-              For a deeper repair workflow, read <Link href="/blog/twitter-card-preview-not-showing" className="font-medium text-blue-700 hover:underline">why a Twitter Card preview may not appear</Link>. For tags shared across more platforms, use the <Link href="/blog/open-graph-tags-guide" className="font-medium text-blue-700 hover:underline">Open Graph tags guide</Link>.
+              For card types, image sizing, and implementation examples, read the <Link href="/blog/twitter-cards-optimization" className="font-medium text-blue-700 hover:underline">Twitter Card guide</Link>. For a deeper repair workflow, see <Link href="/blog/twitter-card-preview-not-showing" className="font-medium text-blue-700 hover:underline">why a Twitter Card preview may not appear</Link>. For tags shared across more platforms, use the <Link href="/blog/open-graph-tags-guide" className="font-medium text-blue-700 hover:underline">Open Graph tags guide</Link>.
             </p>
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Supported Twitter Card Types</h2>
             <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
