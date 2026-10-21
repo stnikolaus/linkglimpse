@@ -77,10 +77,14 @@ export default function BlogPage() {
                       <span className="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
                         {featuredPost.category}
                       </span>
-                      <span className="text-gray-500 text-sm ml-4 flex items-center">
+                      <time
+                        className="text-gray-500 text-sm ml-4 flex items-center"
+                        dateTime={featuredPost.updated || featuredPost.date}
+                      >
                         <Calendar className="h-4 w-4 mr-1" />
-                        {new Date(featuredPost.date).toLocaleDateString()}
-                      </span>
+                        {featuredPost.updated ? 'Updated ' : ''}
+                        {new Date(featuredPost.updated || featuredPost.date).toLocaleDateString()}
+                      </time>
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">
                       {featuredPost.title}
@@ -128,10 +132,14 @@ export default function BlogPage() {
                       <span className="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
                         {post.category}
                       </span>
-                      <span className="text-gray-500 text-sm ml-4 flex items-center">
+                      <time
+                        className="text-gray-500 text-sm ml-4 flex items-center"
+                        dateTime={post.updated || post.date}
+                      >
                         <Calendar className="h-4 w-4 mr-1" />
-                        {new Date(post.date).toLocaleDateString()}
-                      </span>
+                        {post.updated ? 'Updated ' : ''}
+                        {new Date(post.updated || post.date).toLocaleDateString()}
+                      </time>
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
                       {post.title}

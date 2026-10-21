@@ -137,7 +137,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="flex flex-wrap items-center gap-4 mb-8 text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">
                   <div className="flex items-center">
                     <Calendar className="h-4 w-4 mr-2 text-blue-500" />
-                    {format(new Date(post.date), 'MMMM dd, yyyy')}
+                    <time dateTime={post.updated || post.date}>
+                      {post.updated ? 'Updated ' : ''}
+                      {format(new Date(post.updated || post.date), 'MMMM dd, yyyy')}
+                    </time>
                   </div>
                   <div className="flex items-center">
                     <User className="h-4 w-4 mr-2 text-green-500" />
@@ -186,7 +189,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="text-sm text-gray-600">
                       <p className="font-medium">Written by {post.author}</p>
-                      <p>Published on {format(new Date(post.date), 'MMMM dd, yyyy')}</p>
+                      <p>
+                        Published on <time dateTime={post.date}>{format(new Date(post.date), 'MMMM dd, yyyy')}</time>
+                      </p>
+                      {post.updated && (
+                        <p>
+                          Updated on <time dateTime={post.updated}>{format(new Date(post.updated), 'MMMM dd, yyyy')}</time>
+                        </p>
+                      )}
                     </div>
                     <div className="flex items-center gap-4">
                       <button className="inline-flex items-center text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200">
@@ -221,9 +231,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         <div className="mb-4">
                           <div className="flex items-center gap-2 mb-2">
                             <Calendar className="h-3 w-3 text-gray-500" />
-                            <span className="text-xs text-gray-500">
-                              {format(new Date(relatedPost.date), 'MMM dd, yyyy')}
-                            </span>
+                            <time className="text-xs text-gray-500" dateTime={relatedPost.updated || relatedPost.date}>
+                              {relatedPost.updated ? 'Updated ' : ''}
+                              {format(new Date(relatedPost.updated || relatedPost.date), 'MMM dd, yyyy')}
+                            </time>
                           </div>
                           <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                             {relatedPost.title}
