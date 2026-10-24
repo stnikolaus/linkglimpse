@@ -1,8 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  InspectionError,
   analyzeMetadata,
   extractMetadata,
+  inspectUrl,
   renderPreviewSvg,
   validatePublicUrl,
 } from '../src/core/index.mjs';
@@ -51,5 +53,30 @@ test('rejects unsafe image data passed to the SVG renderer', () => {
 });
 
 test('blocks private network URLs before fetching', async () => {
-  await assert.rejects(validatePublicUrl('http://127.0.0.1/admin'), /Private or reserved/);
+  await assert.rejects(
+    validatePublicUrl('http://127.0.0.1/admin'),
+    (error) => error instanceof InspectionError && error.code === 'private_network' && error.status === 422,
+  );
+});
+
+test('classifies malformed URLs as expected inspection errors', async () => {
+  await assert.rejects(
+    validatePublicUrl('not-a-url'),
+    (error) => error instanceof InspectionError && error.code === 'invalid_url' && error.status === 422,
+  );
+});
+
+test('classifies target timeouts as expected gateway timeouts', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new DOMException('The operation was aborted due to timeout', 'TimeoutError');
+  };
+  try {
+    await assert.rejects(
+      inspectUrl('https://93.184.216.34'),
+      (error) => error instanceof InspectionError && error.code === 'target_timeout' && error.status === 504,
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });

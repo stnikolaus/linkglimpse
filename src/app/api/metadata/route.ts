@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { inspectUrl } from 'linkglimpse/core/inspection';
+import { InspectionError, inspectUrl } from 'linkglimpse/core/inspection';
 
 export const runtime = 'nodejs';
 
@@ -19,11 +19,11 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to fetch URL metadata';
-    const errorStatus = error && typeof error === 'object' && 'status' in error ? Number(error.status) : undefined;
-    const status = error instanceof DOMException && error.name === 'TimeoutError' ? 504 : errorStatus === 415 ? 415 : 422;
+    const isExpectedRejection = error instanceof InspectionError;
+    const status = isExpectedRejection ? error.status : 500;
 
-    if (status === 415) {
-      console.warn('Metadata inspection rejected non-HTML input:', message);
+    if (isExpectedRejection) {
+      console.warn(`Metadata inspection rejected (${error.code}):`, message);
     } else {
       console.error('Metadata inspection failed:', message);
     }

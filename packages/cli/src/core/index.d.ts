@@ -54,6 +54,12 @@ export interface InspectOptions {
   userAgent?: string;
 }
 
+export class InspectionError extends Error {
+  status: number;
+  code: string;
+  constructor(message: string, options?: { status?: number; code?: string; cause?: unknown });
+}
+
 export const PREVIEW_PLATFORMS: readonly PreviewPlatform[];
 export const PREVIEW_IMAGE_CONTENT_TYPES: readonly string[];
 export function inspectUrl(input: string, options?: InspectOptions): Promise<LinkGlimpseReport>;

@@ -11,6 +11,15 @@ const DEFAULTS = {
   userAgent: 'LinkGlimpse/2.0 (+https://www.linkglimpse.com)',
 };
 
+export class InspectionError extends Error {
+  constructor(message, { status = 422, code = 'inspection_failed', cause } = {}) {
+    super(message, { cause });
+    this.name = 'InspectionError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
 export async function inspectUrl(input, options = {}) {
   const config = { ...DEFAULTS, ...options };
   const requestedUrl = await validatePublicUrl(input);
@@ -19,9 +28,10 @@ export async function inspectUrl(input, options = {}) {
   });
   const contentType = response.headers.get('content-type') ?? '';
   if (!contentType.includes('text/html') && !contentType.includes('application/xhtml+xml')) {
-    const error = new Error(`Expected an HTML page but received ${contentType || 'an unknown content type'}`);
-    error.status = 415;
-    throw error;
+    throw new InspectionError(`Expected an HTML page but received ${contentType || 'an unknown content type'}`, {
+      status: 415,
+      code: 'unsupported_content_type',
+    });
   }
 
   const html = await readResponsePrefix(response, config.maxHtmlBytes);
@@ -67,16 +77,32 @@ export async function fetchPublicImage(input, options = {}) {
 }
 
 export async function validatePublicUrl(input) {
-  const parsed = new URL(input);
-  if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Only HTTP and HTTPS URLs are supported');
-  if (parsed.username || parsed.password) throw new Error('URLs containing credentials are not supported');
+  let parsed;
+  try {
+    parsed = new URL(input);
+  } catch (cause) {
+    throw new InspectionError('Invalid URL', { code: 'invalid_url', cause });
+  }
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new InspectionError('Only HTTP and HTTPS URLs are supported', { code: 'unsupported_protocol' });
+  }
+  if (parsed.username || parsed.password) {
+    throw new InspectionError('URLs containing credentials are not supported', { code: 'embedded_credentials' });
+  }
   const hostname = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, '');
   const blockedHostname = hostname === 'localhost' || hostname.endsWith('.localhost') || hostname.endsWith('.local')
     || hostname.endsWith('.internal') || hostname.endsWith('.test') || hostname.endsWith('.invalid');
-  if (blockedHostname) throw new Error('Private or local network URLs are not supported');
-  const addresses = isIP(hostname) ? [{ address: hostname }] : await lookup(hostname, { all: true, verbatim: true });
+  if (blockedHostname) {
+    throw new InspectionError('Private or local network URLs are not supported', { code: 'private_network' });
+  }
+  let addresses;
+  try {
+    addresses = isIP(hostname) ? [{ address: hostname }] : await lookup(hostname, { all: true, verbatim: true });
+  } catch (cause) {
+    throw new InspectionError('Unable to resolve target hostname', { code: 'hostname_unreachable', cause });
+  }
   if (addresses.length === 0 || addresses.some(({ address }) => isPrivateOrReservedAddress(address))) {
-    throw new Error('Private or reserved network URLs are not supported');
+    throw new InspectionError('Private or reserved network URLs are not supported', { code: 'private_network' });
   }
   return parsed;
 }
@@ -85,10 +111,15 @@ async function fetchWithRedirects(startUrl, { accept, config }) {
   let currentUrl = startUrl;
   const redirectChain = [];
   for (let attempt = 0; attempt <= config.maxRedirects; attempt += 1) {
-    const response = await fetch(currentUrl, {
-      headers: { Accept: accept, 'User-Agent': config.userAgent }, redirect: 'manual', cache: 'no-store',
-      signal: AbortSignal.timeout(config.requestTimeoutMs),
-    });
+    let response;
+    try {
+      response = await fetch(currentUrl, {
+        headers: { Accept: accept, 'User-Agent': config.userAgent }, redirect: 'manual', cache: 'no-store',
+        signal: AbortSignal.timeout(config.requestTimeoutMs),
+      });
+    } catch (cause) {
+      throw normalizeTargetError(cause);
+    }
     const location = response.headers.get('location');
     const isRedirect = location && [300, 301, 302, 303, 307, 308].includes(response.status);
     const resolvedLocation = isRedirect ? (await validatePublicUrl(new URL(location, currentUrl).toString())).toString() : undefined;
@@ -96,7 +127,7 @@ async function fetchWithRedirects(startUrl, { accept, config }) {
     if (!resolvedLocation) return { response, finalUrl: currentUrl, redirectChain };
     currentUrl = new URL(resolvedLocation);
   }
-  throw new Error(`Too many redirects (more than ${config.maxRedirects})`);
+  throw new InspectionError(`Too many redirects (more than ${config.maxRedirects})`, { code: 'too_many_redirects' });
 }
 
 async function inspectImage(input, config) {
@@ -124,19 +155,32 @@ async function readResponsePrefix(response, limit) {
 
 async function readBinaryPrefix(response, limit, rejectOverflow = false) {
   if (!response.body) {
-    const bytes = new Uint8Array(await response.arrayBuffer());
-    if (rejectOverflow && bytes.byteLength > limit) throw new Error(`Response exceeds the ${limit} byte limit`);
+    let bytes;
+    try {
+      bytes = new Uint8Array(await response.arrayBuffer());
+    } catch (cause) {
+      throw normalizeTargetError(cause);
+    }
+    if (rejectOverflow && bytes.byteLength > limit) {
+      throw new InspectionError(`Response exceeds the ${limit} byte limit`, { code: 'response_too_large' });
+    }
     return bytes.subarray(0, limit);
   }
   const reader = response.body.getReader();
   const chunks = [];
   let received = 0;
   while (received <= limit) {
-    const { done, value } = await reader.read();
+    let read;
+    try {
+      read = await reader.read();
+    } catch (cause) {
+      throw normalizeTargetError(cause);
+    }
+    const { done, value } = read;
     if (done) break;
     if (rejectOverflow && received + value.byteLength > limit) {
       await reader.cancel().catch(() => undefined);
-      throw new Error(`Response exceeds the ${limit} byte limit`);
+      throw new InspectionError(`Response exceeds the ${limit} byte limit`, { code: 'response_too_large' });
     }
     const remaining = limit - received;
     const chunk = value.byteLength > remaining ? value.subarray(0, remaining) : value;
@@ -148,6 +192,14 @@ async function readBinaryPrefix(response, limit, rejectOverflow = false) {
   let offset = 0;
   for (const chunk of chunks) { output.set(chunk, offset); offset += chunk.byteLength; }
   return output;
+}
+
+function normalizeTargetError(cause) {
+  if (cause instanceof DOMException && ['AbortError', 'TimeoutError'].includes(cause.name)) {
+    return new InspectionError('Target request timed out', { status: 504, code: 'target_timeout', cause });
+  }
+  const message = cause instanceof Error ? cause.message : 'Unable to fetch target URL';
+  return new InspectionError(message, { code: 'target_unreachable', cause });
 }
 
 export function extractMetadata(html, requestedUrl, finalUrl) {
