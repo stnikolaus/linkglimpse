@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: SITE_URL, lastModified: new Date('2026-09-17'), changeFrequency: 'weekly', priority: 1 },
     {
       url: `${SITE_URL}/open-graph-checker`,
-      lastModified: new Date('2026-09-23'),
+      lastModified: new Date('2026-09-29'),
       changeFrequency: 'weekly',
       priority: 1,
     },
@@ -20,7 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    { url: `${SITE_URL}/linkedin-post-preview`, changeFrequency: 'weekly', priority: 0.9 },
+    {
+      url: `${SITE_URL}/linkedin-post-preview`,
+      lastModified: new Date('2026-08-03'),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     { url: `${SITE_URL}/facebook-open-graph-debugger`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE_URL}/bulk`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/api`, changeFrequency: 'monthly', priority: 0.7 },
