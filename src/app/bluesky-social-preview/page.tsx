@@ -14,7 +14,7 @@ import { useLinkGlimpseAnalytics } from '@/components/PlausibleEvents';
 const faqItems = [
   {
     question: 'How does Bluesky create a link preview?',
-    answer: 'Bluesky website cards include a URL, title, description, and thumbnail. The official Bluesky example reads og:title, og:description, and og:image from the linked page before creating the card.',
+    answer: 'Bluesky stores a website card as an external embed with a URL, title, description, and optional thumbnail. The posting client fetches and attaches that card metadata when it creates the post.',
   },
   {
     question: 'Does this tool show the exact Bluesky card?',
@@ -22,7 +22,7 @@ const faqItems = [
   },
   {
     question: 'Why is my Bluesky link preview missing or outdated?',
-    answer: 'The public page may have missing or unreachable Open Graph tags, a blocked image, a redirect problem, or metadata that changed after a client cached the link. Validate the deployed page first, then share the final public URL.',
+    answer: 'The posting client may have found missing or unreachable metadata, a blocked image, or a redirect problem. Existing posts keep the card embedded when they were created, so deploy the metadata fix, validate the final public URL, and create a new post.',
   },
   {
     question: 'Which tags should I check for a Bluesky card?',
@@ -85,7 +85,7 @@ export default function BlueskySocialPreview() {
             Preview how a public URL may appear in a Bluesky post. Check the representative link card, title, description and image before sharing.
           </p>
           <p className="mt-3 text-sm text-gray-500">
-            Reviewed October 7, 2026 · Maintained by <Link href="/about" className="font-medium text-blue-700 hover:underline">LinkGlimpse</Link> ·{' '}
+            Reviewed October 28, 2026 · Maintained by <Link href="/about" className="font-medium text-blue-700 hover:underline">LinkGlimpse</Link> ·{' '}
             <Link href="/methodology" className="font-medium text-blue-700 hover:underline">How the diagnostics work</Link>
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function BlueskySocialPreview() {
         <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-5 text-sm text-blue-950">
           <p className="font-semibold">Check the public metadata behind a Bluesky website card.</p>
           <p className="mt-2 leading-6">
-            Paste the final public URL below. LinkGlimpse follows redirects, reads the server-rendered metadata, checks the share image, and shows a representative card. It cannot reproduce every Bluesky client, clear a client cache, or guarantee the final crop.
+            Paste the final public URL below. LinkGlimpse follows redirects, reads the server-rendered metadata, checks the share image, and shows a representative card. It cannot reproduce every Bluesky client, change a card already embedded in a post, or guarantee the final crop.
           </p>
         </div>
 
@@ -149,9 +149,9 @@ export default function BlueskySocialPreview() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">How Bluesky Link Previews Use Metadata</h2>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-600 mb-4">
-              A Bluesky website card carries a URL, title, description, and thumbnail.
-              The <a href="https://github.com/bluesky-social/bsky-docs/blob/main/docs/advanced-guides/posts.md" target="_blank" rel="noreferrer" className="font-medium text-blue-700 hover:underline">official Bluesky posting guide</a> demonstrates creating those fields from <code className="bg-gray-200 px-1 rounded">og:title</code>, <code className="bg-gray-200 px-1 rounded">og:description</code>, and <code className="bg-gray-200 px-1 rounded">og:image</code>.
-              LinkGlimpse inspects those public signals without posting to Bluesky.
+              A Bluesky website card is stored in the post as an external embed with a URL, title, description, and optional thumbnail.
+              The <a href="https://docs.bsky.app/docs/tutorials/creating-a-post#website-card-embeds" target="_blank" rel="noreferrer" className="font-medium text-blue-700 hover:underline">official Bluesky posting guide</a> explains that each posting client fetches and embeds the card metadata when it creates the post.
+              LinkGlimpse inspects the public Open Graph signals a client can use without posting to Bluesky.
             </p>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-900 mb-2">Key metadata to check</h3>
@@ -179,7 +179,8 @@ export default function BlueskySocialPreview() {
               <li>Deploy the fix and rerun the same URL before sharing it again.</li>
             </ol>
             <p className="text-gray-600 mt-4">
-              If the live metadata is correct but an existing post still looks stale, the remaining difference may be client-side caching or rendering that LinkGlimpse cannot control.
+              A Bluesky card is embedded when the post is created, so changing the page metadata does not rewrite an existing post.
+              Deploy the fix, validate the final public URL, and create a new post to attach the updated card.
             </p>
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">Bluesky Link Preview Questions</h2>
             <div className="space-y-4">

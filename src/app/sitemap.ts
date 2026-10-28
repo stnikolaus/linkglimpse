@@ -45,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/nextdoor-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
     {
       url: `${SITE_URL}/bluesky-social-preview`,
-      lastModified: new Date('2026-10-07'),
+      lastModified: new Date('2026-10-28'),
       changeFrequency: 'monthly',
       priority: 0.4,
     },
