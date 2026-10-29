@@ -1,6 +1,8 @@
-# Visual Social Preview & Open Graph Auditor
+# LinkGlimpse Social Preview & Open Graph Auditor
 
-See the result instead of reading raw tags. This Actor inspects public URLs, renders a visual preview sheet, scores metadata health and returns concrete fixes that developers or AI agents can apply.
+LinkGlimpse is a free, open-source link preview and metadata diagnostic tool that shows how a URL may appear across social platforms and explains how to fix missing or incorrect metadata.
+This Apify Actor inspects public URLs, renders a visual preview sheet, scores metadata health and returns concrete fixes that developers or AI agents can apply.
+Use the [LinkGlimpse web checker](https://www.linkglimpse.com/) for one free, no-signup audit or review the [public source repository](https://github.com/stnikolaus/linkglimpse).
 
 ## What makes this Actor different
 

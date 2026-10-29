@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "linkglimpse-social-preview-auditor",
-  "title": "Visual Social Preview & Open Graph Auditor",
-  "description": "Render visual social and Google previews, score metadata health, validate share images, and return actionable fixes for up to 100 public URLs.",
+  "title": "LinkGlimpse Social Preview & Open Graph Auditor",
+  "description": "Use the LinkGlimpse Actor to render visual social and Google previews, score metadata health, validate share images, and return actionable fixes for up to 100 public URLs.",
   "version": "0.1",
   "readme": "./README.md",
   "input": "./input_schema.json",
