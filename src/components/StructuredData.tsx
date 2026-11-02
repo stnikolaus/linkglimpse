@@ -7,6 +7,7 @@ import {
 interface StructuredDataProps {
   type: 'website' | 'tool' | 'software'
   title: string
+  alternateName?: string
   description: string
   url: string
   image?: string
@@ -16,6 +17,7 @@ interface StructuredDataProps {
 export default function StructuredData({
   type,
   title,
+  alternateName,
   description,
   url,
   image = 'https://www.linkglimpse.com/images/icon/social-preview-1200x630.jpeg',
@@ -52,6 +54,8 @@ export default function StructuredData({
 
   const toolStructuredData = type === 'tool' || type === 'software' ? {
     ...baseStructuredData,
+    '@id': 'https://www.linkglimpse.com/#software-application',
+    ...(alternateName ? { alternateName } : {}),
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Web Browser',
     offers: {

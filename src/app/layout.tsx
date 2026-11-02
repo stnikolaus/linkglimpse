@@ -91,7 +91,8 @@ export default function RootLayout({
       <body className="antialiased flex flex-col min-h-screen">
         <StructuredData
           type="tool"
-          title="Social Media Link Preview & Open Graph Checker"
+          title="LinkGlimpse"
+          alternateName="Social Media Link Preview & Open Graph Checker"
           description="Check how any URL may appear across social networks, inspect its Open Graph tags, and find missing images, titles, or descriptions."
           url="https://www.linkglimpse.com"
         />
