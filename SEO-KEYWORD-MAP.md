@@ -11,6 +11,7 @@ This map assigns each search intent to one primary indexable URL. Supporting pag
 | `/twitter-card-validator` | Validate an X/Twitter Card | Twitter Card validator, Twitter Card test, X Card validator, Twitter Card preview | `/blog/twitter-card-preview-not-showing`, `/blog/twitter-cards-optimization` |
 | `/facebook-open-graph-debugger` | Debug a Facebook share card | Facebook Open Graph debugger, Facebook link debugger, Facebook OG tester | `/blog/facebook-link-preview-wrong` |
 | `/linkedin-post-preview` | Inspect a LinkedIn link card | LinkedIn Post Inspector alternative, LinkedIn preview checker, LinkedIn link debugger | `/blog/linkedin-link-preview-not-updating` |
+| `/instagram-social-preview` | Review page metadata as an Instagram post mockup | Instagram post preview from URL, Instagram link preview | `/open-graph-checker` |
 | `/compare` | Compare two metadata implementations | compare Open Graph tags, metadata comparison tool, OG tag diff | `/open-graph-checker` |
 
 ## Troubleshooting and reference pages

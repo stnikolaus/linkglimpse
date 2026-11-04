@@ -7,16 +7,20 @@ import { ApiResponse } from '@/types';
 import { fetchUrlMetadata } from '@/lib/url-utils';
 import UrlInput from '@/components/UrlInput';
 import DiagnosticsPanel from '@/components/DiagnosticsPanel';
+import { useLinkGlimpseAnalytics } from '@/components/PlausibleEvents';
 
 export default function TumblrSocialPreview() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [urlMetadata, setUrlMetadata] = useState<ApiResponse | null>(null);
+  const analytics = useLinkGlimpseAnalytics();
 
   const handleUrlSubmit = async (url: string) => {
+    const startedAt = performance.now();
     setIsLoading(true);
     setError('');
     setUrlMetadata(null);
+    analytics.trackPreviewStarted('tumblr-link-preview', url);
 
     try {
       const fetchedMetadata = await fetchUrlMetadata(url);
@@ -26,8 +30,11 @@ export default function TumblrSocialPreview() {
       }
 
       setUrlMetadata(fetchedMetadata);
+      analytics.trackPreviewSucceeded('tumblr-link-preview', fetchedMetadata, Math.round(performance.now() - startedAt));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate preview');
+      const message = err instanceof Error ? err.message : 'Failed to generate preview';
+      setError(message);
+      analytics.trackPreviewFailed('tumblr-link-preview', url, message);
     } finally {
       setIsLoading(false);
     }

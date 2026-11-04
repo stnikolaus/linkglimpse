@@ -38,7 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     { url: `${SITE_URL}/browser-extension`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/apify`, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/instagram-social-preview`, changeFrequency: 'monthly', priority: 0.5 },
+    {
+      url: `${SITE_URL}/instagram-social-preview`,
+      lastModified: new Date('2026-11-04'),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
     { url: `${SITE_URL}/google-search-preview`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${SITE_URL}/tumblr-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/mastodon-social-preview`, changeFrequency: 'monthly', priority: 0.4 },
